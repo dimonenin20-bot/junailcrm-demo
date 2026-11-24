@@ -1770,9 +1770,50 @@
       bookingSelectedService: null,
       bookingSelectedMasterId: "m-any"
     };
+    window.appState = appState;
 
-    // Load from LocalStorage and forcefully ensure images are synchronized
-    const cachedState = localStorage.getItem('wild_beauty_crm_state_v3') || localStorage.getItem('wild_beauty_crm_state');
+    // Standard BOM Fallback Map
+    const DEFAULT_BOM_MAP = {
+      'Манікюр': [
+        { invId: "inv-m1", name: "Rubber Base (Каучукова база)", qty: 0.5, unit: "мл" },
+        { invId: "inv-m2", name: "No-Wipe Glossy Top", qty: 0.4, unit: "мл" },
+        { invId: "inv-m4", name: "Пилочка одноразова 100/180", qty: 1, unit: "шт" }
+      ],
+      'Педикюр': [
+        { invId: "inv-m1", name: "Rubber Base (Каучукова база)", qty: 0.4, unit: "мл" },
+        { invId: "inv-m2", name: "No-Wipe Glossy Top", qty: 0.4, unit: "мл" },
+        { invId: "inv-m5", name: "Змінний файл для Smart-диска", qty: 2, unit: "шт" }
+      ],
+      'Вії': [
+        { invId: "inv-l1", name: "Клей для вій швидкої фіксації", qty: 0.3, unit: "мл" },
+        { invId: "inv-l2", name: "Гідрогелеві патчі під очі", qty: 1, unit: "пара" },
+        { invId: "inv-l4", name: "Вії коричневі/кольорові акценти", qty: 0.2, unit: "пал" }
+      ],
+      'Косметологія': [
+        { invId: "inv-c1", name: "Гель холодного гідрування", qty: 5, unit: "мл" },
+        { invId: "inv-c2", name: "Антисептична заспокійлива маска", qty: 5, unit: "мл" },
+        { invId: "inv-c3", name: "Фінішний SPF-крем 50+", qty: 2, unit: "мл" }
+      ],
+      'Брови': [
+        { invId: "inv-b4", name: "Склади для ламінування 1+2+3", qty: 1, unit: "компл" },
+        { invId: "inv-b1", name: "Фарба для брів Levissime / Elan", qty: 1.5, unit: "мл" }
+      ]
+    };
+
+    const STORAGE_KEY = 'wild_beauty_crm_state_v4';
+
+    // Load from LocalStorage with auto-healing and seamless legacy migration
+    const cachedState = localStorage.getItem(STORAGE_KEY) 
+      || localStorage.getItem('wild_beauty_crm_state_v3') 
+      || localStorage.getItem('wild_beauty_crm_state');
+
+    // Clean legacy obsolete cache keys
+    try {
+      localStorage.removeItem('wild_beauty_crm_state');
+      localStorage.removeItem('wild_beauty_crm_state_v2');
+      localStorage.removeItem('wild_beauty_crm_state_v3');
+    } catch(e){}
+
     if (cachedState) {
       try {
         const parsed = JSON.parse(cachedState);
@@ -1783,16 +1824,50 @@
           const cached = (parsed.services || []).find(ps => ps.id === cs.id);
           return cached ? { ...cached, img: cs.img, defaultBOM: cs.defaultBOM } : cs;
         });
+
+        // Robust migration & repair of appointments
+        if (Array.isArray(parsed.appointments) && parsed.appointments.length > 0) {
+          const hasBrokenClients = parsed.appointments.some(a => (!a.client && !a.clientName) || a.client === 'undefined');
+          const isOldDummySet = parsed.appointments.length <= 3 && parsed.appointments.every(a => a.status === 'confirmed' || a.status === 'pending');
+
+          if (isOldDummySet || hasBrokenClients) {
+            appState.appointments = INITIAL_APPOINTMENTS;
+          } else {
+            appState.appointments = parsed.appointments.map(apt => {
+              const client = (apt.client && apt.client !== 'undefined') ? apt.client : (apt.clientName || 'Катерина Воронова');
+              const dir = apt.dir || 'Манікюр';
+              const bom = (Array.isArray(apt.bom) && apt.bom.length > 0) ? apt.bom : (DEFAULT_BOM_MAP[dir] || DEFAULT_BOM_MAP['Манікюр']);
+              let status = apt.status || 'Підтверджено';
+              if (status === 'confirmed') status = 'Підтверджено';
+              if (status === 'pending') status = 'Очікує клієнта';
+              return {
+                ...apt,
+                client: client,
+                dir: dir,
+                status: status,
+                bom: bom
+              };
+            });
+          }
+        } else {
+          appState.appointments = INITIAL_APPOINTMENTS;
+        }
       } catch (e) {
         console.warn('Could not parse cached state:', e);
         appState.services = CANONICAL_SERVICES;
+        appState.appointments = INITIAL_APPOINTMENTS;
       }
     } else {
       appState.services = CANONICAL_SERVICES;
+      appState.appointments = INITIAL_APPOINTMENTS;
     }
 
     function saveState() {
-      localStorage.setItem('wild_beauty_crm_state_v3', JSON.stringify(appState));
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
+      } catch(e) {
+        console.warn('Error saving state:', e);
+      }
     }
 
     // Mode Switcher
@@ -1818,8 +1893,9 @@
     // Reset Data
     document.getElementById('resetBtn').addEventListener('click', () => {
       if (confirm('Скинути всі дані студії wild_beauty_space до початкового стану?')) {
-        localStorage.removeItem('wild_beauty_crm_state_v3');
-        localStorage.removeItem('wild_beauty_crm_state');
+        ['wild_beauty_crm_state', 'wild_beauty_crm_state_v2', 'wild_beauty_crm_state_v3', 'wild_beauty_crm_state_v4'].forEach(k => {
+          try { localStorage.removeItem(k); } catch(e){}
+        });
         location.reload();
       }
     });
@@ -1982,23 +2058,29 @@
       let totalRev = 0, totalCost = 0;
 
       appState.appointments.forEach(apt => {
-        totalRev += apt.price;
-        totalCost += apt.cost;
+        const price = Number(apt.price) || 0;
+        const cost = Number(apt.cost) || 0;
+        totalRev += price;
+        totalCost += cost;
 
         const tr = document.createElement('tr');
-        const statusClass = (apt.status === 'Виконано') ? 'badge-success' : 'badge-warning';
+        const isSuccess = (apt.status === 'Виконано' || apt.status === 'Підтверджено' || apt.status === 'confirmed');
+        const statusClass = isSuccess ? 'badge-success' : 'badge-warning';
+        const statusText = (apt.status === 'confirmed') ? 'Підтверджено' : (apt.status === 'pending') ? 'Очікує' : (apt.status || 'Підтверджено');
+        const clientName = ((apt.client && apt.client !== 'undefined') ? apt.client : (apt.clientName || 'Катерина Воронова')).trim();
+        const clientPhone = apt.phone || '+38 (067) 345-21-90';
 
         tr.innerHTML = `
-          <td><strong>${apt.time}</strong></td>
+          <td><strong>${apt.time || '10:30'}</strong></td>
           <td>
-            <div style="font-weight: 600;">${apt.client}</div>
-            <div style="font-size: 11.5px; color: var(--text-muted);">${apt.phone}</div>
+            <div style="font-weight: 600;">${clientName}</div>
+            <div style="font-size: 11.5px; color: var(--text-muted);">${clientPhone}</div>
           </td>
-          <td><span class="dir-tag">${apt.dir}</span></td>
-          <td>${apt.service}</td>
-          <td>${apt.master}</td>
-          <td><strong>${apt.price} ₴</strong></td>
-          <td><span class="badge ${statusClass}">${apt.status}</span></td>
+          <td><span class="dir-tag">${apt.dir || 'Манікюр'}</span></td>
+          <td>${apt.service || 'Зняття + манікюр + покриття'}</td>
+          <td>${apt.master || 'Катерина'}</td>
+          <td><strong>${price.toLocaleString()} ₴</strong></td>
+          <td><span class="badge ${statusClass}">${statusText}</span></td>
           <td style="text-align: right; white-space: nowrap;">
             <button class="btn btn-primary btn-sm" onclick="openBriefModal('${apt.id}')" style="margin-right: 4px;">📋 Бриф після візиту</button>
             <button class="btn btn-secondary btn-sm" onclick="deleteAppointment('${apt.id}')">✕</button>
@@ -2024,140 +2106,188 @@
     // VISIT BRIEF & EDITABLE BOM LOGIC
     let currentBriefBOM = [];
 
-    window.openSampleBriefModal = function(aptId) {
-      openBriefModal(aptId || 'apt-01');
-    };
+    function openBriefModal(aptId) {
+      try {
+        appState.activeBriefAppointmentId = aptId;
+        const apt = (aptId ? appState.appointments.find(a => a.id === aptId) : null)
+          || appState.appointments[0]
+          || INITIAL_APPOINTMENTS[0];
 
-    window.openBriefModal = function(aptId) {
-      appState.activeBriefAppointmentId = aptId;
-      const apt = appState.appointments.find(a => a.id === aptId) || appState.appointments[0];
-      if (!apt) return;
+        if (!apt) return;
 
-      document.getElementById('briefModalTitle').innerText = `📋 Бриф після візиту: ${apt.client}`;
-      document.getElementById('briefModalSubtitle').innerText = `Студія wild_beauty_space • ${apt.service} • Французький б-р, 26/1`;
+        const clientName = ((apt.client && apt.client !== 'undefined') ? apt.client : (apt.clientName || 'Катерина Воронова')).trim();
+        const clientFirstName = (clientName.split(/\s+/)[0] || 'Клієнтка').replace(/[«»"']/g, '');
+        const clientPhone = apt.phone || '+38 (067) 345-21-90';
+        const serviceName = apt.service || 'Зняття + манікюр + покриття';
+        const masterName = apt.master || 'Катерина';
+        const timeVal = apt.time || '10:30';
+        const priceVal = Number(apt.price) || 900;
+        const dirVal = apt.dir || 'Манікюр';
 
-      document.getElementById('briefClientName').innerText = apt.client;
-      document.getElementById('briefClientPhone').innerText = apt.phone;
-      document.getElementById('briefServiceName').innerText = apt.service;
-      document.getElementById('briefMasterName').innerText = `Майстер: ${apt.master}`;
-      document.getElementById('briefVisitTime').innerText = `Сьогодні, ${apt.time}`;
-      document.getElementById('briefFinPrice').innerText = `${apt.price.toLocaleString()} ₴`;
+        const titleElem = document.getElementById('briefModalTitle');
+        if (titleElem) titleElem.innerText = `📋 Бриф після візиту: ${clientName}`;
+        const subTitleElem = document.getElementById('briefModalSubtitle');
+        if (subTitleElem) subTitleElem.innerText = `Студія wild_beauty_space • ${serviceName} • Французький б-р, 26/1`;
 
-      // Pre-populate real Before & After photos based on direction
-      const imgBefore = document.getElementById('briefImgBefore');
-      const imgAfter = document.getElementById('briefImgAfter');
-      const lblBefore = document.getElementById('briefImgBeforeLbl');
-      const lblAfter = document.getElementById('briefImgAfterLbl');
+        const nameElem = document.getElementById('briefClientName');
+        if (nameElem) nameElem.innerText = clientName;
+        const phoneElem = document.getElementById('briefClientPhone');
+        if (phoneElem) phoneElem.innerText = clientPhone;
+        const servElem = document.getElementById('briefServiceName');
+        if (servElem) servElem.innerText = serviceName;
+        const masterElem = document.getElementById('briefMasterName');
+        if (masterElem) masterElem.innerText = `Майстер: ${masterName}`;
+        const timeElem = document.getElementById('briefVisitTime');
+        if (timeElem) timeElem.innerText = `Сьогодні, ${timeVal}`;
+        const finPriceElem = document.getElementById('briefFinPrice');
+        if (finPriceElem) finPriceElem.innerText = `${priceVal.toLocaleString()} ₴`;
 
-      if (apt.dir === 'Манікюр') {
-        imgBefore.src = './assets/img/salon_4.jpg';
-        lblBefore.innerText = 'Відросле покриття (4 тижні), суха кутикула';
-        imgAfter.src = './assets/img/salon_3.jpg';
-        lblAfter.innerText = 'Dark Cherry Glossy Gel • Ідеальний блік';
-      } else if (apt.dir === 'Педикюр') {
-        imgBefore.src = './assets/img/salon_4.jpg';
-        lblBefore.innerText = 'Початковий стан стопи та нігтів';
-        imgAfter.src = './assets/img/salon_5.jpg';
-        lblAfter.innerText = 'Повний апаратний педикюр Smart + покриття';
-      } else if (apt.dir === 'Вії') {
-        imgBefore.src = './assets/img/salon_1.jpg';
-        lblBefore.innerText = 'Свої вії до нарощування';
-        imgAfter.src = './assets/img/salon_2.jpg';
-        lblAfter.innerText = 'Нарощування Тренди (мокрий ефект, вигин L)';
-      } else if (apt.dir === 'Косметологія') {
-        imgBefore.src = './assets/img/salon_1.jpg';
-        lblBefore.innerText = 'Забиті пори, комедони в T-зоні';
-        imgAfter.src = './assets/img/salon_2.jpg';
-        lblAfter.innerText = 'Чиста сяюча шкіра після УЗ + заспокійлива маска';
-      } else {
-        imgBefore.src = './assets/img/salon_1.jpg';
-        lblBefore.innerText = 'Брови до корекції та ламінування';
-        imgAfter.src = './assets/img/salon_2.jpg';
-        lblAfter.innerText = 'Ламінування + моделювання воском + тон 7.0';
+        // Pre-populate real Before & After photos based on direction
+        const imgBefore = document.getElementById('briefImgBefore');
+        const imgAfter = document.getElementById('briefImgAfter');
+        const lblBefore = document.getElementById('briefImgBeforeLbl');
+        const lblAfter = document.getElementById('briefImgAfterLbl');
+
+        if (dirVal === 'Манікюр') {
+          if (imgBefore) imgBefore.src = './assets/img/salon_4.jpg';
+          if (lblBefore) lblBefore.innerText = 'Відросле покриття (4 тижні), суха кутикула';
+          if (imgAfter) imgAfter.src = './assets/img/salon_3.jpg';
+          if (lblAfter) lblAfter.innerText = 'Dark Cherry Glossy Gel • Ідеальний блік';
+        } else if (dirVal === 'Педикюр') {
+          if (imgBefore) imgBefore.src = './assets/img/salon_4.jpg';
+          if (lblBefore) lblBefore.innerText = 'Початковий стан стопи та нігтів';
+          if (imgAfter) imgAfter.src = './assets/img/salon_5.jpg';
+          if (lblAfter) lblAfter.innerText = 'Повний апаратний педикюр Smart + покриття';
+        } else if (dirVal === 'Вії') {
+          if (imgBefore) imgBefore.src = './assets/img/salon_1.jpg';
+          if (lblBefore) lblBefore.innerText = 'Свої вії до нарощування';
+          if (imgAfter) imgAfter.src = './assets/img/salon_2.jpg';
+          if (lblAfter) lblAfter.innerText = 'Нарощування Тренди (мокрий ефект, вигин L)';
+        } else if (dirVal === 'Косметологія') {
+          if (imgBefore) imgBefore.src = './assets/img/salon_1.jpg';
+          if (lblBefore) lblBefore.innerText = 'Забиті пори, комедони в T-зоні';
+          if (imgAfter) imgAfter.src = './assets/img/salon_2.jpg';
+          if (lblAfter) lblAfter.innerText = 'Чиста сяюча шкіра після УЗ + заспокійлива маска';
+        } else {
+          if (imgBefore) imgBefore.src = './assets/img/salon_1.jpg';
+          if (lblBefore) lblBefore.innerText = 'Брови до корекції та ламінування';
+          if (imgAfter) imgAfter.src = './assets/img/salon_2.jpg';
+          if (lblAfter) lblAfter.innerText = 'Ламінування + моделювання воском + тон 7.0';
+        }
+
+        // Render direction-specific fields
+        const dynContainer = document.getElementById('briefDynamicFields');
+        if (dynContainer) {
+          if (dirVal === 'Манікюр' || dirVal === 'Педикюр') {
+            dynContainer.innerHTML = `
+              <div class="form-row">
+                <label class="form-lbl">Стан нігтьової пластини & кутикули</label>
+                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                  <span class="slot-pill active">✓ Тонка / Чутлива пластина</span>
+                  <span class="slot-pill">Здорова / Норма</span>
+                  <span class="slot-pill">Схильна до відшарувань</span>
+                </div>
+              </div>
+              <div class="form-row">
+                <label class="form-lbl">Технічний протокол укріплення</label>
+                <input type="text" class="input-field" value="Rubber Base безкислотне укріплення + форма квадрат, довжина 2">
+              </div>
+            `;
+          } else if (dirVal === 'Вії') {
+            dynContainer.innerHTML = `
+              <div class="form-row">
+                <label class="form-lbl">Параметри нарощування вій</label>
+                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                  <span class="slot-pill active">✓ Вигин L</span>
+                  <span class="slot-pill active">✓ Довжина 9-12 мм</span>
+                  <span class="slot-pill active">✓ Мокрий ефект</span>
+                  <span class="slot-pill">Товщина 0.07</span>
+                </div>
+              </div>
+            `;
+          } else if (dirVal === 'Косметологія') {
+            dynContainer.innerHTML = `
+              <div class="form-row">
+                <label class="form-lbl">Тип шкіри & Протокол догляду</label>
+                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                  <span class="slot-pill active">✓ Комбінована</span>
+                  <span class="slot-pill active">✓ Чутлива T-зона</span>
+                  <span class="slot-pill">Атравматична чистка + SPF 50</span>
+                </div>
+              </div>
+            `;
+          } else {
+            dynContainer.innerHTML = `
+              <div class="form-row">
+                <label class="form-lbl">Колористика / Рівень глибини тону</label>
+                <input type="text" class="input-field" value="Натуральний світло-коричневий 7.0, оксид 3%, віск">
+              </div>
+            `;
+          }
+        }
+
+        // Initialize Editable BOM array
+        const rawBOM = (Array.isArray(apt.bom) && apt.bom.length > 0)
+          ? apt.bom
+          : (DEFAULT_BOM_MAP[dirVal] || DEFAULT_BOM_MAP['Манікюр']);
+        currentBriefBOM = JSON.parse(JSON.stringify(rawBOM));
+
+        renderBOMItemsInBrief();
+        calculateBriefTotals(priceVal);
+
+        // Telegram Message Preview
+        const tgElem = document.getElementById('briefTelegramPreview');
+        if (tgElem) {
+          tgElem.innerText = `💬 «${clientFirstName}, дякуємо за візит у @wild_beauty_space_! 💜 Ваш майстер ${masterName} зафіксувала результат (${serviceName}) та нагадує про щоденний догляд. Чекаємо на оновлення 15 грудня о 11:30 ✨»`;
+        }
+
+        const modal = document.getElementById('adminBriefModal');
+        if (modal) modal.classList.add('open');
+      } catch (err) {
+        console.error('CRITICAL: Error in openBriefModal:', err);
+        const modal = document.getElementById('adminBriefModal');
+        if (modal) modal.classList.add('open');
       }
+    }
+    window.openBriefModal = openBriefModal;
 
-      // Render direction-specific fields
-      const dynContainer = document.getElementById('briefDynamicFields');
-      if (apt.dir === 'Манікюр' || apt.dir === 'Педикюр') {
-        dynContainer.innerHTML = `
-          <div class="form-row">
-            <label class="form-lbl">Стан нігтьової пластини & кутикули</label>
-            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-              <span class="slot-pill active">✓ Тонка / Чутлива пластина</span>
-              <span class="slot-pill">Здорова / Норма</span>
-              <span class="slot-pill">Схильна до відшарувань</span>
-            </div>
-          </div>
-          <div class="form-row">
-            <label class="form-lbl">Технічний протокол укріплення</label>
-            <input type="text" class="input-field" value="Rubber Base безкислотне укріплення + форма квадрат, довжина 2">
-          </div>
-        `;
-      } else if (apt.dir === 'Вії') {
-        dynContainer.innerHTML = `
-          <div class="form-row">
-            <label class="form-lbl">Параметри нарощування вій</label>
-            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-              <span class="slot-pill active">✓ Вигин L</span>
-              <span class="slot-pill active">✓ Довжина 9-12 мм</span>
-              <span class="slot-pill active">✓ Мокрий ефект</span>
-              <span class="slot-pill">Товщина 0.07</span>
-            </div>
-          </div>
-        `;
-      } else if (apt.dir === 'Косметологія') {
-        dynContainer.innerHTML = `
-          <div class="form-row">
-            <label class="form-lbl">Тип шкіри & Протокол догляду</label>
-            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-              <span class="slot-pill active">✓ Комбінована</span>
-              <span class="slot-pill active">✓ Чутлива T-зона</span>
-              <span class="slot-pill">Атравматична чистка + SPF 50</span>
-            </div>
-          </div>
-        `;
-      } else {
-        dynContainer.innerHTML = `
-          <div class="form-row">
-            <label class="form-lbl">Колористика / Рівень глибини тону</label>
-            <input type="text" class="input-field" value="Натуральний світло-коричневий 7.0, оксид 3%, віск">
-          </div>
-        `;
+    function openSampleBriefModal(aptId) {
+      if (appState.currentMode !== 'admin') {
+        switchMode('admin');
       }
-
-      // Initialize Editable BOM array
-      currentBriefBOM = JSON.parse(JSON.stringify(apt.bom || []));
-      renderBOMItemsInBrief();
-      calculateBriefTotals(apt.price);
-
-      // Telegram Message Preview
-      document.getElementById('briefTelegramPreview').innerText = 
-        `💬 «${apt.client.split(' ')[0]}, дякуємо за візит у @wild_beauty_space_! 💜 Ваш майстер ${apt.master} зафіксувала результат (${apt.service}) та нагадує про щоденний догляд. Чекаємо на оновлення 15 грудня о 11:30 ✨»`;
-
-      document.getElementById('adminBriefModal').classList.add('open');
-    };
+      setTimeout(() => {
+        openBriefModal(aptId || 'apt-01');
+      }, 50);
+    }
+    window.openSampleBriefModal = openSampleBriefModal;
 
     window.closeBriefModal = function() {
-      document.getElementById('adminBriefModal').classList.remove('open');
+      const modal = document.getElementById('adminBriefModal');
+      if (modal) modal.classList.remove('open');
     };
 
     function calculateBriefTotals(price) {
+      const numPrice = Number(price) || 900;
       let matCost = 0;
       currentBriefBOM.forEach(b => {
         const inv = appState.inventory.find(i => i.id === b.invId);
         const costPerUnit = inv ? inv.cost : 20;
-        matCost += (b.qty * costPerUnit);
+        matCost += ((Number(b.qty) || 0) * costPerUnit);
       });
       const costFormatted = matCost.toFixed(2) + ' ₴';
-      const profitFormatted = (price - matCost).toFixed(2) + ' ₴';
+      const profitFormatted = (numPrice - matCost).toFixed(2) + ' ₴';
 
-      document.getElementById('briefLiveCostText').innerText = costFormatted;
-      document.getElementById('briefFinCost').innerText = costFormatted;
-      document.getElementById('briefFinProfit').innerText = profitFormatted;
+      const liveCostElem = document.getElementById('briefLiveCostText');
+      if (liveCostElem) liveCostElem.innerText = costFormatted;
+      const finCostElem = document.getElementById('briefFinCost');
+      if (finCostElem) finCostElem.innerText = costFormatted;
+      const finProfitElem = document.getElementById('briefFinProfit');
+      if (finProfitElem) finProfitElem.innerText = profitFormatted;
     }
 
     function renderBOMItemsInBrief() {
       const container = document.getElementById('bomItemsContainer');
+      if (!container) return;
       container.innerHTML = '';
 
       currentBriefBOM.forEach((item, idx) => {
@@ -2181,7 +2311,7 @@
       if (currentBriefBOM[idx]) {
         currentBriefBOM[idx].qty = Math.max(0, +(currentBriefBOM[idx].qty + delta).toFixed(2));
         renderBOMItemsInBrief();
-        const apt = appState.appointments.find(a => a.id === appState.activeBriefAppointmentId) || appState.appointments[0];
+        const apt = appState.appointments.find(a => a.id === appState.activeBriefAppointmentId) || appState.appointments[0] || INITIAL_APPOINTMENTS[0];
         calculateBriefTotals(apt.price);
       }
     };
@@ -2189,7 +2319,8 @@
     window.updateBOMQty = function(idx, val) {
       if (currentBriefBOM[idx]) {
         currentBriefBOM[idx].qty = Math.max(0, parseFloat(val) || 0);
-        const apt = appState.appointments.find(a => a.id === appState.activeBriefAppointmentId) || appState.appointments[0];
+        renderBOMItemsInBrief();
+        const apt = appState.appointments.find(a => a.id === appState.activeBriefAppointmentId) || appState.appointments[0] || INITIAL_APPOINTMENTS[0];
         calculateBriefTotals(apt.price);
       }
     };
@@ -2197,7 +2328,7 @@
     window.removeBOMRow = function(idx) {
       currentBriefBOM.splice(idx, 1);
       renderBOMItemsInBrief();
-      const apt = appState.appointments.find(a => a.id === appState.activeBriefAppointmentId) || appState.appointments[0];
+      const apt = appState.appointments.find(a => a.id === appState.activeBriefAppointmentId) || appState.appointments[0] || INITIAL_APPOINTMENTS[0];
       calculateBriefTotals(apt.price);
     };
 
@@ -2211,7 +2342,7 @@
         unit: inv.unit
       });
       renderBOMItemsInBrief();
-      const apt = appState.appointments.find(a => a.id === appState.activeBriefAppointmentId) || appState.appointments[0];
+      const apt = appState.appointments.find(a => a.id === appState.activeBriefAppointmentId) || appState.appointments[0] || INITIAL_APPOINTMENTS[0];
       calculateBriefTotals(apt.price);
     };
 
@@ -2220,7 +2351,9 @@
     };
 
     window.sendBriefTelegramDemo = function() {
-      alert(`📲 Повідомлення клієнтці успішно надіслано в Telegram!\n\nКатерині Вороновій відправлено фото результату процедури (ПІСЛЯ), рекомендації майстра по догляду та автоматичне нагадування на 15 грудня.`);
+      const apt = appState.appointments.find(a => a.id === appState.activeBriefAppointmentId) || appState.appointments[0] || INITIAL_APPOINTMENTS[0];
+      const clientName = ((apt.client && apt.client !== 'undefined') ? apt.client : (apt.clientName || 'Катерина Воронова')).trim();
+      alert(`📲 Повідомлення клієнтці успішно надіслано в Telegram!\n\n${clientName} відправлено фото результату процедури (ПІСЛЯ), рекомендації майстра по догляду та автоматичне нагадування на наступний візит.`);
     };
 
     window.saveBriefChanges = function() {
@@ -2441,12 +2574,18 @@
     if (window.location.hash === '#admin') {
       switchMode('admin');
     } else if (window.location.hash === '#brief') {
-      openSampleBriefModal('apt-01');
+      switchMode('admin');
+      setTimeout(() => openSampleBriefModal('apt-01'), 150);
     }
     window.addEventListener('hashchange', () => {
-      if (window.location.hash === '#admin') switchMode('admin');
-      else if (window.location.hash === '#brief') openSampleBriefModal('apt-01');
-      else if (window.location.hash === '#booking' || window.location.hash === '#client') switchMode('client');
+      if (window.location.hash === '#admin') {
+        switchMode('admin');
+      } else if (window.location.hash === '#brief') {
+        switchMode('admin');
+        setTimeout(() => openSampleBriefModal('apt-01'), 150);
+      } else if (window.location.hash === '#booking' || window.location.hash === '#client') {
+        switchMode('client');
+      }
     });
   </script>
 </body>

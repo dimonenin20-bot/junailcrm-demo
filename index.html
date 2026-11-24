@@ -1506,13 +1506,29 @@
 
     <div class="admin-content">
 
+      <!-- Master Accounts Switcher Bar (GLOBAL across all tabs: Calendar, Clients, Warehouse, Techcards, Finance, Stories) -->
+      <div class="master-account-bar">
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 12px; flex-wrap: wrap;">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span style="font-size: 14px; font-weight: 700; color: #fff;">👤 Особистий кабінет майстра / Фільтр CRM:</span>
+            <span class="badge" id="activeMasterBadge" style="background: rgba(168, 85, 247, 0.15); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.3);">👑 Власниця (Всі записи студії)</span>
+          </div>
+          <div style="font-size: 12px; color: var(--text-muted);" id="activeMasterHelpText">
+            💡 Оберіть майстра, щоб вся адмінка (розклад, клієнти, склад, техкарти, фінанси, stories) відображала тільки його дані
+          </div>
+        </div>
+        <div class="master-filter-strip" id="masterFilterStrip">
+          <!-- Rendered by renderMasterFilterStrip() -->
+        </div>
+      </div>
+
       <!-- Admin Tab: Calendar & Appointments -->
       <section id="adminTabCalendar" class="admin-subtab">
         <!-- Feature Highlights & Bookon Comparison -->
         <div style="background: rgba(46, 196, 124, 0.1); border: 1px solid var(--success-border); border-radius: var(--radius-md); padding: 14px 18px; margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap;">
           <div style="flex: 1; min-width: 250px;">
             <div style="font-size: 13.5px; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 6px; margin-bottom: 3px;">
-              <span>🔥 Спробуйте головну фічу: натисніть кнопку «Бриф» біля запису</span>
+              <span>🔥 Головна фіча над Bookon: електронний «Бриф після візиту» та списання матеріалів</span>
             </div>
             <div style="font-size: 12px; color: var(--text-secondary); line-height: 1.45;">
               У Bookon майстер просто ставить галочку. А в нашій адмінці відкривається <strong>електронна картка візиту (Бриф)</strong>: автоматичне списання матеріалів по нормах, ручне редагування кількості, додавання будь-яких матеріалів зі складу та точний розрахунок чистого прибутку!
@@ -1522,22 +1538,6 @@
             <div style="font-size: 12px; font-weight: 600; color: var(--success); background: var(--bg-surface); padding: 6px 14px; border-radius: var(--radius-full); border: 1px solid var(--success-border); display: inline-block;">
               💰 0 ₴ абонплати • Економія 9 000 ₴/рік
             </div>
-          </div>
-        </div>
-
-        <!-- Master Accounts Switcher Bar -->
-        <div class="master-account-bar">
-          <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 12px; flex-wrap: wrap;">
-            <div style="display: flex; align-items: center; gap: 8px;">
-              <span style="font-size: 14px; font-weight: 700; color: #fff;">👤 Особисті акаунти майстрів:</span>
-              <span class="badge" id="activeMasterBadge" style="background: rgba(168, 85, 247, 0.15); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.3);">👑 Власниця (Всі записи студії)</span>
-            </div>
-            <div style="font-size: 12px; color: var(--text-muted);" id="activeMasterHelpText">
-              💡 Перемикайте кабінет майстра, щоб бачити розклад та чистий заробіток конкретного спеціаліста
-            </div>
-          </div>
-          <div class="master-filter-strip" id="masterFilterStrip">
-            <!-- Rendered by renderMasterFilterStrip() -->
           </div>
         </div>
 
@@ -1595,8 +1595,8 @@
       <section id="adminTabClients" class="admin-subtab" style="display: none;">
         <div class="data-card">
           <div class="data-header">
-            <strong style="font-size: 14.5px;">Клієнтська база studio wild_beauty_space</strong>
-            <input type="text" class="input-field" placeholder="Пошук за ім'ям або телефоном..." style="max-width: 260px;" id="clientSearchInput">
+            <strong style="font-size: 14.5px;" id="adminClientsTableTitle">Клієнтська база studio wild_beauty_space</strong>
+            <input type="text" class="input-field" placeholder="Пошук за ім'ям або телефоном..." style="max-width: 280px;" id="clientSearchInput" oninput="renderAdminClients()">
           </div>
           <div class="table-responsive">
             <table>
@@ -1604,6 +1604,7 @@
                 <tr>
                   <th>Клієнт</th>
                   <th>Телефон</th>
+                  <th>Майстер</th>
                   <th>Візитів</th>
                   <th>LTV (Виручка)</th>
                   <th>Останній візит</th>
@@ -1623,7 +1624,7 @@
       <section id="adminTabInventory" class="admin-subtab" style="display: none;">
         <div class="data-card">
           <div class="data-header">
-            <strong style="font-size: 14.5px;">Склад матеріалів (BOM Списання)</strong>
+            <strong style="font-size: 14.5px;" id="adminInventoryTableTitle">Склад матеріалів (BOM Списання)</strong>
             <div style="display: flex; gap: 8px;">
               <select class="input-field" id="invCatFilter" style="width: auto; padding: 6px 10px;">
                 <option value="all">Всі напрямки</option>
@@ -1655,33 +1656,63 @@
         </div>
       </section>
 
+
+      <!-- Admin Tab: Tech Cards & BOM Norms -->
+      <section id="adminTabTechcards" class="admin-subtab" style="display: none;">
+        <div class="data-card" style="padding: 22px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; flex-wrap: wrap; gap: 12px;">
+            <div>
+              <h3 style="font-size: 16px; font-weight: 700; color: #fff;" id="adminTechcardsTitle">⚙️ Технологічні карти & Норми списання матеріалів (BOM)</h3>
+              <div style="font-size: 12.5px; color: var(--text-muted); margin-top: 3px;" id="adminTechcardsSub">
+                Налаштуйте опції процедур та точну прив'язку витрат матеріалів зі складу для автоматичного списання в брифі
+              </div>
+            </div>
+            <button class="btn btn-primary btn-sm" onclick="saveState(); alert('✨ Технологічні карти та норми списання успішно збережено!');">💾 Зберегти зміни</button>
+          </div>
+
+          <!-- Category Selector for Tech Cards -->
+          <div class="cat-nav" id="adminTabTechcardsDirNav" style="margin-bottom: 20px;">
+            <button class="cat-btn active" onclick="switchTechCardEditorDir('Манікюр')">💅 Манікюр</button>
+            <button class="cat-btn" onclick="switchTechCardEditorDir('Педикюр')">🦶 Педикюр</button>
+            <button class="cat-btn" onclick="switchTechCardEditorDir('Вії')">👁️ Вії</button>
+            <button class="cat-btn" onclick="switchTechCardEditorDir('Брови')">🎨 Брови</button>
+            <button class="cat-btn" onclick="switchTechCardEditorDir('Косметологія')">💆‍♀️ Косметологія</button>
+            <button class="cat-btn" onclick="switchTechCardEditorDir('Перукарські')">💇‍♀️ Перукарські</button>
+          </div>
+
+          <!-- Container where sections and options are rendered -->
+          <div id="adminTabTechcardsSectionsContainer" style="display: flex; flex-direction: column; gap: 16px;">
+          </div>
+        </div>
+      </section>
+
       <!-- Admin Tab: Finance -->
       <section id="adminTabFinance" class="admin-subtab" style="display: none;">
         <div class="kpi-row">
           <div class="kpi-card">
-            <div style="font-size: 12px; color: var(--text-muted);">Виручка за листопад</div>
+            <div style="font-size: 12px; color: var(--text-muted);" id="finRevTitle">Виручка за листопад</div>
             <div class="kpi-num" id="finRevTotal">68 400 ₴</div>
-            <div style="font-size: 11.5px; color: var(--success);">+14% до жовтня</div>
+            <div style="font-size: 11.5px; color: var(--success);" id="finRevSub">+14% до жовтня</div>
           </div>
           <div class="kpi-card">
-            <div style="font-size: 12px; color: var(--text-muted);">Витрати на матеріали (BOM)</div>
+            <div style="font-size: 12px; color: var(--text-muted);" id="finCostTitle">Витрати на матеріали (BOM)</div>
             <div class="kpi-num" id="finCostTotal">5 820 ₴</div>
-            <div style="font-size: 11.5px; color: var(--text-secondary);">8.5% від обороту</div>
+            <div style="font-size: 11.5px; color: var(--text-secondary);" id="finCostSub">8.5% від обороту</div>
           </div>
           <div class="kpi-card">
-            <div style="font-size: 12px; color: var(--text-muted);">Чистий студійний дохід</div>
+            <div style="font-size: 12px; color: var(--text-muted);" id="finProfitTitle">Чистий студійний дохід</div>
             <div class="kpi-num" style="color: var(--success);" id="finProfitTotal">62 580 ₴</div>
-            <div style="font-size: 11.5px; color: var(--success);">Маржинальність 91.5%</div>
+            <div style="font-size: 11.5px; color: var(--success);" id="finProfitSub">Маржинальність 91.5%</div>
           </div>
           <div class="kpi-card">
-            <div style="font-size: 12px; color: var(--text-muted);">Заощаджено на Bookon</div>
-            <div class="kpi-num" style="color: var(--accent);">+9 000 ₴</div>
-            <div style="font-size: 11.5px; color: var(--text-secondary);">Без щомісячної абонплати</div>
+            <div style="font-size: 12px; color: var(--text-muted);" id="finSavingsTitle">Заощаджено на Bookon</div>
+            <div class="kpi-num" style="color: var(--accent);" id="finSavingsTotal">+9 000 ₴</div>
+            <div style="font-size: 11.5px; color: var(--text-secondary);" id="finSavingsSub">Без щомісячної абонплати</div>
           </div>
         </div>
 
         <div class="data-card" style="padding: 20px;">
-          <h3 style="font-size: 15px; margin-bottom: 16px;">Структура виручки по напрямках студії</h3>
+          <h3 style="font-size: 15px; margin-bottom: 16px;" id="financeBreakdownTitle">Структура виручки по напрямках студії</h3>
           <div style="display: flex; flex-direction: column; gap: 12px;" id="financeCategoryBars">
             <!-- Rendered via JS -->
           </div>
@@ -3052,6 +3083,7 @@
         const tab = item.getAttribute('data-atab');
         
         document.querySelectorAll('.admin-subtab').forEach(s => s.style.display = 'none');
+        appState.currentAdminTab = tab;
         if (tab === 'calendar') {
           document.getElementById('adminTabCalendar').style.display = 'block';
           renderAdminAppointments();
@@ -3061,6 +3093,9 @@
         } else if (tab === 'inventory') {
           document.getElementById('adminTabInventory').style.display = 'block';
           renderAdminInventory();
+        } else if (tab === 'techcards') {
+          document.getElementById('adminTabTechcards').style.display = 'block';
+          renderAdminTechcards();
         } else if (tab === 'finance') {
           document.getElementById('adminTabFinance').style.display = 'block';
           renderAdminFinance();
@@ -3257,6 +3292,7 @@
       const sidebarRole = document.getElementById('sidebarActiveMasterRole');
       const activeMaster = (activeId !== 'all') ? REAL_MASTERS.find(m => m.id === activeId) : null;
 
+      const helpText = document.getElementById('activeMasterHelpText');
       if (badge) {
         if (activeMaster) {
           badge.innerHTML = `🟢 Акаунт: <strong>${activeMaster.name}</strong> (${activeMaster.role}) • <span style="text-decoration: underline; cursor: pointer;" onclick="setActiveMasterAccount('all')">Скинути до всіх</span>`;
@@ -3264,12 +3300,18 @@
           badge.style.background = 'rgba(46, 196, 124, 0.15)';
           badge.style.color = '#4ade80';
           badge.style.borderColor = 'rgba(46, 196, 124, 0.3)';
+          if (helpText) {
+            helpText.innerHTML = `🔒 <strong>Персональний режим:</strong> всі розділи (розклад, клієнти, склад, техкарти, фінанси, stories) закріплені за майстром <strong>${activeMaster.name}</strong>`;
+          }
         } else {
-          badge.innerHTML = `👑 Власниця (Всі записи студії)`;
+          badge.innerHTML = `👑 Власниця (Всі майстри студії)`;
           badge.className = 'badge badge-info';
           badge.style.background = 'rgba(168, 85, 247, 0.15)';
           badge.style.color = '#c084fc';
           badge.style.borderColor = 'rgba(168, 85, 247, 0.3)';
+          if (helpText) {
+            helpText.innerHTML = `💡 Оберіть майстра, щоб вся адмінка (розклад, клієнти, склад, техкарти, фінанси) відображала тільки його дані`;
+          }
         }
       }
 
@@ -3299,7 +3341,17 @@
         appState.bookingSelectedMasterId = masterId;
       }
       saveState();
+
+      // Update switcher strip, header badge and sidebar
+      renderMasterFilterStrip();
+
+      // Refresh all admin tabs immediately
       renderAdminAppointments();
+      renderAdminClients();
+      renderAdminInventory();
+      renderAdminFinance();
+      renderAdminTechcards();
+      drawAdminStories();
     }
     window.setActiveMasterAccount = setActiveMasterAccount;
 
@@ -4014,70 +4066,336 @@
       }
     };
 
+    // Canonical clients database with master associations
+    const CANONICAL_CLIENTS = [
+      { id: "c-1", name: "Катерина Воронова", phone: "+38 (067) 345-21-90", masterId: "m-katya", masterName: "Катерина", dir: "Манікюр", visits: 6, ltv: 5400, last: "24 лист 2026", notes: "Чутлива кутикула, форма м'який квадрат, нюдові тони" },
+      { id: "c-2", name: "Олена Шевченко", phone: "+38 (063) 789-11-22", masterId: "m-katya", masterName: "Катерина", dir: "Педикюр", visits: 5, ltv: 4500, last: "26 лист 2026", notes: "Smart-педикюр з покриттям, сухість п'ят, молекулярна олійка" },
+      { id: "c-3", name: "Тетяна Василенко", phone: "+38 (068) 221-45-78", masterId: "m-nastya", masterName: "Анастасія", dir: "Педикюр", visits: 4, ltv: 3800, last: "24 лист 2026", notes: "Апаратне розвантаження стопи, схильність до гіперкератозу" },
+      { id: "c-4", name: "Оксана Мельник", phone: "+38 (098) 112-90-44", masterId: "m-diana", masterName: "Діана", dir: "Вії", visits: 4, ltv: 4800, last: "24 лист 2026", notes: "Вії вигин L, довжина 9-12 мм, мокрий ефект" },
+      { id: "c-5", name: "Марина Коваль", phone: "+38 (073) 441-29-87", masterId: "m-diana", masterName: "Діана", dir: "Брови", visits: 3, ltv: 2850, last: "25 лист 2026", notes: "Ламінування брів, тон 7.0, схильність до вигорання" },
+      { id: "c-6", name: "Анна Савченко", phone: "+38 (050) 890-43-12", masterId: "m-viktoria", masterName: "Вікторія", dir: "Косметологія", visits: 8, ltv: 9600, last: "25 лист 2026", notes: "Курс комбінованих чисток, чутлива T-зона, SPF 50+" },
+      { id: "c-7", name: "Наталія Мороз", phone: "+38 (093) 445-67-89", masterId: "m-viktoria", masterName: "Вікторія", dir: "Косметологія", visits: 7, ltv: 7700, last: "25 лист 2026", notes: "Карбоксітерапія неінвазивна, мікроциркуляція" },
+      { id: "c-8", name: "Юлія Бондаренко", phone: "+38 (095) 432-88-99", masterId: "m-olena", masterName: "Олена", dir: "Перукарські", visits: 5, ltv: 8000, last: "26 лист 2026", notes: "Spa-догляд «Абсолютне щастя», термозахист обов'язковий" },
+      { id: "c-9", name: "Ірина Кравчук", phone: "+38 (097) 889-32-10", masterId: "m-olena", masterName: "Олена", dir: "Перукарські", visits: 3, ltv: 4350, last: "25 лист 2026", notes: "Тонування 10.12 перлинний беж, стрижка кінчиків" }
+    ];
+
+    const MASTER_CATS_MAP = {
+      'm-katya': ['Манікюр', 'Педикюр'],
+      'm-nastya': ['Манікюр', 'Педикюр'],
+      'm-diana': ['Вії', 'Брови'],
+      'm-viktoria': ['Косметологія'],
+      'm-olena': ['Перукарські']
+    };
+
     function renderAdminClients() {
       const tbody = document.getElementById('adminClientsBody');
+      if (!tbody) return;
       tbody.innerHTML = '';
-      const clients = [
-        { name: "Катерина Воронова", phone: "+38 (067) 345-21-90", visits: 6, ltv: 5400, last: "24 лист 2026", notes: "Чутлива кутикула, любить капучино" },
-        { name: "Оксана Мельник", phone: "+38 (098) 112-90-44", visits: 4, ltv: 4800, last: "24 лист 2026", notes: "Вії вигин L, мокрий ефект" },
-        { name: "Анна Савченко", phone: "+38 (050) 890-43-12", visits: 8, ltv: 9600, last: "24 лист 2026", notes: "Курс комбінованих чисток" },
-        { name: "Марина Коваль", phone: "+38 (073) 441-29-87", visits: 3, ltv: 2850, last: "24 лист 2026", notes: "Ламінування брів, тон 7.0" }
-      ];
 
-      clients.forEach(c => {
+      const activeId = appState.activeMasterId || 'all';
+      const activeMaster = (activeId !== 'all') ? REAL_MASTERS.find(m => m.id === activeId) : null;
+      const search = (document.getElementById('clientSearchInput')?.value || '').toLowerCase().trim();
+
+      let list = CANONICAL_CLIENTS;
+      if (activeMaster) {
+        list = list.filter(c => c.masterId === activeMaster.id || c.masterName.toLowerCase() === activeMaster.name.toLowerCase());
+      }
+      if (search) {
+        list = list.filter(c => c.name.toLowerCase().includes(search) || c.phone.includes(search) || c.notes.toLowerCase().includes(search));
+      }
+
+      const titleEl = document.getElementById('adminClientsTableTitle');
+      if (titleEl) {
+        if (activeMaster) {
+          titleEl.innerHTML = `Клієнтська база: <span style="color: var(--accent);">${activeMaster.name}</span> (${activeMaster.role}) • Клієнтів: ${list.length}`;
+        } else {
+          titleEl.innerHTML = `Клієнтська база studio wild_beauty_space (Всі клієнти: ${list.length})`;
+        }
+      }
+
+      if (list.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="8" style="text-align: center; padding: 36px 16px; color: var(--text-muted);">
+              <div style="font-size: 28px; margin-bottom: 8px;">👥</div>
+              <div style="font-size: 14px; font-weight: 600; color: #fff;">У майстра ${activeMaster ? activeMaster.name : 'студії'} немає клієнтів за цим фільтром</div>
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      list.forEach(c => {
         const tr = document.createElement('tr');
         tr.innerHTML = `
           <td><strong>${c.name}</strong></td>
           <td>${c.phone}</td>
-          <td>${c.visits}</td>
-          <td><strong>${c.ltv.toLocaleString()} ₴</strong></td>
+          <td><span class="badge" style="background: rgba(168, 85, 247, 0.15); color: #c084fc;">${c.masterName}</span></td>
+          <td><strong>${c.visits}</strong> візитів</td>
+          <td><strong style="color: #4ade80;">${c.ltv.toLocaleString()} ₴</strong></td>
           <td>${c.last}</td>
           <td><span style="font-size: 12px; color: var(--text-secondary);">${c.notes}</span></td>
-          <td style="text-align: right;"><button class="btn btn-secondary btn-sm" onclick="alert('Історія візитів клієнтки ${c.name} завантажена.')">Картка</button></td>
+          <td style="text-align: right; white-space: nowrap;">
+            <button class="btn btn-secondary btn-sm" onclick="alert('Електронна картка клієнтки: ${c.name}\nЗакріплений майстер: ${c.masterName}\nПослуга: ${c.dir}\nІсторія брифів: збережено в базі.')">📋 Картка</button>
+          </td>
         `;
         tbody.appendChild(tr);
       });
     }
+    window.renderAdminClients = renderAdminClients;
 
-    function renderAdminFinance() {
-      let total = 0, cost = 0;
-      const catTotals = { 'Манікюр': 0, 'Вії': 0, 'Брови': 0, 'Педикюр': 0, 'Косметологія': 0 };
+    // Inventory View (Master-Scoped)
+    function renderAdminInventory() {
+      const tbody = document.getElementById('adminInventoryBody');
+      if (!tbody) return;
+      tbody.innerHTML = '';
 
-      appState.appointments.forEach(a => {
-        total += a.price;
-        cost += a.cost;
-        if (catTotals[a.dir] !== undefined) catTotals[a.dir] += a.price;
-      });
+      const activeId = appState.activeMasterId || 'all';
+      const activeMaster = (activeId !== 'all') ? REAL_MASTERS.find(m => m.id === activeId) : null;
+      const filterSelect = document.getElementById('invCatFilter');
+      let filterVal = (filterSelect && filterSelect.value) ? filterSelect.value : 'all';
 
-      document.getElementById('finRevTotal').innerText = (48200 + total).toLocaleString() + ' ₴';
-      document.getElementById('finCostTotal').innerText = (4320 + cost).toLocaleString() + ' ₴';
-      document.getElementById('finProfitTotal').innerText = (43880 + total - cost).toLocaleString() + ' ₴';
+      let items = appState.inventory || [];
 
-      const barContainer = document.getElementById('financeCategoryBars');
-      barContainer.innerHTML = '';
-      Object.keys(catTotals).forEach(cat => {
-        const sum = catTotals[cat] + 6500;
-        const pct = Math.min(100, Math.round((sum / 60000) * 100));
-        barContainer.innerHTML += `
-          <div>
-            <div style="display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 4px;">
-              <span><strong>${cat}</strong></span>
-              <span>${sum.toLocaleString()} ₴ (${pct}%)</span>
-            </div>
-            <div style="height: 6px; background: var(--bg-surface-raised); border-radius: 4px; overflow: hidden;">
-              <div style="width: ${pct}%; height: 100%; background: var(--accent);"></div>
-            </div>
-          </div>
+      // If a specific master is selected, default to their categories
+      if (activeMaster) {
+        const allowedCats = MASTER_CATS_MAP[activeMaster.id] || [];
+        if (filterVal === 'all') {
+          items = items.filter(i => allowedCats.includes(i.cat));
+        } else {
+          items = items.filter(i => i.cat === filterVal);
+        }
+      } else if (filterVal !== 'all') {
+        items = items.filter(i => i.cat === filterVal);
+      }
+
+      const titleEl = document.getElementById('adminInventoryTableTitle');
+      if (titleEl) {
+        if (activeMaster) {
+          const allowed = (MASTER_CATS_MAP[activeMaster.id] || []).join(', ');
+          titleEl.innerHTML = `Склад матеріалів: <span style="color: var(--accent);">${activeMaster.name}</span> (${activeMaster.role}) • Напрямки: ${allowed} (${items.length} поз.)`;
+        } else {
+          titleEl.innerHTML = `Склад матеріалів студії (BOM Списання) • Всі напрямки (${items.length} поз.)`;
+        }
+      }
+
+      if (items.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="6" style="text-align: center; padding: 36px 16px; color: var(--text-muted);">
+              <div style="font-size: 28px; margin-bottom: 8px;">📦</div>
+              <div style="font-size: 14px; font-weight: 600; color: #fff;">Немає матеріалів для обраного майстра чи напрямку</div>
+            </td>
+          </tr>
         `;
+        return;
+      }
+
+      items.forEach(inv => {
+        const tr = document.createElement('tr');
+        const badge = inv.status === 'В нормі' ? 'badge-success' : 'badge-warning';
+        tr.innerHTML = `
+          <td><strong>${inv.name}</strong></td>
+          <td><span class="dir-tag">${inv.cat}</span></td>
+          <td><strong>${inv.current}</strong> / ${inv.max} ${inv.unit}</td>
+          <td>${inv.cost} ₴</td>
+          <td><span class="badge ${badge}">${inv.status}</span></td>
+          <td style="text-align: right; white-space: nowrap;">
+            <button class="btn btn-secondary btn-sm" onclick="restockItem('${inv.id}')">+ Поповнити</button>
+          </td>
+        `;
+        tbody.appendChild(tr);
       });
     }
+    window.renderAdminInventory = renderAdminInventory;
 
-    // Stories Canvas
+    const invFilterElem = document.getElementById('invCatFilter');
+    if (invFilterElem) invFilterElem.addEventListener('change', renderAdminInventory);
+
+    window.restockItem = function(id) {
+      const item = appState.inventory.find(i => i.id === id);
+      if (item) {
+        item.current = item.max;
+        item.status = 'В нормі';
+        saveState();
+        renderAdminInventory();
+        alert(`Склад поповнено: ${item.name} тепер ${item.max} ${item.unit}`);
+      }
+    };
+
+    // Finance View (Master-Scoped)
+    function renderAdminFinance() {
+      const activeId = appState.activeMasterId || 'all';
+      const activeMaster = (activeId !== 'all') ? REAL_MASTERS.find(m => m.id === activeId) : null;
+
+      const revEl = document.getElementById('finRevTotal');
+      const costEl = document.getElementById('finCostTotal');
+      const profitEl = document.getElementById('finProfitTotal');
+      const savingsEl = document.getElementById('finSavingsTotal');
+
+      const revTitle = document.getElementById('finRevTitle');
+      const revSub = document.getElementById('finRevSub');
+      const costTitle = document.getElementById('finCostTitle');
+      const costSub = document.getElementById('finCostSub');
+      const profitTitle = document.getElementById('finProfitTitle');
+      const profitSub = document.getElementById('finProfitSub');
+      const savingsTitle = document.getElementById('finSavingsTitle');
+      const savingsSub = document.getElementById('finSavingsSub');
+      const breakdownTitle = document.getElementById('financeBreakdownTitle');
+      const barsContainer = document.getElementById('financeCategoryBars');
+
+      if (activeMaster) {
+        // Master personal finances
+        const masterApts = appState.appointments.filter(a => {
+          if (!a.master) return false;
+          if (a.masterId && a.masterId === activeMaster.id) return true;
+          return a.master.toLowerCase().includes(activeMaster.name.toLowerCase());
+        });
+
+        let mRev = 0, mCost = 0;
+        const dirTotals = {};
+
+        masterApts.forEach(a => {
+          const p = Number(a.price) || 0;
+          const c = Number(a.cost) || 0;
+          mRev += p;
+          mCost += c;
+          const dir = a.dir || 'Інше';
+          dirTotals[dir] = (dirTotals[dir] || 0) + p;
+        });
+
+        // 50% commission from net margin
+        const mEarnings = Math.round((mRev - mCost) * 0.5);
+
+        if (revTitle) revTitle.innerText = `Особиста каса (${activeMaster.name})`;
+        if (revSub) revSub.innerText = `${masterApts.length} виконаних/запланованих записів`;
+        if (costTitle) costTitle.innerText = `Списано матеріалів (BOM)`;
+        if (costSub) costSub.innerText = `Витрати за брифами процедур`;
+        if (profitTitle) profitTitle.innerText = `Чистий заробіток майстра`;
+        if (profitSub) profitSub.innerHTML = `<span style="color: #4ade80; font-weight: 600;">50% ставка від маржі</span>`;
+        if (savingsTitle) savingsTitle.innerText = `Статус виплати заробітку`;
+        if (savingsSub) savingsSub.innerText = `Розраховано автоматично`;
+
+        if (revEl) revEl.innerText = mRev.toLocaleString() + ' ₴';
+        if (costEl) costEl.innerText = mCost.toLocaleString() + ' ₴';
+        if (profitEl) profitEl.innerText = mEarnings.toLocaleString() + ' ₴';
+        if (savingsEl) savingsEl.innerText = 'До виплати';
+
+        if (breakdownTitle) {
+          breakdownTitle.innerHTML = `Структура особистого доходу майстра: <span style="color: var(--accent);">${activeMaster.name}</span>`;
+        }
+
+        if (barsContainer) {
+          let bHtml = '';
+          if (Object.keys(dirTotals).length === 0) {
+            bHtml = `<div style="color: var(--text-muted); font-size: 13px; padding: 12px 0;">У майстра ${activeMaster.name} поки немає закритих записів за цей період.</div>`;
+          } else {
+            Object.entries(dirTotals).forEach(([dir, amt]) => {
+              const pct = mRev > 0 ? Math.round((amt / mRev) * 100) : 0;
+              bHtml += `
+                <div>
+                  <div style="display: flex; justify-content: space-between; font-size: 13px; font-weight: 600; margin-bottom: 5px;">
+                    <span>${dir}</span>
+                    <span>${amt.toLocaleString()} ₴ (${pct}%)</span>
+                  </div>
+                  <div style="width: 100%; height: 8px; background: rgba(255, 255, 255, 0.08); border-radius: 4px; overflow: hidden;">
+                    <div style="width: ${pct}%; height: 100%; background: linear-gradient(90deg, #9356d4, #c084fc); border-radius: 4px;"></div>
+                  </div>
+                </div>
+              `;
+            });
+          }
+          barsContainer.innerHTML = bHtml;
+        }
+      } else {
+        // Studio overall finance
+        let total = 0, cost = 0;
+        const catTotals = { 'Манікюр': 0, 'Вії': 0, 'Брови': 0, 'Педикюр': 0, 'Косметологія': 0, 'Перукарські': 0 };
+
+        appState.appointments.forEach(a => {
+          const p = Number(a.price) || 0;
+          const c = Number(a.cost) || 0;
+          total += p;
+          cost += c;
+          if (catTotals[a.dir] !== undefined) catTotals[a.dir] += p;
+          else catTotals[a.dir] = p;
+        });
+
+        if (revTitle) revTitle.innerText = `Виручка студії за місяць`;
+        if (revSub) revSub.innerText = `+14% до попереднього періоду`;
+        if (costTitle) costTitle.innerText = `Витрати на матеріали (BOM)`;
+        if (costSub) costSub.innerText = `Точне списання за брифами`;
+        if (profitTitle) profitTitle.innerText = `Чистий студійний дохід`;
+        if (profitSub) profitSub.innerText = `Маржинальність 91.5%`;
+        if (savingsTitle) savingsTitle.innerText = `Заощаджено на Bookon`;
+        if (savingsSub) savingsSub.innerText = `Без щомісячної абонплати`;
+
+        if (revEl) revEl.innerText = (48200 + total).toLocaleString() + ' ₴';
+        if (costEl) costEl.innerText = (4320 + cost).toLocaleString() + ' ₴';
+        if (profitEl) profitEl.innerText = (43880 + total - cost).toLocaleString() + ' ₴';
+        if (savingsEl) savingsEl.innerText = '+9 000 ₴';
+
+        if (breakdownTitle) {
+          breakdownTitle.innerText = `Структура виручки по напрямках студії (Всі майстри)`;
+        }
+
+        if (barsContainer) {
+          let bHtml = '';
+          const totalCombined = (48200 + total) || 1;
+          const catsWithBase = {
+            'Манікюр': 24500 + (catTotals['Манікюр'] || 0),
+            'Педикюр': 14200 + (catTotals['Педикюр'] || 0),
+            'Вії': 12400 + (catTotals['Вії'] || 0),
+            'Брови': 8600 + (catTotals['Брови'] || 0),
+            'Косметологія': 9800 + (catTotals['Косметологія'] || 0),
+            'Перукарські': 7100 + (catTotals['Перукарські'] || 0)
+          };
+
+          Object.entries(catsWithBase).forEach(([cat, val]) => {
+            const pct = Math.round((val / totalCombined) * 100);
+            bHtml += `
+              <div>
+                <div style="display: flex; justify-content: space-between; font-size: 13px; font-weight: 600; margin-bottom: 5px;">
+                  <span>${cat}</span>
+                  <span>${val.toLocaleString()} ₴ (${pct}%)</span>
+                </div>
+                <div style="width: 100%; height: 8px; background: rgba(255, 255, 255, 0.08); border-radius: 4px; overflow: hidden;">
+                  <div style="width: ${pct}%; height: 100%; background: linear-gradient(90deg, #9356d4, #c084fc); border-radius: 4px;"></div>
+                </div>
+              </div>
+            `;
+          });
+          barsContainer.innerHTML = bHtml;
+        }
+      }
+    }
+    window.renderAdminFinance = renderAdminFinance;
+
     function drawAdminStories() {
       const canvas = document.getElementById('adminStoriesCanvas');
+      if (!canvas) return;
       const ctx = canvas.getContext('2d');
-      const dir = document.getElementById('storiesDirSelect').value;
-      const hours = document.getElementById('storiesHoursInput').value || '11:30 • 14:00 • 17:30';
+      const activeId = appState.activeMasterId || 'all';
+      const activeMaster = (activeId !== 'all') ? REAL_MASTERS.find(m => m.id === activeId) : null;
+
+      const dirSelect = document.getElementById('storiesDirSelect');
+      if (activeMaster && dirSelect) {
+        const primaryDir = (activeMaster.id === 'm-katya') ? 'Манікюр'
+                         : (activeMaster.id === 'm-nastya') ? 'Педикюр'
+                         : (activeMaster.id === 'm-diana') ? 'Вії'
+                         : (activeMaster.id === 'm-viktoria') ? 'Косметологія'
+                         : 'Перукарські';
+        dirSelect.value = primaryDir;
+      }
+      const dir = dirSelect ? dirSelect.value : 'Манікюр';
+      const hoursInput = document.getElementById('storiesHoursInput');
+      const hours = (hoursInput ? hoursInput.value : '11:30 • 14:00 • 17:30').trim() || '11:30 • 14:00 • 17:30';
+
+      // Update download button text
+      const dlBtn = document.getElementById('btnDownloadStory');
+      if (dlBtn) {
+        dlBtn.innerText = `📥 Завантажити Stories (${activeMaster ? activeMaster.name : 'Студія'})`;
+      }
 
       ctx.fillStyle = '#090b0e';
       ctx.fillRect(0, 0, 1080, 1920);
@@ -4091,7 +4409,7 @@
 
       // Studio Header
       ctx.fillStyle = 'rgba(255, 255, 255, 0.08)';
-      ctx.roundRect(540 - 240, 260, 480, 64, 32);
+      ctx.roundRect(540 - 260, 260, 520, 64, 32);
       ctx.fill();
 
       ctx.fillStyle = '#9356d4';
@@ -4102,32 +4420,44 @@
       // Title
       ctx.fillStyle = '#ffffff';
       ctx.font = '700 70px Inter, sans-serif';
-      ctx.fillText('Вільні віконця', 540, 430);
+      ctx.fillText('Вільні віконця', 540, 420);
 
-      ctx.fillStyle = '#9da6b3';
-      ctx.font = '400 34px Inter, sans-serif';
-      ctx.fillText(`${dir} • Завтра (25 листопада)`, 540, 490);
+      // Master badge on canvas
+      if (activeMaster) {
+        ctx.fillStyle = '#c084fc';
+        ctx.font = '600 36px Inter, sans-serif';
+        ctx.fillText(`Майстер: ${activeMaster.name} • ${activeMaster.role}`, 540, 475);
+
+        ctx.fillStyle = '#9da6b3';
+        ctx.font = '400 30px Inter, sans-serif';
+        ctx.fillText(`${dir} • Запис на найближчі дні`, 540, 525);
+      } else {
+        ctx.fillStyle = '#9da6b3';
+        ctx.font = '400 34px Inter, sans-serif';
+        ctx.fillText(`${dir} • Завтра (25 листопада)`, 540, 490);
+      }
 
       // Slots
       const slots = hours.split('•').map(s => s.trim());
+      const startY = activeMaster ? 660 : 640;
       slots.forEach((slot, idx) => {
-        const y = 640 + idx * 170;
+        const y = startY + idx * 165;
         ctx.fillStyle = '#11141a';
         ctx.strokeStyle = 'rgba(147, 86, 212, 0.3)';
         ctx.lineWidth = 2;
-        ctx.roundRect(140, y, 800, 130, 24);
+        ctx.roundRect(140, y, 800, 125, 24);
         ctx.fill();
         ctx.stroke();
 
         ctx.fillStyle = '#ffffff';
-        ctx.font = '600 52px Inter, sans-serif';
+        ctx.font = '600 50px Inter, sans-serif';
         ctx.textAlign = 'left';
-        ctx.fillText(slot, 190, y + 84);
+        ctx.fillText(slot, 190, y + 80);
 
         ctx.fillStyle = '#2ec47c';
         ctx.font = '500 26px Inter, sans-serif';
         ctx.textAlign = 'right';
-        ctx.fillText('Доступно для запису', 890, y + 80);
+        ctx.fillText('Доступно для запису', 890, y + 76);
       });
 
       // Bottom Location & CTA
@@ -4147,6 +4477,7 @@
       ctx.font = '400 24px Inter, sans-serif';
       ctx.fillText('📞 +38 075 645 77 35', 540, 1630);
     }
+    window.drawAdminStories = drawAdminStories;
 
     document.getElementById('btnDownloadStory').addEventListener('click', () => {
       const canvas = document.getElementById('adminStoriesCanvas');
@@ -4307,7 +4638,36 @@
     window.renderTechCardEditorContent = renderTechCardEditorContent;
 
     function renderAdminTechcards() {
-      switchTechCardEditorDir(currentEditorDir);
+      const activeId = appState.activeMasterId || 'all';
+      const activeMaster = (activeId !== 'all') ? REAL_MASTERS.find(m => m.id === activeId) : null;
+
+      if (activeMaster) {
+        const primaryDir = (activeMaster.id === 'm-katya') ? 'Манікюр'
+                         : (activeMaster.id === 'm-nastya') ? 'Педикюр'
+                         : (activeMaster.id === 'm-diana') ? 'Вії'
+                         : (activeMaster.id === 'm-viktoria') ? 'Косметологія'
+                         : 'Перукарські';
+        switchTechCardEditorDir(primaryDir);
+
+        const titleEl = document.getElementById('adminTechcardsTitle');
+        const subEl = document.getElementById('adminTechcardsSub');
+        if (titleEl) {
+          titleEl.innerHTML = `⚙️ Технологічні карти майстра: <span style="color: var(--accent);">${activeMaster.name}</span> (${activeMaster.role})`;
+        }
+        if (subEl) {
+          subEl.innerText = `Параметри процедур та норми витрат матеріалів (BOM) закріплені за цим робочим місцем`;
+        }
+      } else {
+        switchTechCardEditorDir(currentEditorDir || 'Манікюр');
+        const titleEl = document.getElementById('adminTechcardsTitle');
+        const subEl = document.getElementById('adminTechcardsSub');
+        if (titleEl) {
+          titleEl.innerHTML = `⚙️ Технологічні карти & Норми списання матеріалів (Всі напрямки студії)`;
+        }
+        if (subEl) {
+          subEl.innerText = `Налаштуйте опції процедур та точну прив'язку витрат матеріалів зі складу для автоматичного списання в брифі`;
+        }
+      }
     }
     window.renderAdminTechcards = renderAdminTechcards;
 

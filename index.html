@@ -1650,20 +1650,30 @@
           </div>
         </div>
 
-        <!-- 2. Date & Time Selection -->
+        <!-- 2. Date & Time Selection (Any Date Calendar & Horizon) -->
         <div class="form-row">
-          <label class="form-lbl">2. Оберіть дату та час візиту</label>
-          <div style="display: flex; gap: 8px; margin-bottom: 8px; overflow-x: auto; padding-bottom: 4px;">
-            <div class="slot-pill active" onclick="selectDatePill(this)">Сьогодні, 24 лист</div>
-            <div class="slot-pill" onclick="selectDatePill(this)">Завтра, 25 лист</div>
-            <div class="slot-pill" onclick="selectDatePill(this)">Середа, 26 лист</div>
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 6px; margin-bottom: 6px;">
+            <label class="form-lbl" style="margin: 0;">2. Оберіть дату та час візиту</label>
+            <span id="bookingSelectedDateBanner" style="font-size: 11.5px; color: var(--accent); font-weight: 600;">Вівторок, 24 листопада 2026 р.</span>
           </div>
+
+          <!-- Quick Date Strip (14-21 days horizon) -->
+          <div style="display: flex; gap: 6px; margin-bottom: 8px; overflow-x: auto; padding-bottom: 6px; scrollbar-width: thin;" id="bookingDatesScrollStrip">
+            <!-- Rendered dynamically via renderBookingDates() -->
+          </div>
+
+          <!-- Any Date Full Calendar Picker -->
+          <div style="display: flex; align-items: center; gap: 10px; background: var(--bg-surface-raised); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); padding: 8px 12px; margin-bottom: 12px; flex-wrap: wrap;">
+            <span style="font-size: 12.5px; font-weight: 500; color: var(--text-secondary); display: flex; align-items: center; gap: 6px;">
+              <span>📅</span> Або оберіть будь-яку іншу дату в календарі:
+            </span>
+            <input type="date" id="bookingAnyDateInput" class="input-field" style="max-width: 170px; padding: 5px 10px; font-size: 13px; color-scheme: dark; cursor: pointer;" onchange="onBookingCustomDateChange(this.value)">
+          </div>
+
+          <!-- Time Slots Selection -->
+          <div style="font-size: 11.5px; color: var(--text-muted); margin-bottom: 6px;">Вільні віконця майстра на обраний день:</div>
           <div class="slots-grid" id="bookingTimeSlots">
-            <div class="slot-pill active" onclick="selectTimePill(this)">11:30</div>
-            <div class="slot-pill" onclick="selectTimePill(this)">13:00</div>
-            <div class="slot-pill" onclick="selectTimePill(this)">15:30</div>
-            <div class="slot-pill" onclick="selectTimePill(this)">17:00</div>
-            <div class="slot-pill" onclick="selectTimePill(this)">18:30</div>
+            <!-- Rendered dynamically via renderBookingTimeSlots() -->
           </div>
         </div>
 
@@ -2092,7 +2102,7 @@
 
     const INITIAL_APPOINTMENTS = [
       {
-        id: "apt-01", time: "10:30", client: "Катерина Воронова", phone: "+38 (067) 345-21-90",
+        id: "apt-01", time: "10:30", date: "24 лист", client: "Катерина Воронова", phone: "+38 (067) 345-21-90",
         dir: "Манікюр", service: "Зняття + манікюр + покриття", price: 900, master: "Катерина",
         cost: 68, status: "Підтверджено",
         bom: [
@@ -2114,7 +2124,7 @@
         notes: "Вигин L, довжина 9-12 мм, ефект мокрих вій."
       },
       {
-        id: "apt-03", time: "14:30", client: "Анна Савченко", phone: "+38 (050) 890-43-12",
+        id: "apt-03", time: "14:30", date: "25 лист", client: "Анна Савченко", phone: "+38 (050) 890-43-12",
         dir: "Косметологія", service: "Комбінована чистка обличчя", price: 1200, master: "Вікторія",
         cost: 140, status: "Підтверджено",
         bom: [
@@ -2125,7 +2135,7 @@
         notes: "Чутлива T-зона, атравматичний ультразвуковий протокол."
       },
       {
-        id: "apt-04", time: "17:00", client: "Марина Коваль", phone: "+38 (073) 441-29-87",
+        id: "apt-04", time: "17:00", date: "25 лист", client: "Марина Коваль", phone: "+38 (073) 441-29-87",
         dir: "Брови", service: "Ламінування брів + фарбування + ботокс", price: 950, master: "Діана",
         cost: 85, status: "Очікує клієнта",
         bom: [
@@ -2136,7 +2146,7 @@
         notes: "Натуральний світло-коричневий тон 7.0, без затемнення."
       },
       {
-        id: "apt-05", time: "15:45", client: "Олена Шевченко", phone: "+38 (063) 789-11-22",
+        id: "apt-05", time: "15:45", date: "26 лист", client: "Олена Шевченко", phone: "+38 (063) 789-11-22",
         dir: "Педикюр", service: "Повний педикюр з покриттям (Smart)", price: 900, master: "Катерина",
         cost: 72, status: "Підтверджено",
         bom: [
@@ -2148,7 +2158,7 @@
         notes: "Плівкове ультратонке покриття Podofoot, сухість п'ят."
       },
       {
-        id: "apt-06", time: "18:30", client: "Юлія Бондаренко", phone: "+38 (095) 432-88-99",
+        id: "apt-06", time: "18:30", date: "26 лист", client: "Юлія Бондаренко", phone: "+38 (095) 432-88-99",
         dir: "Перукарські", service: "Spa-догляд «Абсолютне щастя для волосся»", price: 1600, master: "Вікторія",
         cost: 95, status: "Очікує клієнта",
         bom: [
@@ -2503,12 +2513,14 @@
     // =========================================================================
     // DEFAULT TECH CARDS (ТЕХНОЛОГІЧНІ КАРТИ З ПРИВ'ЯЗКОЮ РОЗХОДУ МАТЕРІАЛІВ)
     // =========================================================================
-    const STORAGE_KEY = 'wild_beauty_crm_state_v6';
+    const STORAGE_KEY = 'wild_beauty_crm_state_v7';
 
     // Load from LocalStorage with auto-healing and seamless legacy migration
-    const cachedState = localStorage.getItem(STORAGE_KEY) 
-      || localStorage.getItem('wild_beauty_crm_state_v4') 
-      || localStorage.getItem('wild_beauty_crm_state_v3') 
+    const cachedState = localStorage.getItem(STORAGE_KEY)
+      || localStorage.getItem('wild_beauty_crm_state_v6')
+      || localStorage.getItem('wild_beauty_crm_state_v5')
+      || localStorage.getItem('wild_beauty_crm_state_v4')
+      || localStorage.getItem('wild_beauty_crm_state_v3')
       || localStorage.getItem('wild_beauty_crm_state');
 
     // Clean legacy obsolete cache keys
@@ -2644,8 +2656,178 @@
       });
     });
 
-    // Booking Modal
-    window.openClientBookingModal = function(serviceId) {
+    
+    // =========================================================================
+    // DYNAMIC CALENDAR & DATE SELECTION ENGINE (ANY FUTURE DATE)
+    // =========================================================================
+    const UKR_DAYS_SHORT = ['Нд', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
+    const UKR_DAYS_FULL = ['Неділя', 'Понеділок', 'Вівторок', 'Середа', 'Четвер', 'П\'ятниця', 'Субота'];
+    const UKR_MONTHS_SHORT = ['січ', 'лют', 'бер', 'квіт', 'трав', 'черв', 'лип', 'серп', 'вер', 'жовт', 'лист', 'груд'];
+    const UKR_MONTHS_FULL = ['січня', 'лютого', 'березня', 'квітня', 'травня', 'червня', 'липня', 'серпня', 'вересня', 'жовтня', 'листопада', 'грудня'];
+
+    function parseISODate(isoStr) {
+      if (!isoStr) return new Date();
+      const parts = isoStr.split('-');
+      if (parts.length === 3) {
+        return new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
+      }
+      return new Date(isoStr);
+    }
+
+    function formatToISODate(d) {
+      const year = d.getFullYear();
+      const month = String(d.getMonth() + 1).padStart(2, '0');
+      const day = String(d.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
+    }
+
+    function formatShortDate(d) {
+      return `${d.getDate()} ${UKR_MONTHS_SHORT[d.getMonth()]}`;
+    }
+
+    function formatFullDate(d) {
+      return `${UKR_DAYS_FULL[d.getDay()]}, ${d.getDate()} ${UKR_MONTHS_FULL[d.getMonth()]} ${d.getFullYear()} р.`;
+    }
+
+    // Default time slots
+    const BOOKING_TIME_SLOTS = [
+      '09:30', '11:00', '12:30', '14:00', '15:30', '17:00', '18:30', '20:00'
+    ];
+
+    // Render interactive date strip (next 21 days from today)
+    function renderBookingDates() {
+      const container = document.getElementById('bookingDatesScrollStrip');
+      if (!container) return;
+      container.innerHTML = '';
+
+      const today = new Date();
+      const todayISO = formatToISODate(today);
+      if (!appState.bookingSelectedDate) {
+        appState.bookingSelectedDate = todayISO;
+      }
+
+      // Sync calendar input minimum and value
+      const anyDateInput = document.getElementById('bookingAnyDateInput');
+      if (anyDateInput) {
+        anyDateInput.min = todayISO;
+        anyDateInput.value = appState.bookingSelectedDate;
+      }
+
+      // Update banner
+      updateSelectedDateBanner(appState.bookingSelectedDate);
+
+      let foundActiveInStrip = false;
+      const totalDaysInStrip = 21;
+
+      for (let i = 0; i < totalDaysInStrip; i++) {
+        const d = new Date(today);
+        d.setDate(today.getDate() + i);
+        const iso = formatToISODate(d);
+        const isSel = (iso === appState.bookingSelectedDate);
+        if (isSel) foundActiveInStrip = true;
+
+        const prefix = (i === 0) ? 'Сьогодні' : (i === 1) ? 'Завтра' : UKR_DAYS_SHORT[d.getDay()];
+        const label = `${prefix}, ${formatShortDate(d)}`;
+
+        const pill = document.createElement('div');
+        pill.className = `slot-pill ${isSel ? 'active' : ''}`;
+        pill.style.whiteSpace = 'nowrap';
+        pill.setAttribute('data-date', iso);
+        pill.innerText = label;
+        pill.onclick = function() {
+          selectDatePill(iso, this);
+        };
+        container.appendChild(pill);
+      }
+
+      // If user selected a custom date far into the future (not in first 21 days), prepend/append an active chip
+      if (!foundActiveInStrip) {
+        const customDateObj = parseISODate(appState.bookingSelectedDate);
+        const customPill = document.createElement('div');
+        customPill.className = 'slot-pill active';
+        customPill.style.whiteSpace = 'nowrap';
+        customPill.setAttribute('data-date', appState.bookingSelectedDate);
+        customPill.innerText = `📅 ${formatShortDate(customDateObj)} (${UKR_DAYS_SHORT[customDateObj.getDay()]})`;
+        customPill.onclick = function() {
+          selectDatePill(appState.bookingSelectedDate, this);
+        };
+        container.appendChild(customPill);
+      }
+    }
+    window.renderBookingDates = renderBookingDates;
+
+    function selectDatePill(isoDate, el) {
+      appState.bookingSelectedDate = isoDate;
+      const container = document.getElementById('bookingDatesScrollStrip');
+      if (container) {
+        container.querySelectorAll('.slot-pill').forEach(p => p.classList.remove('active'));
+      }
+      if (el) el.classList.add('active');
+
+      const anyDateInput = document.getElementById('bookingAnyDateInput');
+      if (anyDateInput) anyDateInput.value = isoDate;
+
+      updateSelectedDateBanner(isoDate);
+      renderBookingTimeSlots();
+    }
+    window.selectDatePill = selectDatePill;
+
+    function onBookingCustomDateChange(val) {
+      if (!val) return;
+      appState.bookingSelectedDate = val;
+      renderBookingDates();
+      renderBookingTimeSlots();
+    }
+    window.onBookingCustomDateChange = onBookingCustomDateChange;
+
+    function updateSelectedDateBanner(isoDate) {
+      const banner = document.getElementById('bookingSelectedDateBanner');
+      if (!banner) return;
+      const d = parseISODate(isoDate);
+      banner.innerText = formatFullDate(d);
+    }
+
+    function renderBookingTimeSlots() {
+      const container = document.getElementById('bookingTimeSlots');
+      if (!container) return;
+      container.innerHTML = '';
+
+      if (!appState.bookingSelectedTime) {
+        appState.bookingSelectedTime = '14:00';
+      }
+
+      BOOKING_TIME_SLOTS.forEach(time => {
+        const isSel = (time === appState.bookingSelectedTime);
+        const pill = document.createElement('div');
+        pill.className = `slot-pill ${isSel ? 'active' : ''}`;
+        pill.innerText = time;
+        pill.onclick = function() {
+          selectTimePill(time, this);
+        };
+        container.appendChild(pill);
+      });
+    }
+    window.renderBookingTimeSlots = renderBookingTimeSlots;
+
+    function selectTimePill(timeVal, el) {
+      appState.bookingSelectedTime = timeVal;
+      const container = document.getElementById('bookingTimeSlots');
+      if (container) {
+        container.querySelectorAll('.slot-pill').forEach(p => p.classList.remove('active'));
+      }
+      if (el) el.classList.add('active');
+    }
+    window.selectTimePill = selectTimePill;
+
+    function closeClientBookingModal() {
+      const modal = document.getElementById('clientBookingModal');
+      if (modal) modal.classList.remove('open');
+    }
+    window.closeClientBookingModal = closeClientBookingModal;
+
+    // Open booking dialog with refreshed dates and masters
+    function openClientBookingModal(serviceId) {
+
       const s = appState.services.find(item => item.id === serviceId) || appState.services[0];
       appState.bookingSelectedService = s;
       document.getElementById('bookModalServiceName').innerText = `Запис: ${s.name}`;
@@ -2668,38 +2850,33 @@
         `;
       });
 
+      // Render dates & time slots
+      renderBookingDates();
+      renderBookingTimeSlots();
+
       document.getElementById('clientBookingModal').classList.add('open');
-    };
+    }
+    window.openClientBookingModal = openClientBookingModal;
 
-    window.closeClientBookingModal = function() {
-      document.getElementById('clientBookingModal').classList.remove('open');
-    };
+    function confirmClientBooking() {
 
-    window.selectMasterCard = function(masterId, el) {
-      appState.bookingSelectedMasterId = masterId;
-      document.querySelectorAll('.master-card-select').forEach(c => c.classList.remove('selected'));
-      el.classList.add('selected');
-    };
-
-    window.selectDatePill = function(el) {
-      el.parentElement.querySelectorAll('.slot-pill').forEach(p => p.classList.remove('active'));
-      el.classList.add('active');
-    };
-
-    window.selectTimePill = function(el) {
-      document.getElementById('bookingTimeSlots').querySelectorAll('.slot-pill').forEach(p => p.classList.remove('active'));
-      el.classList.add('active');
-    };
-
-    window.confirmClientBooking = function() {
       const name = document.getElementById('bookClientName').value.trim() || 'Клієнт з сайту';
       const phone = document.getElementById('bookClientPhone').value.trim() || '+38 (067) 555-12-34';
-      const s = appState.bookingSelectedService;
+      const s = appState.bookingSelectedService || appState.services[0];
       const mObj = REAL_MASTERS.find(m => m.id === appState.bookingSelectedMasterId) || REAL_MASTERS[1];
+
+      const chosenISO = appState.bookingSelectedDate || formatToISODate(new Date());
+      const chosenDateObj = parseISODate(chosenISO);
+      const chosenShortDate = formatShortDate(chosenDateObj);
+      const chosenFullDate = formatFullDate(chosenDateObj);
+      const chosenTime = appState.bookingSelectedTime || '14:00';
 
       const newApt = {
         id: "apt-" + Date.now(),
-        time: "15:00",
+        date: chosenShortDate,
+        dateISO: chosenISO,
+        dateFormatted: chosenFullDate,
+        time: chosenTime,
         client: name,
         phone: phone,
         dir: (s.cat === 'nails') ? 'Манікюр' : (s.cat === 'pedi') ? 'Педикюр' : (s.cat === 'lashes') ? 'Вії' : (s.cat === 'brows') ? 'Брови' : (s.cat === 'cosmo') ? 'Косметологія' : 'Перукарські',
@@ -2709,18 +2886,21 @@
         cost: s.cost,
         status: "Новий (Завдаток)",
         bom: JSON.parse(JSON.stringify(s.defaultBOM || [])),
-        notes: "Онлайн-запис через сайт студії. Завдаток 200 ₴ підтверджено."
+        notes: `Онлайн-запис на ${chosenFullDate} о ${chosenTime}. Завдаток 200 ₴ підтверджено.`
       };
 
       appState.appointments.unshift(newApt);
-      saveState();
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
       closeClientBookingModal();
+
       alert(`🎉 Дякуємо, ${name}!
 
-Ваш запис на "${s.name}" до майстра ${mObj.name} успішно створено!
+Ваш запис на "${s.name}" до майстра ${mObj.name} успішно створено на ${chosenFullDate} о ${chosenTime}!
+
 Запис з'явився у Студійній адмін-панелі.`);
       switchMode('admin');
-    };
+    }
+    window.confirmClientBooking = confirmClientBooking;
 
     // =========================================================================
     // ADMIN PORTAL LOGIC
@@ -2771,7 +2951,10 @@
         const clientPhone = apt.phone || '+38 (067) 345-21-90';
 
         tr.innerHTML = `
-          <td><strong>${apt.time || '10:30'}</strong></td>
+          <td style="white-space: nowrap;">
+            <strong style="color: #fff; font-size: 13.5px;">${apt.time || '10:30'}</strong>
+            <div style="font-size: 11px; color: var(--accent); font-weight: 600; margin-top: 2px;">📅 ${apt.date || '24 лист'}</div>
+          </td>
           <td>
             <div style="font-weight: 600;">${clientName}</div>
             <div style="font-size: 11.5px; color: var(--text-muted);">${clientPhone}</div>

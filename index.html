@@ -617,6 +617,77 @@
       letter-spacing: -0.02em;
     }
 
+    /* Master Accounts & Profile Switcher */
+    .master-account-bar {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 16px 20px;
+      margin-bottom: 20px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .master-filter-strip {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      padding-bottom: 6px;
+      scrollbar-width: thin;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .master-filter-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--bg-surface-raised);
+      border: 1px solid var(--border-subtle);
+      padding: 8px 16px;
+      border-radius: var(--radius-full);
+      cursor: pointer;
+      white-space: nowrap;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      transition: all 0.2s ease;
+      user-select: none;
+    }
+
+    .master-filter-chip:hover {
+      border-color: var(--accent);
+      color: #fff;
+      transform: translateY(-1px);
+    }
+
+    .master-filter-chip.active {
+      background: linear-gradient(135deg, rgba(168, 85, 247, 0.25), rgba(236, 72, 153, 0.2));
+      border-color: var(--accent);
+      color: #fff;
+      box-shadow: 0 2px 10px rgba(168, 85, 247, 0.25);
+    }
+
+    .master-chip-avatar {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 1.5px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .master-chip-count {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 1px 7px;
+      border-radius: 10px;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-muted);
+    }
+
+    .master-filter-chip.active .master-chip-count {
+      background: var(--accent);
+      color: #fff;
+    }
+
     /* Data Cards & Tables */
     .data-card {
       background: var(--bg-surface);
@@ -1418,6 +1489,13 @@
   <!-- ===================================================================== -->
   <div id="adminPortalView" style="display: none;">
     <aside class="admin-sidebar">
+      <div style="padding: 12px 14px; margin-bottom: 14px; background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); font-size: 12px;">
+        <div style="color: var(--text-muted); font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px;">Поточний профіль:</div>
+        <div style="font-weight: 700; color: #fff; display: flex; align-items: center; gap: 6px;" id="sidebarActiveMasterName">
+          <span>👑 Власниця студії</span>
+        </div>
+        <div style="font-size: 11px; color: var(--accent); margin-top: 2px;" id="sidebarActiveMasterRole">Всі майстри</div>
+      </div>
       <div class="admin-nav-item active" data-atab="calendar">🗓 Розклад & Записи</div>
       <div class="admin-nav-item" data-atab="clients">👥 Клієнти & Бріфи</div>
       <div class="admin-nav-item" data-atab="inventory">📦 Склад матеріалів (BOM)</div>
@@ -1447,32 +1525,48 @@
           </div>
         </div>
 
+        <!-- Master Accounts Switcher Bar -->
+        <div class="master-account-bar">
+          <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 12px; flex-wrap: wrap;">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span style="font-size: 14px; font-weight: 700; color: #fff;">👤 Особисті акаунти майстрів:</span>
+              <span class="badge" id="activeMasterBadge" style="background: rgba(168, 85, 247, 0.15); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.3);">👑 Власниця (Всі записи студії)</span>
+            </div>
+            <div style="font-size: 12px; color: var(--text-muted);" id="activeMasterHelpText">
+              💡 Перемикайте кабінет майстра, щоб бачити розклад та чистий заробіток конкретного спеціаліста
+            </div>
+          </div>
+          <div class="master-filter-strip" id="masterFilterStrip">
+            <!-- Rendered by renderMasterFilterStrip() -->
+          </div>
+        </div>
+
         <div class="kpi-row">
           <div class="kpi-card">
-            <div style="font-size: 12px; color: var(--text-muted);">Записів сьогодні</div>
+            <div style="font-size: 12px; color: var(--text-muted);" id="adminKpiCountTitle">Записів сьогодні</div>
             <div class="kpi-num" id="adminKpiCount">4</div>
-            <div style="font-size: 11.5px; color: var(--success);">Всі напрямки заброньовані</div>
+            <div style="font-size: 11.5px; color: var(--success);" id="adminKpiCountSub">Всі напрямки заброньовані</div>
           </div>
           <div class="kpi-card">
-            <div style="font-size: 12px; color: var(--text-muted);">Очікувана виручка</div>
+            <div style="font-size: 12px; color: var(--text-muted);" id="adminKpiRevenueTitle">Очікувана виручка</div>
             <div class="kpi-num" id="adminKpiRevenue">3 650 ₴</div>
-            <div style="font-size: 11.5px; color: var(--text-secondary);">Сер. чек: 912 ₴</div>
+            <div style="font-size: 11.5px; color: var(--text-secondary);" id="adminKpiRevenueSub">Сер. чек: 912 ₴</div>
           </div>
           <div class="kpi-card">
-            <div style="font-size: 12px; color: var(--text-muted);">Собівартість матеріалів (BOM)</div>
+            <div style="font-size: 12px; color: var(--text-muted);" id="adminKpiCostTitle">Собівартість матеріалів (BOM)</div>
             <div class="kpi-num" id="adminKpiCost">310 ₴</div>
-            <div style="font-size: 11.5px; color: var(--text-secondary);">Точне списання за брифами</div>
+            <div style="font-size: 11.5px; color: var(--text-secondary);" id="adminKpiCostSub">Точне списання за брифами</div>
           </div>
           <div class="kpi-card">
-            <div style="font-size: 12px; color: var(--text-muted);">Чистий дохід студії</div>
+            <div style="font-size: 12px; color: var(--text-muted);" id="adminKpiProfitTitle">Чистий дохід студії</div>
             <div class="kpi-num" style="color: var(--success);" id="adminKpiProfit">3 340 ₴</div>
-            <div style="font-size: 11.5px; color: var(--success);">Маржа: 91.5%</div>
+            <div style="font-size: 11.5px; color: var(--success);" id="adminKpiProfitSub">Маржа: 91.5%</div>
           </div>
         </div>
 
         <div class="data-card">
           <div class="data-header">
-            <strong style="font-size: 14.5px;">Журнал записів • Сьогодні (24 листопада)</strong>
+            <strong style="font-size: 14.5px;" id="adminAppointmentsTableTitle">Журнал записів • Сьогодні (24 листопада)</strong>
             <button class="btn btn-secondary btn-sm" onclick="openClientBookingModal()">+ Додати запис вручну</button>
           </div>
           <div class="table-responsive">
@@ -2043,6 +2137,7 @@
       { id: "m-viktoria", name: "Вікторія", role: "Косметолог-естетист", avatar: "./assets/img/salon_2.jpg", rating: 5.0, exp: "Мед. освіта" },
       { id: "m-olena", name: "Олена", role: "Стиліст-колорист (Hair)", avatar: "./assets/img/industry_4.png", rating: 4.9, exp: "Досвід 7 років" }
     ];
+    window.REAL_MASTERS = REAL_MASTERS;
 
     const INITIAL_INVENTORY = [
       // 💅 Манікюр
@@ -2103,7 +2198,7 @@
     const INITIAL_APPOINTMENTS = [
       {
         id: "apt-01", time: "10:30", date: "24 лист", client: "Катерина Воронова", phone: "+38 (067) 345-21-90",
-        dir: "Манікюр", service: "Зняття + манікюр + покриття", price: 900, master: "Катерина",
+        dir: "Манікюр", service: "Зняття + манікюр + покриття", price: 900, master: "Катерина", masterId: "m-katya",
         cost: 68, status: "Підтверджено",
         bom: [
           { invId: "inv-m1", name: "Rubber Base (Каучукова база)", qty: 0.5, unit: "мл" },
@@ -2113,8 +2208,8 @@
         notes: "Нігті тонкі після зняття, укріпити додатково безкислотною базою."
       },
       {
-        id: "apt-02", time: "12:00", client: "Оксана Мельник", phone: "+38 (098) 112-90-44",
-        dir: "Вії", service: "Нарощування вій: Тренди (мокрий ефект)", price: 1200, master: "Діана",
+        id: "apt-02", time: "12:00", date: "24 лист", client: "Оксана Мельник", phone: "+38 (098) 112-90-44",
+        dir: "Вії", service: "Нарощування вій: Тренди (мокрий ефект)", price: 1200, master: "Діана", masterId: "m-diana",
         cost: 85, status: "Очікує клієнта",
         bom: [
           { invId: "inv-l1", name: "Клей для вій швидкої фіксації", qty: 0.3, unit: "мл" },
@@ -2125,7 +2220,7 @@
       },
       {
         id: "apt-03", time: "14:30", date: "25 лист", client: "Анна Савченко", phone: "+38 (050) 890-43-12",
-        dir: "Косметологія", service: "Комбінована чистка обличчя", price: 1200, master: "Вікторія",
+        dir: "Косметологія", service: "Комбінована чистка обличчя", price: 1200, master: "Вікторія", masterId: "m-viktoria",
         cost: 140, status: "Підтверджено",
         bom: [
           { invId: "inv-c1", name: "Гель холодного гідрування", qty: 5, unit: "мл" },
@@ -2136,7 +2231,7 @@
       },
       {
         id: "apt-04", time: "17:00", date: "25 лист", client: "Марина Коваль", phone: "+38 (073) 441-29-87",
-        dir: "Брови", service: "Ламінування брів + фарбування + ботокс", price: 950, master: "Діана",
+        dir: "Брови", service: "Ламінування брів + фарбування + ботокс", price: 950, master: "Діана", masterId: "m-diana",
         cost: 85, status: "Очікує клієнта",
         bom: [
           { invId: "inv-b4", name: "Склади для ламінування 1+2+3", qty: 1, unit: "компл" },
@@ -2147,7 +2242,7 @@
       },
       {
         id: "apt-05", time: "15:45", date: "26 лист", client: "Олена Шевченко", phone: "+38 (063) 789-11-22",
-        dir: "Педикюр", service: "Повний педикюр з покриттям (Smart)", price: 900, master: "Катерина",
+        dir: "Педикюр", service: "Повний педикюр з покриттям (Smart)", price: 900, master: "Катерина", masterId: "m-katya",
         cost: 72, status: "Підтверджено",
         bom: [
           { invId: "inv-p1", name: "Подо-диск одноразовий 180 грит", qty: 2, unit: "шт" },
@@ -2159,7 +2254,7 @@
       },
       {
         id: "apt-06", time: "18:30", date: "26 лист", client: "Юлія Бондаренко", phone: "+38 (095) 432-88-99",
-        dir: "Перукарські", service: "Spa-догляд «Абсолютне щастя для волосся»", price: 1600, master: "Вікторія",
+        dir: "Перукарські", service: "Spa-догляд «Абсолютне щастя для волосся»", price: 1600, master: "Олена", masterId: "m-olena",
         cost: 95, status: "Очікує клієнта",
         bom: [
           { invId: "inv-h1", name: "Шампунь глибокого очищення", qty: 25, unit: "мл" },
@@ -2167,6 +2262,38 @@
           { invId: "inv-h2", name: "Термозахисний спрей / флюїд", qty: 5, unit: "мл" }
         ],
         notes: "Освітлений блонд, сухі кінчики. Обов'язковий термозахист перед сушкою."
+      },
+      {
+        id: "apt-07", time: "11:00", date: "24 лист", client: "Тетяна Василенко", phone: "+38 (068) 221-45-78",
+        dir: "Педикюр", service: "Smart-педикюр апаратний з розвантаженням", price: 950, master: "Анастасія", masterId: "m-nastya",
+        cost: 75, status: "Підтверджено",
+        bom: [
+          { invId: "inv-p1", name: "Подо-диск одноразовий 180 грит", qty: 2, unit: "шт" },
+          { invId: "inv-p2", name: "Кератолітик пілінговий", qty: 3, unit: "мл" },
+          { invId: "inv-p3", name: "Молекулярна олійка Smart для стоп", qty: 1, unit: "мл" }
+        ],
+        notes: "Апаратне розвантаження стопи, схильність до гіперкератозу."
+      },
+      {
+        id: "apt-08", time: "13:30", date: "25 лист", client: "Наталія Мороз", phone: "+38 (093) 445-67-89",
+        dir: "Косметологія", service: "Карбоксітерапія обличчя неінвазивна", price: 1100, master: "Вікторія", masterId: "m-viktoria",
+        cost: 130, status: "Підтверджено",
+        bom: [
+          { invId: "inv-c1", name: "Гель холодного гідрування", qty: 5, unit: "мл" },
+          { invId: "inv-c2", name: "Антисептична заспокійлива маска", qty: 5, unit: "мл" },
+          { invId: "inv-c3", name: "Фінішний SPF-крем 50+", qty: 2, unit: "мл" }
+        ],
+        notes: "Курсова карбоксітерапія, поліпшення мікроциркуляції."
+      },
+      {
+        id: "apt-09", time: "16:00", date: "25 лист", client: "Ірина Кравчук", phone: "+38 (097) 889-32-10",
+        dir: "Перукарські", service: "Тонування волосся + Стрижка кінчиків", price: 1450, master: "Олена", masterId: "m-olena",
+        cost: 110, status: "Підтверджено",
+        bom: [
+          { invId: "inv-h1", name: "Шампунь глибокого очищення", qty: 25, unit: "мл" },
+          { invId: "inv-h2", name: "Термозахисний спрей / флюїд", qty: 5, unit: "мл" }
+        ],
+        notes: "Тонування без аміаку, відтінок 10.12 перлинний беж."
       }
     ];
 
@@ -2497,6 +2624,7 @@
     };
 
     let appState = {
+      activeMasterId: 'all',
       services: CANONICAL_SERVICES,
       inventory: INITIAL_INVENTORY,
       appointments: INITIAL_APPOINTMENTS,
@@ -2513,10 +2641,11 @@
     // =========================================================================
     // DEFAULT TECH CARDS (ТЕХНОЛОГІЧНІ КАРТИ З ПРИВ'ЯЗКОЮ РОЗХОДУ МАТЕРІАЛІВ)
     // =========================================================================
-    const STORAGE_KEY = 'wild_beauty_crm_state_v7';
+    const STORAGE_KEY = 'wild_beauty_crm_state_v8';
 
     // Load from LocalStorage with auto-healing and seamless legacy migration
     const cachedState = localStorage.getItem(STORAGE_KEY)
+      || localStorage.getItem('wild_beauty_crm_state_v7')
       || localStorage.getItem('wild_beauty_crm_state_v6')
       || localStorage.getItem('wild_beauty_crm_state_v5')
       || localStorage.getItem('wild_beauty_crm_state_v4')
@@ -2538,6 +2667,11 @@
           const cached = (parsed.services || []).find(ps => ps.id === cs.id);
           return cached ? { ...cached, img: cs.img, defaultBOM: cs.defaultBOM } : cs;
         });
+
+        // Preserve active master selection
+        if (parsed.activeMasterId) {
+          appState.activeMasterId = parsed.activeMasterId;
+        }
 
         // Robust migration & repair of appointments
         if (Array.isArray(parsed.appointments) && parsed.appointments.length >= 6) {
@@ -2828,6 +2962,11 @@
     // Open booking dialog with refreshed dates and masters
     function openClientBookingModal(serviceId) {
 
+      // If a specific master account is active, default the booking to this master
+      if (appState.activeMasterId && appState.activeMasterId !== 'all') {
+        appState.bookingSelectedMasterId = appState.activeMasterId;
+      }
+
       const s = appState.services.find(item => item.id === serviceId) || appState.services[0];
       appState.bookingSelectedService = s;
       document.getElementById('bookModalServiceName').innerText = `Запис: ${s.name}`;
@@ -2883,6 +3022,7 @@
         service: s.name,
         price: s.price,
         master: mObj.name,
+        masterId: mObj.id,
         cost: s.cost,
         status: "Новий (Завдаток)",
         bom: JSON.parse(JSON.stringify(s.defaultBOM || [])),
@@ -2933,51 +3073,235 @@
 
     function renderAdminAppointments() {
       const tbody = document.getElementById('adminAppointmentsBody');
+      if (!tbody) return;
       tbody.innerHTML = '';
+
+      const activeId = appState.activeMasterId || 'all';
+      const activeMaster = (activeId !== 'all') ? REAL_MASTERS.find(m => m.id === activeId) : null;
+
+      // Filter appointments based on active master account
+      const displayedAppointments = activeMaster 
+        ? appState.appointments.filter(apt => {
+            if (!apt.master) return false;
+            if (apt.masterId && apt.masterId === activeMaster.id) return true;
+            return apt.master.toLowerCase().includes(activeMaster.name.toLowerCase());
+          })
+        : appState.appointments;
 
       let totalRev = 0, totalCost = 0;
 
-      appState.appointments.forEach(apt => {
-        const price = Number(apt.price) || 0;
-        const cost = Number(apt.cost) || 0;
-        totalRev += price;
-        totalCost += cost;
-
+      if (displayedAppointments.length === 0) {
         const tr = document.createElement('tr');
-        const isSuccess = (apt.status === 'Виконано' || apt.status === 'Підтверджено' || apt.status === 'confirmed');
-        const statusClass = isSuccess ? 'badge-success' : 'badge-warning';
-        const statusText = (apt.status === 'confirmed') ? 'Підтверджено' : (apt.status === 'pending') ? 'Очікує' : (apt.status || 'Підтверджено');
-        const clientName = ((apt.client && apt.client !== 'undefined') ? apt.client : (apt.clientName || 'Катерина Воронова')).trim();
-        const clientPhone = apt.phone || '+38 (067) 345-21-90';
-
         tr.innerHTML = `
-          <td style="white-space: nowrap;">
-            <strong style="color: #fff; font-size: 13.5px;">${apt.time || '10:30'}</strong>
-            <div style="font-size: 11px; color: var(--accent); font-weight: 600; margin-top: 2px;">📅 ${apt.date || '24 лист'}</div>
-          </td>
-          <td>
-            <div style="font-weight: 600;">${clientName}</div>
-            <div style="font-size: 11.5px; color: var(--text-muted);">${clientPhone}</div>
-          </td>
-          <td><span class="dir-tag">${apt.dir || 'Манікюр'}</span></td>
-          <td>${apt.service || 'Зняття + манікюр + покриття'}</td>
-          <td>${apt.master || 'Катерина'}</td>
-          <td><strong>${price.toLocaleString()} ₴</strong></td>
-          <td><span class="badge ${statusClass}">${statusText}</span></td>
-          <td style="text-align: right; white-space: nowrap;">
-            <button class="btn btn-primary btn-sm" onclick="openBriefModal('${apt.id}')" style="margin-right: 4px;">📋 Бриф після візиту</button>
-            <button class="btn btn-secondary btn-sm" onclick="openBriefReminderDirect('${apt.id}')" style="margin-right: 4px;" title="Центр нагадувань клієнтці">📲 Нагадування</button>
-            <button class="btn btn-secondary btn-sm" onclick="deleteAppointment('${apt.id}')">✕</button>
+          <td colspan="8" style="text-align: center; padding: 40px 16px; color: var(--text-muted);">
+            <div style="font-size: 32px; margin-bottom: 10px;">☕</div>
+            <div style="font-size: 15px; font-weight: 600; color: #fff;">У майстра ${activeMaster ? activeMaster.name : 'студії'} немає активних записів</div>
+            <div style="font-size: 12.5px; margin-top: 6px; color: var(--text-secondary);">
+              Натисніть кнопку <strong>«+ Додати запис вручну»</strong>, щоб записати клієнта до цього майстра
+            </div>
+            <button class="btn btn-primary btn-sm" style="margin-top: 14px;" onclick="openClientBookingModal()">+ Додати запис до ${activeMaster ? activeMaster.name : 'журналу'}</button>
           </td>
         `;
         tbody.appendChild(tr);
+      } else {
+        displayedAppointments.forEach(apt => {
+          const price = Number(apt.price) || 0;
+          const cost = Number(apt.cost) || 0;
+          totalRev += price;
+          totalCost += cost;
+
+          const tr = document.createElement('tr');
+          const isSuccess = (apt.status === 'Виконано' || apt.status === 'Підтверджено' || apt.status === 'confirmed');
+          const statusClass = isSuccess ? 'badge-success' : 'badge-warning';
+          const statusText = (apt.status === 'confirmed') ? 'Підтверджено' : (apt.status === 'pending') ? 'Очікує' : (apt.status || 'Підтверджено');
+          const clientName = ((apt.client && apt.client !== 'undefined') ? apt.client : (apt.clientName || 'Катерина Воронова')).trim();
+          const clientPhone = apt.phone || '+38 (067) 345-21-90';
+
+          tr.innerHTML = `
+            <td style="white-space: nowrap;">
+              <strong style="color: #fff; font-size: 13.5px;">${apt.time || '10:30'}</strong>
+              <div style="font-size: 11px; color: var(--accent); font-weight: 600; margin-top: 2px;">📅 ${apt.date || '24 лист'}</div>
+            </td>
+            <td>
+              <div style="font-weight: 600;">${clientName}</div>
+              <div style="font-size: 11.5px; color: var(--text-muted);">${clientPhone}</div>
+            </td>
+            <td><span class="dir-tag">${apt.dir || 'Манікюр'}</span></td>
+            <td>${apt.service || 'Зняття + манікюр + покриття'}</td>
+            <td>
+              <div style="font-weight: 600; color: #fff;">${apt.master || 'Катерина'}</div>
+              ${activeId === 'all' ? '<span style="font-size: 11px; color: var(--text-muted);">Майстер студії</span>' : '<span style="font-size: 11px; color: #4ade80;">✓ Особистий запис</span>'}
+            </td>
+            <td><strong>${price.toLocaleString()} ₴</strong></td>
+            <td><span class="badge ${statusClass}">${statusText}</span></td>
+            <td style="text-align: right; white-space: nowrap;">
+              <button class="btn btn-primary btn-sm" onclick="openBriefModal('${apt.id}')" style="margin-right: 4px;">📋 Бриф після візиту</button>
+              <button class="btn btn-secondary btn-sm" onclick="openBriefReminderDirect('${apt.id}')" style="margin-right: 4px;" title="Центр нагадувань клієнтці">📲 Нагадування</button>
+              <button class="btn btn-secondary btn-sm" onclick="deleteAppointment('${apt.id}')">✕</button>
+            </td>
+          `;
+          tbody.appendChild(tr);
+        });
+      }
+
+      // Update KPI Cards
+      const countEl = document.getElementById('adminKpiCount');
+      const revEl = document.getElementById('adminKpiRevenue');
+      const costEl = document.getElementById('adminKpiCost');
+      const profitEl = document.getElementById('adminKpiProfit');
+
+      const countTitleEl = document.getElementById('adminKpiCountTitle');
+      const countSubEl = document.getElementById('adminKpiCountSub');
+      const revTitleEl = document.getElementById('adminKpiRevenueTitle');
+      const revSubEl = document.getElementById('adminKpiRevenueSub');
+      const costTitleEl = document.getElementById('adminKpiCostTitle');
+      const costSubEl = document.getElementById('adminKpiCostSub');
+      const profitTitleEl = document.getElementById('adminKpiProfitTitle');
+      const profitSubEl = document.getElementById('adminKpiProfitSub');
+
+      if (activeMaster) {
+        if (countTitleEl) countTitleEl.innerText = `Записів майстра (${activeMaster.name})`;
+        if (countSubEl) countSubEl.innerText = `${displayedAppointments.length} запис(ів) у розкладі`;
+        if (revTitleEl) revTitleEl.innerText = `Виручка за послуги майстра`;
+        if (revSubEl) revSubEl.innerText = `Особиста каса майстра`;
+        if (costTitleEl) costTitleEl.innerText = `Списано матеріалів (BOM)`;
+        if (costSubEl) costSubEl.innerText = `Витрати на процедури`;
+        if (profitTitleEl) profitTitleEl.innerText = `Чистий заробіток майстра`;
+        
+        // 50% commission for the master
+        const masterEarnings = Math.round((totalRev - totalCost) * 0.5);
+        if (profitSubEl) profitSubEl.innerHTML = `<span style="color: #4ade80; font-weight: 600;">50% ставка від маржі</span> (${masterEarnings.toLocaleString()} ₴ до виплати)`;
+
+        if (countEl) countEl.innerText = displayedAppointments.length;
+        if (revEl) revEl.innerText = totalRev.toLocaleString() + ' ₴';
+        if (costEl) costEl.innerText = totalCost.toLocaleString() + ' ₴';
+        if (profitEl) profitEl.innerText = masterEarnings.toLocaleString() + ' ₴';
+      } else {
+        if (countTitleEl) countTitleEl.innerText = `Записів сьогодні (Всі майстри)`;
+        if (countSubEl) countSubEl.innerText = `Всі напрямки заброньовані`;
+        if (revTitleEl) revTitleEl.innerText = `Очікувана виручка студії`;
+        const avgCheck = displayedAppointments.length ? Math.round(totalRev / displayedAppointments.length) : 0;
+        if (revSubEl) revSubEl.innerText = `Сер. чек: ${avgCheck.toLocaleString()} ₴`;
+        if (costTitleEl) costTitleEl.innerText = `Собівартість матеріалів (BOM)`;
+        if (costSubEl) costSubEl.innerText = `Точне списання за брифами`;
+        if (profitTitleEl) profitTitleEl.innerText = `Чистий дохід студії`;
+        const margin = totalRev > 0 ? (((totalRev - totalCost) / totalRev) * 100).toFixed(1) : '0';
+        if (profitSubEl) profitSubEl.innerText = `Маржа студії: ${margin}%`;
+
+        if (countEl) countEl.innerText = displayedAppointments.length;
+        if (revEl) revEl.innerText = totalRev.toLocaleString() + ' ₴';
+        if (costEl) costEl.innerText = totalCost.toLocaleString() + ' ₴';
+        if (profitEl) profitEl.innerText = (totalRev - totalCost).toLocaleString() + ' ₴';
+      }
+
+      // Render the Master Filter Strip
+      renderMasterFilterStrip();
+    }
+    window.renderAdminAppointments = renderAdminAppointments;
+
+    // Render Master Filter Strip and Active Profile State
+    function renderMasterFilterStrip() {
+      const container = document.getElementById('masterFilterStrip');
+      if (!container) return;
+
+      const activeId = appState.activeMasterId || 'all';
+
+      // Calculate appointment counts per master
+      const counts = { all: appState.appointments.length };
+      REAL_MASTERS.forEach(m => {
+        if (m.id === 'm-any') return;
+        counts[m.id] = appState.appointments.filter(a => {
+          if (!a.master) return false;
+          if (a.masterId && a.masterId === m.id) return true;
+          return a.master.toLowerCase().includes(m.name.toLowerCase());
+        }).length;
       });
 
-      document.getElementById('adminKpiCount').innerText = appState.appointments.length;
-      document.getElementById('adminKpiRevenue').innerText = totalRev.toLocaleString() + ' ₴';
-      document.getElementById('adminKpiCost').innerText = totalCost.toLocaleString() + ' ₴';
-      document.getElementById('adminKpiProfit').innerText = (totalRev - totalCost).toLocaleString() + ' ₴';
+      let html = '';
+
+      // 1. "All masters" chip
+      const isAllActive = (activeId === 'all');
+      html += `
+        <div class="master-filter-chip ${isAllActive ? 'active' : ''}" onclick="setActiveMasterAccount('all')" title="Переглянути всі записи студії">
+          <img src="./assets/img/logo.png" class="master-chip-avatar" alt="Всі майстри" onerror="this.src='./assets/img/logo.png'">
+          <span>👑 Всі майстри (Власниця)</span>
+          <span class="master-chip-count">${counts.all || 0}</span>
+        </div>
+      `;
+
+      // 2. Individual master chips
+      REAL_MASTERS.forEach(m => {
+        if (m.id === 'm-any') return;
+        const isActive = (activeId === m.id);
+        const icon = (m.role.includes('нігтьов') || m.role.includes('манікюр')) ? '💅'
+                   : (m.role.includes('Лешмейкер') || m.role.includes('Ламі')) ? '👁️'
+                   : (m.role.includes('Косметолог')) ? '💆‍♀️'
+                   : (m.role.includes('Стиліст') || m.role.includes('Hair')) ? '💇‍♀️'
+                   : '✨';
+
+        html += `
+          <div class="master-filter-chip ${isActive ? 'active' : ''}" onclick="setActiveMasterAccount('${m.id}')" title="Кабінет: ${m.name} (${m.role})">
+            <img src="${m.avatar}" class="master-chip-avatar" alt="${m.name}" onerror="this.src='./assets/img/logo.png'">
+            <span>${icon} ${m.name}</span>
+            <span class="master-chip-count">${counts[m.id] || 0}</span>
+          </div>
+        `;
+      });
+
+      container.innerHTML = html;
+
+      // Update active master badge & indicator in card header
+      const badge = document.getElementById('activeMasterBadge');
+      const tableTitle = document.getElementById('adminAppointmentsTableTitle');
+      const sidebarName = document.getElementById('sidebarActiveMasterName');
+      const sidebarRole = document.getElementById('sidebarActiveMasterRole');
+      const activeMaster = (activeId !== 'all') ? REAL_MASTERS.find(m => m.id === activeId) : null;
+
+      if (badge) {
+        if (activeMaster) {
+          badge.innerHTML = `🟢 Акаунт: <strong>${activeMaster.name}</strong> (${activeMaster.role}) • <span style="text-decoration: underline; cursor: pointer;" onclick="setActiveMasterAccount('all')">Скинути до всіх</span>`;
+          badge.className = 'badge badge-success';
+          badge.style.background = 'rgba(46, 196, 124, 0.15)';
+          badge.style.color = '#4ade80';
+          badge.style.borderColor = 'rgba(46, 196, 124, 0.3)';
+        } else {
+          badge.innerHTML = `👑 Власниця (Всі записи студії)`;
+          badge.className = 'badge badge-info';
+          badge.style.background = 'rgba(168, 85, 247, 0.15)';
+          badge.style.color = '#c084fc';
+          badge.style.borderColor = 'rgba(168, 85, 247, 0.3)';
+        }
+      }
+
+      if (tableTitle) {
+        if (activeMaster) {
+          tableTitle.innerHTML = `Особистий розклад: <span style="color: var(--accent);">${activeMaster.name}</span> (${activeMaster.role}) • Записів: ${counts[activeMaster.id] || 0}`;
+        } else {
+          tableTitle.innerHTML = `Журнал записів • Всі майстри студії (${counts.all || 0})`;
+        }
+      }
+
+      if (sidebarName) {
+        if (activeMaster) {
+          sidebarName.innerHTML = `<span>${activeMaster.name}</span>`;
+          if (sidebarRole) sidebarRole.innerText = activeMaster.role;
+        } else {
+          sidebarName.innerHTML = `<span>👑 Власниця студії</span>`;
+          if (sidebarRole) sidebarRole.innerText = 'Всі майстри студії';
+        }
+      }
     }
+    window.renderMasterFilterStrip = renderMasterFilterStrip;
+
+    function setActiveMasterAccount(masterId) {
+      appState.activeMasterId = masterId;
+      if (masterId !== 'all') {
+        appState.bookingSelectedMasterId = masterId;
+      }
+      saveState();
+      renderAdminAppointments();
+    }
+    window.setActiveMasterAccount = setActiveMasterAccount;
 
     window.deleteAppointment = function(id) {
       if (confirm('Видалити цей запис з журналу?')) {

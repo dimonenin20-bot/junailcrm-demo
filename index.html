@@ -1633,6 +1633,7 @@
                 <option value="Вії">Вії</option>
                 <option value="Брови">Брови</option>
                 <option value="Косметологія">Косметологія</option>
+                <option value="Перукарські">Перукарські</option>
               </select>
             </div>
           </div>
@@ -1738,6 +1739,7 @@
                 <option value="Вії">👁️ Нарощування вій</option>
                 <option value="Брови">🎨 Брови</option>
                 <option value="Косметологія">🧖‍♀️ Косметологія</option>
+                <option value="Перукарські">💇‍♀️ Перукарські</option>
               </select>
             </div>
             <div class="form-row">
@@ -2153,10 +2155,38 @@
         { invId: "inv-c3", name: "Фінішний SPF-крем 50+", qty: 2, unit: "мл" }
       ]},
 
-      // 💇‍♀️ Перукарські
-      { id: "s-12", cat: "hair", name: "Жіноча стрижка + укладка", price: 1000, duration: "1 год. 30 хв.", img: "./assets/img/industry_4.png", cost: 50, defaultBOM: [
+      // 💇‍♀️ Перукарські & Колористика (Стиліст-колорист Олена)
+      { id: "s-12", cat: "hair", name: "Жіноча стрижка + Укладка на браш", price: 1000, duration: "1 год. 30 хв.", img: "./assets/img/industry_4.png", cost: 55, defaultBOM: [
         { invId: "inv-h1", name: "Шампунь глибокого очищення", qty: 15, unit: "мл" },
-        { invId: "inv-h2", name: "Термозахисний спрей / флюїд", qty: 3, unit: "мл" }
+        { invId: "inv-h2", name: "Термозахисний спрей / флюїд", qty: 4, unit: "мл" },
+        { invId: "inv-h6", name: "Шовкова олійка для посічених кінчиків", qty: 1.5, unit: "мл" }
+      ]},
+      { id: "s-13", cat: "hair", name: "Складне фарбування (Airtouch / Balayage / Шатуш)", price: 3400, duration: "3 год. 30 хв.", img: "./assets/img/industry_4.png", cost: 380, defaultBOM: [
+        { invId: "inv-h7", name: "Освітлюючий порошок безпиловий Blondor", qty: 60, unit: "г" },
+        { invId: "inv-h8", name: "Окислююча емульсія 1.9% / 3% / 6% / 9%", qty: 120, unit: "мл" },
+        { invId: "inv-h10", name: "Plex концентрат захисту дисульфідних зв'язків", qty: 15, unit: "мл" },
+        { invId: "inv-h11", name: "Фольга перукарська тиснена для Airtouch", qty: 25, unit: "м" },
+        { invId: "inv-h9", name: "Безаміачний барвник тонер (Glossing)", qty: 60, unit: "г" },
+        { invId: "inv-h12", name: "Шампунь-стабілізатор кольору pH 4.5", qty: 20, unit: "мл" },
+        { invId: "inv-h2", name: "Термозахисний спрей / флюїд", qty: 5, unit: "мл" }
+      ]},
+      { id: "s-14", cat: "hair", name: "Тонування волосся без аміаку + Стрижка кінчиків", price: 1450, duration: "2 год.", img: "./assets/img/industry_4.png", cost: 110, defaultBOM: [
+        { invId: "inv-h9", name: "Безаміачний барвник тонер (Glossing)", qty: 50, unit: "г" },
+        { invId: "inv-h8", name: "Окислююча емульсія 1.9% / 3% / 6% / 9%", qty: 100, unit: "мл" },
+        { invId: "inv-h12", name: "Шампунь-стабілізатор кольору pH 4.5", qty: 15, unit: "мл" },
+        { invId: "inv-h2", name: "Термозахисний спрей / флюїд", qty: 4, unit: "мл" }
+      ]},
+      { id: "s-15", cat: "hair", name: "Spa-догляд «Абсолютне щастя для волосся» (Lebel)", price: 1600, duration: "1 год. 30 хв.", img: "./assets/img/industry_4.png", cost: 125, defaultBOM: [
+        { invId: "inv-h1", name: "Шампунь глибокого очищення", qty: 20, unit: "мл" },
+        { invId: "inv-h3", name: "Ампульний комплекс «Абсолютне щастя»", qty: 1, unit: "шт" },
+        { invId: "inv-h2", name: "Термозахисний спрей / флюїд", qty: 5, unit: "мл" }
+      ]},
+      { id: "s-16", cat: "hair", name: "Прикореневе освітлення коренів + Тонування блонду", price: 1950, duration: "2 год. 30 хв.", img: "./assets/img/industry_4.png", cost: 185, defaultBOM: [
+        { invId: "inv-h7", name: "Освітлюючий порошок безпиловий Blondor", qty: 35, unit: "г" },
+        { invId: "inv-h8", name: "Окислююча емульсія 1.9% / 3% / 6% / 9%", qty: 70, unit: "мл" },
+        { invId: "inv-h9", name: "Безаміачний барвник тонер (Glossing)", qty: 45, unit: "г" },
+        { invId: "inv-h12", name: "Шампунь-стабілізатор кольору pH 4.5", qty: 15, unit: "мл" },
+        { invId: "inv-h2", name: "Термозахисний спрей / флюїд", qty: 4, unit: "мл" }
       ]}
     ];
 
@@ -2223,7 +2253,13 @@
       { id: "inv-h3", name: "Ампульний комплекс «Абсолютне щастя»", cat: "Перукарські", current: 24, max: 40, unit: "шт", cost: 65, status: "В нормі" },
       { id: "inv-h4", name: "Холодний ботокс / колагеновий концентрат", cat: "Перукарські", current: 180, max: 300, unit: "мл", cost: 45, status: "В нормі" },
       { id: "inv-h5", name: "Пілінг-детокс для шкіри голови", cat: "Перукарські", current: 120, max: 250, unit: "мл", cost: 15, status: "В нормі" },
-      { id: "inv-h6", name: "Шовкова олійка для посічених кінчиків", cat: "Перукарські", current: 95, max: 150, unit: "мл", cost: 12, status: "В нормі" }
+      { id: "inv-h6", name: "Шовкова олійка для посічених кінчиків", cat: "Перукарські", current: 95, max: 150, unit: "мл", cost: 12, status: "В нормі" },
+      { id: "inv-h7", name: "Освітлюючий порошок безпиловий Blondor", cat: "Перукарські", current: 450, max: 800, unit: "г", cost: 3.5, status: "В нормі" },
+      { id: "inv-h8", name: "Окислююча емульсія 1.9% / 3% / 6% / 9%", cat: "Перукарські", current: 900, max: 1500, unit: "мл", cost: 1.2, status: "В нормі" },
+      { id: "inv-h9", name: "Безаміачний барвник тонер (Glossing)", cat: "Перукарські", current: 380, max: 600, unit: "г", cost: 4.8, status: "В нормі" },
+      { id: "inv-h10", name: "Plex концентрат захисту дисульфідних зв'язків", cat: "Перукарські", current: 150, max: 250, unit: "мл", cost: 9.5, status: "В нормі" },
+      { id: "inv-h11", name: "Фольга перукарська тиснена для Airtouch", cat: "Перукарські", current: 180, max: 300, unit: "м", cost: 2.2, status: "В нормі" },
+      { id: "inv-h12", name: "Шампунь-стабілізатор кольору pH 4.5", cat: "Перукарські", current: 750, max: 1000, unit: "мл", cost: 1.8, status: "В нормі" }
     ];
 
     const INITIAL_APPOINTMENTS = [
@@ -2321,11 +2357,28 @@
         dir: "Перукарські", service: "Тонування волосся + Стрижка кінчиків", price: 1450, master: "Олена", masterId: "m-olena",
         cost: 110, status: "Підтверджено",
         bom: [
-          { invId: "inv-h1", name: "Шампунь глибокого очищення", qty: 25, unit: "мл" },
-          { invId: "inv-h2", name: "Термозахисний спрей / флюїд", qty: 5, unit: "мл" }
+          { invId: "inv-h9", name: "Безаміачний барвник тонер (Glossing)", qty: 50, unit: "г" },
+          { invId: "inv-h8", name: "Окислююча емульсія 1.9% / 3% / 6% / 9%", qty: 100, unit: "мл" },
+          { invId: "inv-h12", name: "Шампунь-стабілізатор кольору pH 4.5", qty: 15, unit: "мл" },
+          { invId: "inv-h2", name: "Термозахисний спрей / флюїд", qty: 4, unit: "мл" }
         ],
         notes: "Тонування без аміаку, відтінок 10.12 перлинний беж."
-      }
+      },
+      {
+        id: "apt-10", time: "14:00", date: "24 лист", client: "Софія Данилюк", phone: "+38 (067) 771-88-23",
+        dir: "Перукарські", service: "Складне фарбування (Airtouch / Balayage)", price: 3400, master: "Олена", masterId: "m-olena",
+        cost: 380, status: "Підтверджено",
+        bom: [
+          { invId: "inv-h7", name: "Освітлюючий порошок безпиловий Blondor", qty: 60, unit: "г" },
+          { invId: "inv-h8", name: "Окислююча емульсія 1.9% / 3% / 6% / 9%", qty: 120, unit: "мл" },
+          { invId: "inv-h10", name: "Plex концентрат захисту дисульфідних зв'язків", qty: 15, unit: "мл" },
+          { invId: "inv-h11", name: "Фольга перукарська тиснена для Airtouch", qty: 25, unit: "м" },
+          { invId: "inv-h9", name: "Безаміачний барвник тонер (Glossing)", qty: 60, unit: "г" },
+          { invId: "inv-h12", name: "Шампунь-стабілізатор кольору pH 4.5", qty: 20, unit: "мл" },
+          { invId: "inv-h2", name: "Термозахисний спрей / флюїд", qty: 5, unit: "мл" }
+        ],
+        notes: "Airtouch видування 40%, натуральна база 6.0, тонування в холодний перлинний беж 10.12."
+      },
     ];
 
     // Standard BOM Fallback Map
@@ -2622,36 +2675,94 @@
         ]
       },
       'Перукарські': {
-        title: "Перукарський діагностичний протокол & Відновлення",
+        title: "Колористичний & Перукарський діагностичний протокол (Стиліст Олена)",
         icon: "💇‍♀️",
         sections: [
           {
-            id: "h_struct", name: "1. Стан структури волосся & Ступінь пошкодження", type: "multi",
+            id: "h_base", name: "1. Вихідна база волосся, Пористість & Сивина", type: "multi",
             options: [
-              { id: "hs_blond", label: "Освітлений блонд (висока пористість)", selected: true, note: "4-5 ступінь пошкодження" },
-              { id: "hs_dry_ends", label: "Сухі посічені кінчики", selected: true, note: "Потрібне ліпідне запечатування" },
-              { id: "hs_thin", label: "Тонке натуральне волосся", selected: false, note: "Потрібен об'єм без обтяження" },
-              { id: "hs_curly", label: "Кучеряве пористе (пухнасте)", selected: false, note: "Кератинове розгладження" }
+              { id: "hb_blond", label: "Освітлений блонд (пористий, 4-5 ступінь пошкодження)", selected: true, note: "Потребує обов'язкового Plex-захисту" },
+              { id: "hb_light_brown", label: "Натуральний русявий (6.0 - 7.0 УГТ)", selected: false, note: "Ідеальна база під Airtouch" },
+              { id: "hb_dark", label: "Темна база (1.0 - 5.0 УГТ)", selected: false, note: "Потрібне поетапне освітлення" },
+              { id: "hb_grey", label: "Сивина більше 40% (склоподібна)", selected: false, note: "Потребує попереднього протравлювання" }
             ]
           },
           {
-            id: "h_care", name: "2. Процедура відновлення & Реконструкції", type: "single",
+            id: "h_technique", name: "2. Техніка фарбування & Стрижка", type: "single",
             options: [
-              { id: "hc_lebel", label: "Spa «Абсолютне щастя для волосся» (Lebel)", selected: true, note: "Глибоке клітинне відновлення", bindInv: { invId: "inv-h3", name: "Ампульний комплекс «Абсолютне щастя»", qty: 1, unit: "шт" } },
-              { id: "hc_cold_botox", label: "Холодний ботокс / Колагеновий концентрат", selected: false, note: "Дзеркальний глянець та шовк", bindInv: { invId: "inv-h4", name: "Холодний ботокс / колагеновий концентрат", qty: 20, unit: "мл" } },
-              { id: "hc_detox", label: "Детокс-пілінг шкіри голови + маска", selected: false, note: "Стимуляція росту та свіжість", bindInv: { invId: "inv-h5", name: "Пілінг-детокс для шкіри голови", qty: 15, unit: "мл" } }
+              { id: "ht_airtouch", label: "Airtouch з видуванням шарів феном 40-50%", selected: true, note: "М'яке делікатне розсіювання блонду", bindInv: { invId: "inv-h11", name: "Фольга перукарська тиснена для Airtouch", qty: 25, unit: "м" } },
+              { id: "ht_balayage", label: "Balayage / Шатуш (відкрита техніка розтяжки)", selected: false, note: "Природний градієнт та рельєф", bindInv: { invId: "inv-h7", name: "Освітлюючий порошок безпиловий Blondor", qty: 50, unit: "г" } },
+              { id: "ht_total_blond", label: "Total Blond прикореневе освітлення", selected: false, note: "Бездоганний чистий блонд", bindInv: { invId: "inv-h7", name: "Освітлюючий порошок безпиловий Blondor", qty: 35, unit: "г" } },
+              { id: "ht_toning_cut", label: "Тонування Glossing + Стрижка форми (Боб/Каскад)", selected: false, note: "Оновлення відтінку та густини кінчиків" }
             ]
           },
           {
-            id: "h_prep", name: "3. Препарати, Стайлінг & Термозахист", type: "multi",
+            id: "h_formula", name: "3. Формула тонування & Окислююча емульсія", type: "multi",
             options: [
-              { id: "hp_shampoo", label: "Шампунь глибокого очищення", selected: true, note: "Підготовка кутикули волосини", bindInv: { invId: "inv-h1", name: "Шампунь глибокого очищення", qty: 25, unit: "мл" } },
-              { id: "hp_thermo", label: "Термозахисний флюїд до 230°C", selected: true, note: "Захист перед сушкою феном/брашем", bindInv: { invId: "inv-h2", name: "Термозахисний спрей / флюїд", qty: 5, unit: "мл" } },
-              { id: "hp_silk", label: "Шовкова олійка для кінчиків", selected: true, note: "Антистатик та блиск", bindInv: { invId: "inv-h6", name: "Шовкова олійка для посічених кінчиків", qty: 2, unit: "мл" } }
+              { id: "hf_beigeblond", label: "Перлинно-бежевий блонд (10.12 + 10.32)", selected: true, note: "Нейтралізація жовтизни без сірості", bindInv: { invId: "inv-h9", name: "Безаміачний барвник тонер (Glossing)", qty: 50, unit: "г" } },
+              { id: "hf_ash", label: "Холодний попелястий графіт (9.16)", selected: false, note: "Скандинавський холодний відтінок", bindInv: { invId: "inv-h9", name: "Безаміачний барвник тонер (Glossing)", qty: 50, unit: "г" } },
+              { id: "hf_ox19", label: "Пастельний активатор 1.9% (без підйому фону)", selected: true, note: "Дбайливе тонування", bindInv: { invId: "inv-h8", name: "Окислююча емульсія 1.9% / 3% / 6% / 9%", qty: 100, unit: "мл" } },
+              { id: "hf_plex", label: "Концентрат Plex для дисульфідних зв'язків", selected: true, note: "Збереження еластичності волосини", bindInv: { invId: "inv-h10", name: "Plex концентрат захисту дисульфідних зв'язків", qty: 15, unit: "мл" } }
+            ]
+          },
+          {
+            id: "h_care", name: "4. Реконструкція, Стабілізація pH & Догляд", type: "single",
+            options: [
+              { id: "hc_lebel", label: "Spa «Абсолютне щастя для волосся» (Lebel Японія)", selected: true, note: "Глибоке клітинне відновлення ліпідів", bindInv: { invId: "inv-h3", name: "Ампульний комплекс «Абсолютне щастя»", qty: 1, unit: "шт" } },
+              { id: "hc_cold_botox", label: "Холодний колагеновий ботокс", selected: false, note: "Дзеркальний глянець та шовковистість", bindInv: { invId: "inv-h4", name: "Холодний ботокс / колагеновий концентрат", qty: 25, unit: "мл" } },
+              { id: "hc_stabilizer", label: "Кислотний стабілізатор pH 4.5 після фарбування", selected: true, note: "Зупинка лужних процесів та закриття кутикули", bindInv: { invId: "inv-h12", name: "Шампунь-стабілізатор кольору pH 4.5", qty: 20, unit: "мл" } }
+            ]
+          },
+          {
+            id: "h_prep", name: "5. Фінішний стайлінг & Термозахист", type: "multi",
+            options: [
+              { id: "hp_thermo", label: "Термозахисний флюїд до 230°C", selected: true, note: "Обов'язковий захист перед брашем/праскою", bindInv: { invId: "inv-h2", name: "Термозахисний спрей / флюїд", qty: 5, unit: "мл" } },
+              { id: "hp_silk", label: "Шовкова молекулярна олійка для кінчиків", selected: true, note: "Запечатування посічених кінчиків", bindInv: { invId: "inv-h6", name: "Шовкова олійка для посічених кінчиків", qty: 2, unit: "мл" } },
+              { id: "hp_shampoo", label: "Шампунь глибокого очищення (ШГО)", selected: true, note: "Підготовка перед Spa-процедурою", bindInv: { invId: "inv-h1", name: "Шампунь гвобокого очищення", qty: 20, unit: "мл" } }
             ]
           }
         ]
-      }
+      },
+      'Косметологія': {
+        title: "Косметологічний протокол процедури & Призначення",
+        icon: "💆‍♀️",
+        sections: [
+          {
+            id: "c_skin", name: "1. Тип та особливості шкіри клієнтки", type: "multi",
+            options: [
+              { id: "cs_combo", label: "Комбінована шкіра", selected: true, note: "Нормальні щоки, жирна T-зона" },
+              { id: "cs_sens", label: "Чутлива куперозна T-зона", selected: true, note: "Уникати агресивних спиртів" },
+              { id: "cs_comed", label: "Комедони / розширені пори", selected: false, note: "Потрібна екстракція" },
+              { id: "cs_dry", label: "Суха зневоднена шкіра", selected: false, note: "Глибока гідратація" }
+            ]
+          },
+          {
+            id: "c_proto", name: "2. Протокол очищення & Догляду", type: "single",
+            options: [
+              { id: "cp_combi", label: "Комбінована чистка (УЗ + делікатна ложка Уно)", selected: true, note: "Атравматичне очищення пор", bindInv: { invId: "inv-c1", name: "Гель холодного гідрування", qty: 5, unit: "мл" } },
+              { id: "cp_carboxy", label: "Карбокситерапія CO2 (омолодження + освітлення)", selected: false, note: "Насичення тканин киснем", bindInv: { invId: "inv-c6", name: "Набір Карбокситерапії CO2", qty: 1, unit: "компл" } },
+              { id: "cp_peel", label: "Мигдальний пілінг 40% (всесезонний)", selected: false, note: "Ексфоліація + сяйво", bindInv: { invId: "inv-c4", name: "Мигдальна кислота 40%", qty: 2.5, unit: "мл" } }
+            ]
+          },
+          {
+            id: "c_serum", name: "3. Активні сироватки & Концентрати", type: "multi",
+            options: [
+              { id: "csr_hyal", label: "Низькомолекулярна гіалуронова к-та 2%", selected: true, note: "Глибоке зволоження дерми", bindInv: { invId: "inv-c7", name: "Сироватка гіалуронова низькомолекулярна 2%", qty: 1, unit: "мл" } },
+              { id: "csr_niacin", label: "Ніацинамід 10% + Цинк 1%", selected: false, note: "Себорегуляція та звуження пор" },
+              { id: "csr_vitc", label: "Вітамін C антиоксидантний комплекс", selected: false, note: "Рівний тон та анти-пігмент" }
+            ]
+          },
+          {
+            id: "c_mask", name: "4. Заспокійлива маска & Фінішний SPF", type: "multi",
+            options: [
+              { id: "cm_anti", label: "Антисептична заспокійлива маска", selected: true, note: "Зняття гіперемії", bindInv: { invId: "inv-c2", name: "Антисептична заспокійлива маска", qty: 5, unit: "мл" } },
+              { id: "cm_algin", label: "Альгінатна маска Spirulina Detox", selected: false, note: "Моделюючий ліфтинг", bindInv: { invId: "inv-c8", name: "Альгінатна маска заспокійлива", qty: 1, unit: "шт" } },
+              { id: "cm_spf", label: "Фінішний SPF 50+ Broad Spectrum", selected: true, note: "Обов'язковий захист після чистки", bindInv: { invId: "inv-c3", name: "Фінішний SPF-крем 50+", qty: 2, unit: "мл" } }
+            ]
+          }
+        ]
+      },
+
     };
 
     let appState = {
@@ -2672,10 +2783,11 @@
     // =========================================================================
     // DEFAULT TECH CARDS (ТЕХНОЛОГІЧНІ КАРТИ З ПРИВ'ЯЗКОЮ РОЗХОДУ МАТЕРІАЛІВ)
     // =========================================================================
-    const STORAGE_KEY = 'wild_beauty_crm_state_v8';
+    const STORAGE_KEY = 'wild_beauty_crm_state_v9';
 
     // Load from LocalStorage with auto-healing and seamless legacy migration
     const cachedState = localStorage.getItem(STORAGE_KEY)
+      || localStorage.getItem('wild_beauty_crm_state_v8')
       || localStorage.getItem('wild_beauty_crm_state_v7')
       || localStorage.getItem('wild_beauty_crm_state_v6')
       || localStorage.getItem('wild_beauty_crm_state_v5')
@@ -4076,7 +4188,8 @@
       { id: "c-6", name: "Анна Савченко", phone: "+38 (050) 890-43-12", masterId: "m-viktoria", masterName: "Вікторія", dir: "Косметологія", visits: 8, ltv: 9600, last: "25 лист 2026", notes: "Курс комбінованих чисток, чутлива T-зона, SPF 50+" },
       { id: "c-7", name: "Наталія Мороз", phone: "+38 (093) 445-67-89", masterId: "m-viktoria", masterName: "Вікторія", dir: "Косметологія", visits: 7, ltv: 7700, last: "25 лист 2026", notes: "Карбоксітерапія неінвазивна, мікроциркуляція" },
       { id: "c-8", name: "Юлія Бондаренко", phone: "+38 (095) 432-88-99", masterId: "m-olena", masterName: "Олена", dir: "Перукарські", visits: 5, ltv: 8000, last: "26 лист 2026", notes: "Spa-догляд «Абсолютне щастя», термозахист обов'язковий" },
-      { id: "c-9", name: "Ірина Кравчук", phone: "+38 (097) 889-32-10", masterId: "m-olena", masterName: "Олена", dir: "Перукарські", visits: 3, ltv: 4350, last: "25 лист 2026", notes: "Тонування 10.12 перлинний беж, стрижка кінчиків" }
+      { id: "c-9", name: "Ірина Кравчук", phone: "+38 (097) 889-32-10", masterId: "m-olena", masterName: "Олена", dir: "Перукарські", visits: 3, ltv: 4350, last: "25 лист 2026", notes: "Тонування 10.12 перлинний беж, стрижка кінчиків" },
+      { id: "c-10", name: "Софія Данилюк", phone: "+38 (067) 771-88-23", masterId: "m-olena", masterName: "Олена", dir: "Перукарські", visits: 4, ltv: 12800, last: "24 лист 2026", notes: "Складне фарбування Airtouch, попелясто-перлинний блонд" }
     ];
 
     const MASTER_CATS_MAP = {

@@ -839,6 +839,116 @@
       font-weight: 600;
     }
 
+    
+    /* TECH CARDS & MATERIAL BINDINGS */
+    .tech-card-box {
+      background: var(--bg-surface-raised);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      margin-bottom: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .tech-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .tech-sec-row {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+    .tech-sec-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .tech-sec-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+    .tech-sec-hint {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+    .tech-pills-wrap {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .tech-opt-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 6px 12px;
+      border-radius: var(--radius-full);
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      font-size: 12.5px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.15s ease;
+      user-select: none;
+    }
+    .tech-opt-pill:hover {
+      border-color: var(--border-strong);
+      color: var(--text-primary);
+    }
+    .tech-opt-pill.active {
+      background: #7c3aed;
+      color: #fff;
+      border-color: #7c3aed;
+      font-weight: 600;
+      box-shadow: 0 2px 8px rgba(124, 58, 237, 0.35);
+    }
+    .tech-bind-badge {
+      font-size: 10px;
+      padding: 1px 5px;
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.2);
+      color: #fff;
+      font-weight: 600;
+    }
+    .tech-opt-pill:not(.active) .tech-bind-badge {
+      background: rgba(124, 58, 237, 0.15);
+      color: #c084fc;
+    }
+    .tech-editor-card {
+      background: var(--bg-surface-raised);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 14px;
+      margin-bottom: 14px;
+    }
+    .tech-editor-item-row {
+      display: grid;
+      grid-template-columns: 2fr 2fr 2fr 1fr 40px;
+      gap: 8px;
+      align-items: center;
+      padding: 8px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      margin-bottom: 6px;
+    }
+    @media (max-width: 768px) {
+      .tech-editor-item-row {
+        grid-template-columns: 1fr;
+        gap: 6px;
+      }
+    }
+
     /* BOM EDITABLE TABLE */
     .bom-editor {
       background: var(--bg-surface-raised);
@@ -1311,6 +1421,7 @@
       <div class="admin-nav-item active" data-atab="calendar">🗓 Розклад & Записи</div>
       <div class="admin-nav-item" data-atab="clients">👥 Клієнти & Бріфи</div>
       <div class="admin-nav-item" data-atab="inventory">📦 Склад матеріалів (BOM)</div>
+      <div class="admin-nav-item" data-atab="techcards">⚙️ Техкарти & Норми розходу</div>
       <div class="admin-nav-item" data-atab="finance">💰 Фінанси & Прибуток</div>
       <div class="admin-nav-item" data-atab="stories">📱 Stories Віконця</div>
     </aside>
@@ -1794,6 +1905,52 @@
     </div>
   </div>
 
+
+  <!-- ===================================================================== -->
+  <!-- MODAL 3: TECH CARD & MATERIAL BINDING EDITOR                          -->
+  <!-- ===================================================================== -->
+  <div class="modal-backdrop" id="adminTechCardEditorModal">
+    <div class="modal-box" style="max-width: 920px;">
+      <div class="modal-head">
+        <div>
+          <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+            <strong style="font-size: 16px;">⚙️ Редактор технологічних карт & прив'язки матеріалів</strong>
+            <span class="badge badge-accent" id="techCardEditorDirBadge">💅 Манікюр</span>
+          </div>
+          <div style="font-size: 12px; color: var(--text-muted); margin-top: 2px;">
+            Індивідуальні стандарти для майстрів манікюру, педикюру, бровістів, лешмейкерів та косметологів
+          </div>
+        </div>
+        <button class="btn-icon" onclick="closeTechCardEditor()">✕</button>
+      </div>
+      <div class="modal-content" style="max-height: 75vh; overflow-y: auto;">
+        <div class="cat-nav" style="margin-bottom: 16px;" id="techCardEditorDirNav">
+          <button class="cat-btn active" onclick="switchTechCardEditorDir('Манікюр')">💅 Манікюр</button>
+          <button class="cat-btn" onclick="switchTechCardEditorDir('Педикюр')">🦶 Педикюр</button>
+          <button class="cat-btn" onclick="switchTechCardEditorDir('Вії')">👁️ Вії</button>
+          <button class="cat-btn" onclick="switchTechCardEditorDir('Брови')">🎨 Брови</button>
+          <button class="cat-btn" onclick="switchTechCardEditorDir('Косметологія')">💆‍♀️ Косметологія</button>
+          <button class="cat-btn" onclick="switchTechCardEditorDir('Перукарські')">💇‍♀️ Перукарські</button>
+        </div>
+
+        <div id="techCardEditorSectionsContainer">
+          <!-- Rendered dynamically -->
+        </div>
+
+        <div style="margin-top: 14px; text-align: center;">
+          <button class="btn btn-secondary" onclick="addNewTechCardSection()" style="width: 100%;">+ Додати новий розділ у техкарту</button>
+        </div>
+      </div>
+      <div class="modal-foot" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+        <button class="btn btn-secondary" style="color: var(--danger);" onclick="resetTechCardEditorToDefaults()">🔄 Скинути до заводських стандартів JuNailCRM</button>
+        <div style="display: flex; gap: 8px;">
+          <button class="btn btn-secondary" onclick="closeTechCardEditor()">Закрити</button>
+          <button class="btn btn-primary" onclick="saveTechCardEditorChanges()">💾 Зберегти зміни техкарт</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script>
     // =========================================================================
     // CANONICAL SERVICES DATA: wild_beauty_space (Odesa, Frantsuzsky blvd 26/1)
@@ -1878,29 +2035,59 @@
     ];
 
     const INITIAL_INVENTORY = [
+      // 💅 Манікюр
       { id: "inv-m1", name: "Rubber Base (Каучукова база)", cat: "Манікюр", current: 85, max: 100, unit: "мл", cost: 24, status: "В нормі" },
       { id: "inv-m2", name: "No-Wipe Glossy Top", cat: "Манікюр", current: 45, max: 80, unit: "мл", cost: 26, status: "В нормі" },
       { id: "inv-m3", name: "Hard Gel Clear", cat: "Манікюр", current: 30, max: 100, unit: "мл", cost: 32, status: "Закінчується" },
       { id: "inv-m4", name: "Пилочка одноразова 100/180", cat: "Манікюр", current: 140, max: 200, unit: "шт", cost: 8, status: "В нормі" },
+      { id: "inv-m5", name: "Полігель / Акригель для моделювання", cat: "Манікюр", current: 60, max: 100, unit: "г", cost: 35, status: "В нормі" },
+      { id: "inv-m6", name: "Матовий оксамитовий топ Velvet", cat: "Манікюр", current: 40, max: 80, unit: "мл", cost: 28, status: "В нормі" },
+      { id: "inv-m7", name: "Камуфляжна база Camo Cover", cat: "Манікюр", current: 75, max: 100, unit: "мл", cost: 25, status: "В нормі" },
+      { id: "inv-m8", name: "Гель-паста для френчу / втирка", cat: "Манікюр", current: 50, max: 80, unit: "мл", cost: 20, status: "В нормі" },
+
+      // 🦶 Педикюр
       { id: "inv-p1", name: "Подо-диск одноразовий 180 грит", cat: "Педикюр", current: 65, max: 100, unit: "шт", cost: 12, status: "В нормі" },
       { id: "inv-p2", name: "Кератолітик пілінговий", cat: "Педикюр", current: 220, max: 500, unit: "мл", cost: 6, status: "В нормі" },
       { id: "inv-p3", name: "Молекулярна олійка Smart для стоп", cat: "Педикюр", current: 180, max: 250, unit: "мл", cost: 8, status: "В нормі" },
+      { id: "inv-p4", name: "Ультратонкі плівки Podofoot", cat: "Педикюр", current: 25, max: 50, unit: "компл", cost: 45, status: "В нормі" },
+      { id: "inv-p5", name: "Каполін для тампонування кутів", cat: "Педикюр", current: 80, max: 100, unit: "шт", cost: 15, status: "В нормі" },
+      { id: "inv-p6", name: "Лікувальний розвантажувальний пластир", cat: "Педикюр", current: 40, max: 60, unit: "шт", cost: 20, status: "В нормі" },
+
+      // 🎨 Брови
       { id: "inv-b1", name: "Фарба для брів Levissime / Elan", cat: "Брови", current: 35, max: 50, unit: "мл", cost: 18, status: "В нормі" },
       { id: "inv-b2", name: "Окислювач 3%", cat: "Брови", current: 80, max: 100, unit: "мл", cost: 5, status: "В нормі" },
       { id: "inv-b3", name: "Віск для моделювання брів", cat: "Брови", current: 150, max: 300, unit: "г", cost: 4, status: "В нормі" },
       { id: "inv-b4", name: "Склади для ламінування 1+2+3", cat: "Брови", current: 12, max: 20, unit: "компл", cost: 55, status: "В нормі" },
+      { id: "inv-b5", name: "Хна для брів Brow Henna", cat: "Брови", current: 20, max: 40, unit: "г", cost: 22, status: "В нормі" },
+      { id: "inv-b6", name: "Botox для брів / Протеїнова сироватка", cat: "Брови", current: 15, max: 30, unit: "мл", cost: 30, status: "В нормі" },
+      { id: "inv-b7", name: "Фіксуючий гель / мило для брів", cat: "Брови", current: 45, max: 60, unit: "г", cost: 12, status: "В нормі" },
+
+      // 👁️ Вії
       { id: "inv-l1", name: "Клей для вій швидкої фіксації", cat: "Вії", current: 4, max: 10, unit: "мл", cost: 65, status: "Закінчується" },
       { id: "inv-l2", name: "Гідрогелеві патчі під очі", cat: "Вії", current: 48, max: 100, unit: "пара", cost: 10, status: "В нормі" },
       { id: "inv-l3", name: "Вії пучки/стрічки C/D 0.07", cat: "Вії", current: 15, max: 30, unit: "пал", cost: 85, status: "В нормі" },
       { id: "inv-l4", name: "Вії коричневі/кольорові акценти", cat: "Вії", current: 8, max: 20, unit: "пал", cost: 95, status: "В нормі" },
+      { id: "inv-l5", name: "Склади для ламінування вій Lami Botox", cat: "Вії", current: 10, max: 20, unit: "компл", cost: 70, status: "В нормі" },
+      { id: "inv-l6", name: "Праймер & Знежирювач для вій", cat: "Вії", current: 20, max: 40, unit: "мл", cost: 15, status: "В нормі" },
+      { id: "inv-l7", name: "Закріплювач з кератином", cat: "Вії", current: 12, max: 25, unit: "мл", cost: 18, status: "В нормі" },
+
+      // 💆‍♀️ Косметологія
       { id: "inv-c1", name: "Гель холодного гідрування", cat: "Косметологія", current: 340, max: 500, unit: "мл", cost: 8, status: "В нормі" },
       { id: "inv-c2", name: "Антисептична заспокійлива маска", cat: "Косметологія", current: 180, max: 300, unit: "мл", cost: 14, status: "В нормі" },
       { id: "inv-c3", name: "Фінішний SPF-крем 50+", cat: "Косметологія", current: 110, max: 200, unit: "мл", cost: 18, status: "В нормі" },
       { id: "inv-c4", name: "Мигдальна кислота 40%", cat: "Косметологія", current: 65, max: 150, unit: "мл", cost: 28, status: "В нормі" },
       { id: "inv-c5", name: "Нейтралізатор пілінгу", cat: "Косметологія", current: 90, max: 200, unit: "мл", cost: 9, status: "В нормі" },
+      { id: "inv-c6", name: "Набір Карбокситерапії CO2", cat: "Косметологія", current: 14, max: 30, unit: "компл", cost: 110, status: "В нормі" },
+      { id: "inv-c7", name: "Сироватка гіалуронова низькомолекулярна 2%", cat: "Косметологія", current: 30, max: 60, unit: "мл", cost: 25, status: "В нормі" },
+      { id: "inv-c8", name: "Альгінатна маска заспокійлива", cat: "Косметологія", current: 25, max: 50, unit: "шт", cost: 35, status: "В нормі" },
+
+      // 💇‍♀️ Перукарські
       { id: "inv-h1", name: "Шампунь глибокого очищення", cat: "Перукарські", current: 850, max: 1000, unit: "мл", cost: 2, status: "В нормі" },
       { id: "inv-h2", name: "Термозахисний спрей / флюїд", cat: "Перукарські", current: 140, max: 250, unit: "мл", cost: 7, status: "В нормі" },
-      { id: "inv-h3", name: "Ампульний комплекс «Абсолютне щастя»", cat: "Перукарські", current: 24, max: 40, unit: "шт", cost: 65, status: "В нормі" }
+      { id: "inv-h3", name: "Ампульний комплекс «Абсолютне щастя»", cat: "Перукарські", current: 24, max: 40, unit: "шт", cost: 65, status: "В нормі" },
+      { id: "inv-h4", name: "Холодний ботокс / колагеновий концентрат", cat: "Перукарські", current: 180, max: 300, unit: "мл", cost: 45, status: "В нормі" },
+      { id: "inv-h5", name: "Пілінг-детокс для шкіри голови", cat: "Перукарські", current: 120, max: 250, unit: "мл", cost: 15, status: "В нормі" },
+      { id: "inv-h6", name: "Шовкова олійка для посічених кінчиків", cat: "Перукарські", current: 95, max: 150, unit: "мл", cost: 12, status: "В нормі" }
     ];
 
     const INITIAL_APPOINTMENTS = [
@@ -2020,10 +2207,290 @@
     }
 
     // App State Management with Cache Migration
+    const DEFAULT_TECH_CARDS = {
+      'Манікюр': {
+        title: "Технологічна карта моделювання нігтів",
+        icon: "💅",
+        sections: [
+          {
+            id: "m_coating", name: "1. Стан попереднього покриття", type: "single",
+            options: [
+              { id: "mc_ideal", label: "Ідеально (без сколів)", selected: true, note: "Відростання 3 тижні" },
+              { id: "mc_edges", label: "Відшарування на торцях", selected: false, note: "Потрібен дегідратор" },
+              { id: "mc_cracks", label: "Тріщини / Сколи (ремонт)", selected: false, note: "Ремонт полігелем", bindInv: { invId: "inv-m5", name: "Полігель / Акригель для моделювання", qty: 0.3, unit: "г" } },
+              { id: "mc_overworn", label: "Переношене (>4 тижнів)", selected: false, note: "Зняття до тонкої бази" },
+              { id: "mc_none", label: "Без попереднього покриття", selected: false, note: "Первинний візит" }
+            ]
+          },
+          {
+            id: "m_plate", name: "2. Тип нігтьової пластини & Архітектура", type: "multi",
+            options: [
+              { id: "mp_thin", label: "Тонка / Чутлива пластина", selected: true, note: "Безкислотна база" },
+              { id: "mp_normal", label: "Міцна нормальна", selected: false, note: "Стандартна підготовка" },
+              { id: "mp_sweat", label: "Волога пластина (гіпергідроз)", selected: false, note: "Два шари дегідратора" },
+              { id: "mp_down", label: "Клюючий ніготь (підняття)", selected: false, note: "Підняття архітектури полігелем", bindInv: { invId: "inv-m5", name: "Полігель / Акригель для моделювання", qty: 0.5, unit: "г" } },
+              { id: "mp_up", label: "Трампліноподібний (вгору)", selected: false, note: "Виправлення апекса" }
+            ]
+          },
+          {
+            id: "m_cuticle", name: "3. Стан кутикули & Техніка обробки", type: "single",
+            options: [
+              { id: "mcu_dry", label: "Суха налипаюча кутикула", selected: true, note: "Апаратне підняття полум'я 023" },
+              { id: "mcu_capillary", label: "Близько капіляри / судинна", selected: false, note: "Делікатний зріз ножицями без тиску" },
+              { id: "mcu_combi", label: "Комбі (фреза + ножиці)", selected: false, note: "Чистий зріз" },
+              { id: "mcu_app", label: "Чисто апаратна техніка", selected: false, note: "Шліфування кулею" }
+            ]
+          },
+          {
+            id: "m_base", name: "4. База укріплення & Матеріал", type: "single",
+            options: [
+              { id: "mb_rubber", label: "Rubber Base безкислотна", selected: true, note: "Еластичне покриття", bindInv: { invId: "inv-m1", name: "Rubber Base (Каучукова база)", qty: 0.5, unit: "мл" } },
+              { id: "mb_camo", label: "Камуфляжна база Camo Cover", selected: false, note: "База + колір 2в1", bindInv: { invId: "inv-m7", name: "Камуфляжна база Camo Cover", qty: 0.6, unit: "мл" } },
+              { id: "mb_hard", label: "Hard Gel (Твердий гель)", selected: false, note: "Для довгих та тонких нігтів", bindInv: { invId: "inv-m3", name: "Hard Gel Clear", qty: 0.7, unit: "мл" } },
+              { id: "mb_poly", label: "Полігель / Акригель укріплення", selected: false, note: "Жорсткий бортик", bindInv: { invId: "inv-m5", name: "Полігель / Акригель для моделювання", qty: 0.6, unit: "г" } }
+            ]
+          },
+          {
+            id: "m_shape", name: "5. Форма & Варіанти форми нігтів", type: "single",
+            options: [
+              { id: "ms_sq_soft", label: "М'який квадрат", selected: true, note: "Згладжені кути, безпечна носка" },
+              { id: "ms_sq_sharp", label: "Чіткий графічний квадрат", selected: false, note: "Паралельні стінки 90°" },
+              { id: "ms_oval", label: "Овал класичний", selected: false, note: "Повторює лінію кутикули" },
+              { id: "ms_almond", label: "Мигдаль витончений", selected: false, note: "Для середньої та великої довжини" },
+              { id: "ms_ballerina", label: "Балерина / Стилет", selected: false, note: "Завужений торець" }
+            ]
+          },
+          {
+            id: "m_length", name: "6. Довжина нігтів", type: "single",
+            options: [
+              { id: "ml_1", label: "Довжина 1 (під нуль / вільний край 1мм)", selected: false, note: "Мінімальна" },
+              { id: "ml_2", label: "Довжина 2 (короткі повсякденні)", selected: true, note: "Комфортна довжина" },
+              { id: "ml_3", label: "Довжина 3-4 (середні)", selected: false, note: "Обов'язкове укріплення апекса" },
+              { id: "ml_5", label: "Довжина 5+ (екстрадовжина)", selected: false, note: "Подвійне вирівнювання полігелем", bindInv: { invId: "inv-m5", name: "Полігель / Акригель для моделювання", qty: 0.4, unit: "г" } }
+            ]
+          },
+          {
+            id: "m_design", name: "7. Дизайн & Фінішний топ", type: "multi",
+            options: [
+              { id: "md_single", label: "Однотонний відтінок", selected: true, note: "2 тонких шари" },
+              { id: "md_french", label: "Класичний / Викладний френч", selected: false, note: "Біла посмішка", bindInv: { invId: "inv-m8", name: "Гель-паста для френчу / втирка", qty: 0.2, unit: "мл" } },
+              { id: "md_rub", label: "Втирка хромована / Pearl", selected: false, note: "Дзеркальний глянець", bindInv: { invId: "inv-m8", name: "Гель-паста для френчу / втирка", qty: 0.2, unit: "мл" } },
+              { id: "md_matte", label: "Матовий оксамитовий топ Velvet", selected: false, note: "Velvet Soft Touch", bindInv: { invId: "inv-m6", name: "Матовий оксамитовий топ Velvet", qty: 0.4, unit: "мл" } },
+              { id: "md_glossy", label: "Глянцевий No-Wipe топ", selected: true, note: "Дзеркальний блік", bindInv: { invId: "inv-m2", name: "No-Wipe Glossy Top", qty: 0.4, unit: "мл" } }
+            ]
+          }
+        ]
+      },
+      'Педикюр': {
+        title: "Технологічна карта Smart-педикюру & Подології",
+        icon: "🦶",
+        sections: [
+          {
+            id: "p_skin", name: "1. Стан шкіри стопи & Проблематика", type: "multi",
+            options: [
+              { id: "ps_dry", label: "Сухість п'ят / Гіперкератоз", selected: true, note: "Кератолітик пілінговий", bindInv: { invId: "inv-p2", name: "Кератолітик пілінговий", qty: 3, unit: "мл" } },
+              { id: "ps_cracks", label: "Тріщини на п'ятах", selected: false, note: "Розкриття тріщин диском + Smart олійка", bindInv: { invId: "inv-p3", name: "Молекулярна олійка Smart для стоп", qty: 1.5, unit: "мл" } },
+              { id: "ps_corns", label: "Стрижневі мозолі / натоптиші", selected: false, note: "Твердосплавна фреза + розвантаження", bindInv: { invId: "inv-p6", name: "Лікувальний розвантажувальний пластир", qty: 1, unit: "шт" } },
+              { id: "ps_norm", label: "Нормальна доглянута стопа", selected: false, note: "Легке шліфування" }
+            ]
+          },
+          {
+            id: "p_nails", name: "2. Стан нігтів & Форма обпилу", type: "single",
+            options: [
+              { id: "pn_sq", label: "Прямий безпечний квадрат (без заокруглення)", selected: true, note: "Профілактика вростання" },
+              { id: "pn_ingrown", label: "Схильність до вростання кутів", selected: false, note: "Тампонування каполіном", bindInv: { invId: "inv-p5", name: "Каполін для тампонування кутів", qty: 1, unit: "шт" } },
+              { id: "pn_thick", label: "Потовщена нігтьова пластина", selected: false, note: "Зняття товщини керамічною фрезою" },
+              { id: "pn_onycho", label: "Оніхолізис (пустоти) - ЗАБОРОНА ПОКРИТТЯ", selected: false, note: "Зачистка без покриття + краплі" }
+            ]
+          },
+          {
+            id: "p_tech", name: "3. Техніка обробки стопи", type: "single",
+            options: [
+              { id: "pt_smart", label: "Smart-педикюр (диски 180 + 240 + Smart олія)", selected: true, note: "Глянцеве мембранне шліфування", bindInv: { invId: "inv-p1", name: "Подо-диск одноразовий 180 грит", qty: 2, unit: "шт" } },
+              { id: "pt_appar", label: "Класичний апаратний (ковпачки)", selected: false, note: "Суха обробка" },
+              { id: "pt_kart", label: "Препаратний кислотний Kart", selected: false, note: "Атравматичний пілінг", bindInv: { invId: "inv-p2", name: "Кератолітик пілінговий", qty: 5, unit: "мл" } }
+            ]
+          },
+          {
+            id: "p_coating", name: "4. Тип покриття пальчиків", type: "single",
+            options: [
+              { id: "pc_film", label: "Ультратонкі плівки Podofoot", selected: true, note: "0% тиску на нігтьове ложе", bindInv: { invId: "inv-p4", name: "Ультратонкі плівки Podofoot", qty: 1, unit: "компл" } },
+              { id: "pc_gel", label: "Гель-лак в 1 тонкий шар", selected: false, note: "Без вирівнювання базою", bindInv: { invId: "inv-m2", name: "No-Wipe Glossy Top", qty: 0.3, unit: "мл" } },
+              { id: "pc_none", label: "Без покриття (глянцеве полірування олійкою)", selected: false, note: "Чистий догляд" }
+            ]
+          }
+        ]
+      },
+      'Вії': {
+        title: "Технічна карта моделювання вій (Lash Design)",
+        icon: "👁️",
+        sections: [
+          {
+            id: "l_effect", name: "1. Ефект & Схема нарощування", type: "single",
+            options: [
+              { id: "le_wet", label: "Тренди: Мокрий ефект (Wet Look)", selected: true, note: "Нерозкриті пучки 0.07" },
+              { id: "le_arrow", label: "Тренди: Стрілка Kim / Аніме", selected: false, note: "Подовження до зовнішнього кута" },
+              { id: "le_fox", label: "Лисячий ефект (Fox Eyes)", selected: false, note: "Плавний перехід вигинів L/M" },
+              { id: "le_doll", label: "Ляльковий / Натуральний", selected: false, note: "Акцент на центр ока" },
+              { id: "le_lami", label: "Ламінування + Lami Lash Botox (без нарощування)", selected: false, note: "Власні натуральні вії", bindInv: { invId: "inv-l5", name: "Склади для ламінування вій Lami Botox", qty: 1, unit: "компл" } }
+            ]
+          },
+          {
+            id: "l_volume", name: "2. Об'єм нарощування", type: "single",
+            options: [
+              { id: "lv_1d", label: "1D Класика", selected: false, note: "1 штучна на 1 натуральну", bindInv: { invId: "inv-l3", name: "Вії пучки/стрічки C/D 0.07", qty: 0.2, unit: "пал" } },
+              { id: "lv_2d", label: "2D Натуральний оксамит", selected: true, note: "Легкий подвійний об'єм", bindInv: { invId: "inv-l3", name: "Вії пучки/стрічки C/D 0.07", qty: 0.3, unit: "пал" } },
+              { id: "lv_3d", label: "3D Оксамитовий об'єм", selected: false, note: "Потрійні пучки 0.07", bindInv: { invId: "inv-l3", name: "Вії пучки/стрічки C/D 0.07", qty: 0.4, unit: "пал" } },
+              { id: "lv_mega", label: "4-5D Мегаоб'єм", selected: false, note: "Ультратонкі 0.05", bindInv: { invId: "inv-l3", name: "Вії пучки/стрічки C/D 0.07", qty: 0.5, unit: "пал" } }
+            ]
+          },
+          {
+            id: "l_curl", name: "3. Вигин вій", type: "single",
+            options: [
+              { id: "lc_l", label: "Вигин L (ліфтинг / ефект стрілки)", selected: true, note: "Пряма ніжка, різкий підйом" },
+              { id: "lc_d", label: "Вигин D (виразний підкручений)", selected: false, note: "Яскравий відкритий погляд" },
+              { id: "lc_c", label: "Вигин C (м'який натуральний)", selected: false, note: "Класичний природний" },
+              { id: "lc_m", label: "Вигин M (котячий ефект)", selected: false, note: "Маскує навислу повіку" }
+            ]
+          },
+          {
+            id: "l_specs", name: "4. Довжина, Товщина & Колір вій", type: "multi",
+            options: [
+              { id: "ls_len_short", label: "Довжина 7-10 мм", selected: false, note: "Короткі" },
+              { id: "ls_len_med", label: "Довжина 9-12 мм", selected: true, note: "Універсальна збалансована" },
+              { id: "ls_len_long", label: "Довжина 11-14 мм", selected: false, note: "Екстра довжина" },
+              { id: "ls_th_07", label: "Товщина 0.07 мм (невагомі)", selected: true, note: "Безпечно для коренів" },
+              { id: "ls_th_10", label: "Товщина 0.10 мм", selected: false, note: "Класика" },
+              { id: "ls_col_choco", label: "Dark Chocolate (Темний шоколад)", selected: true, note: "М'який трендовий погляд", bindInv: { invId: "inv-l4", name: "Вії коричневі/кольорові акценти", qty: 0.2, unit: "пал" } },
+              { id: "ls_col_black", label: "Deep Black (Глибокий чорний)", selected: false, note: "Класичний чорний" }
+            ]
+          },
+          {
+            id: "l_prep", name: "5. Препарати & Захист повік", type: "multi",
+            options: [
+              { id: "lp_glue", label: "Швидкий клей 0.5с гіпоалергенний", selected: true, note: "Без токсичних випарів", bindInv: { invId: "inv-l1", name: "Клей для вій швидкої фіксації", qty: 0.3, unit: "мл" } },
+              { id: "lp_patch", label: "Гідрогелеві колагенові патчі", selected: true, note: "Зволоження зони під очима", bindInv: { invId: "inv-l2", name: "Гідрогелеві патчі під очі", qty: 1, unit: "пара" } },
+              { id: "lp_primer", label: "Праймер + Знежирювач", selected: true, note: "Подовжує носіння до 5 тижнів", bindInv: { invId: "inv-l6", name: "Праймер & Знежирювач для вій", qty: 0.3, unit: "мл" } }
+            ]
+          }
+        ]
+      },
+      'Брови': {
+        title: "Колористика, Архітектура & Ламінування брів",
+        icon: "🎨",
+        sections: [
+          {
+            id: "b_proc", name: "1. Процедура & Комплекс", type: "multi",
+            options: [
+              { id: "bp_lami", label: "Ламінування (довготривала укладка 1+2+3)", selected: true, note: "Слухняний напрямок волосків", bindInv: { invId: "inv-b4", name: "Склади для ламінування 1+2+3", qty: 1, unit: "компл" } },
+              { id: "bp_botox", label: "Brow Botox / Протеїнове відновлення", selected: true, note: "Ущільнення та блиск", bindInv: { invId: "inv-b6", name: "Botox для брів / Протеїнова сироватка", qty: 0.5, unit: "мл" } },
+              { id: "bp_wax", label: "Моделювання віск Lycon + пінцет", selected: true, note: "Ідеально чисті лінії", bindInv: { invId: "inv-b3", name: "Віск для моделювання брів", qty: 2, unit: "г" } },
+              { id: "bp_henna", label: "Фарбування хною Brow Henna", selected: false, note: "Стійка тінь на шкірі", bindInv: { invId: "inv-b5", name: "Хна для брів Brow Henna", qty: 0.5, unit: "г" } }
+            ]
+          },
+          {
+            id: "b_color", name: "2. Рівень глибини тону (УГТ) & Відтінок", type: "single",
+            options: [
+              { id: "bc_7", label: "УГТ 7.0 Натуральний русявий / Графіт", selected: true, note: "Холодний підтон без рудини" },
+              { id: "bc_6", label: "УГТ 6.0 Темний шоколад", selected: false, note: "Виразний шатен" },
+              { id: "bc_8", label: "УГТ 8.0 Світлий блонд", selected: false, note: "Для світлого волосся" }
+            ]
+          },
+          {
+            id: "b_dye", name: "3. Барвник & Окислювач", type: "single",
+            options: [
+              { id: "bd_levis", label: "Levissime 7.7 + Оксид 1.8% м'який", selected: true, note: "Безпечно після ламінування", bindInv: { invId: "inv-b1", name: "Фарба для брів Levissime / Elan", qty: 1.5, unit: "мл" } },
+              { id: "bd_elan", label: "Elan SB 02 + Оксид 3%", selected: false, note: "Гелева стійка фарба", bindInv: { invId: "inv-b1", name: "Фарба для брів Levissime / Elan", qty: 1.5, unit: "мл" } },
+              { id: "bd_thuy", label: "Thuya з аргановою олією", selected: false, note: "Іспанський преміум", bindInv: { invId: "inv-b1", name: "Фарба для брів Levissime / Elan", qty: 1.5, unit: "мл" } }
+            ]
+          },
+          {
+            id: "b_arch", name: "4. Форма & Архітектура брів", type: "single",
+            options: [
+              { id: "ba_soft_arch", label: "М'яка плавна арка з підйомом", selected: true, note: "Візуально відкриває погляд" },
+              { id: "ba_straight", label: "Пряма корейська форма", selected: false, note: "Омолоджуючий ефект" },
+              { id: "ba_graphic", label: "Графічна виразна арка", selected: false, note: "Чіткі геометричні лінії" }
+            ]
+          }
+        ]
+      },
+      'Косметологія': {
+        title: "Косметологічний протокол процедури & Призначення",
+        icon: "💆‍♀️",
+        sections: [
+          {
+            id: "c_skin", name: "1. Тип та особливості шкіри клієнтки", type: "multi",
+            options: [
+              { id: "cs_combo", label: "Комбінована шкіра", selected: true, note: "Нормальні щоки, жирна T-зона" },
+              { id: "cs_sens", label: "Чутлива куперозна T-зона", selected: true, note: "Уникати агресивних спиртів" },
+              { id: "cs_comed", label: "Комедони / розширені пори", selected: false, note: "Потрібна екстракція" },
+              { id: "cs_dry", label: "Суха зневоднена шкіра", selected: false, note: "Глибока гідратація" }
+            ]
+          },
+          {
+            id: "c_proto", name: "2. Протокол очищення & Догляду", type: "single",
+            options: [
+              { id: "cp_combi", label: "Комбінована чистка (УЗ + делікатна ложка Уно)", selected: true, note: "Атравматичне очищення пор", bindInv: { invId: "inv-c1", name: "Гель холодного гідрування", qty: 5, unit: "мл" } },
+              { id: "cp_carboxy", label: "Карбокситерапія CO2 (омолодження + освітлення)", selected: false, note: "Насичення тканин киснем", bindInv: { invId: "inv-c6", name: "Набір Карбокситерапії CO2", qty: 1, unit: "компл" } },
+              { id: "cp_peel", label: "Мигдальний пілінг 40% (всесезонний)", selected: false, note: "Ексфоліація + сяйво", bindInv: { invId: "inv-c4", name: "Мигдальна кислота 40%", qty: 2.5, unit: "мл" } }
+            ]
+          },
+          {
+            id: "c_serum", name: "3. Активні сироватки & Концентрати", type: "multi",
+            options: [
+              { id: "csr_hyal", label: "Низькомолекулярна гіалуронова к-та 2%", selected: true, note: "Глибоке зволоження дерми", bindInv: { invId: "inv-c7", name: "Сироватка гіалуронова низькомолекулярна 2%", qty: 1, unit: "мл" } },
+              { id: "csr_niacin", label: "Ніацинамід 10% + Цинк 1%", selected: false, note: "Себорегуляція та звуження пор" },
+              { id: "csr_vitc", label: "Вітамін C антиоксидантний комплекс", selected: false, note: "Рівний тон та анти-пігмент" }
+            ]
+          },
+          {
+            id: "c_mask", name: "4. Заспокійлива маска & Фінішний SPF", type: "multi",
+            options: [
+              { id: "cm_anti", label: "Антисептична заспокійлива маска", selected: true, note: "Зняття гіперемії", bindInv: { invId: "inv-c2", name: "Антисептична заспокійлива маска", qty: 5, unit: "мл" } },
+              { id: "cm_algin", label: "Альгінатна маска Spirulina Detox", selected: false, note: "Моделюючий ліфтинг", bindInv: { invId: "inv-c8", name: "Альгінатна маска заспокійлива", qty: 1, unit: "шт" } },
+              { id: "cm_spf", label: "Фінішний SPF 50+ Broad Spectrum", selected: true, note: "Обов'язковий захист після чистки", bindInv: { invId: "inv-c3", name: "Фінішний SPF-крем 50+", qty: 2, unit: "мл" } }
+            ]
+          }
+        ]
+      },
+      'Перукарські': {
+        title: "Перукарський діагностичний протокол & Відновлення",
+        icon: "💇‍♀️",
+        sections: [
+          {
+            id: "h_struct", name: "1. Стан структури волосся & Ступінь пошкодження", type: "multi",
+            options: [
+              { id: "hs_blond", label: "Освітлений блонд (висока пористість)", selected: true, note: "4-5 ступінь пошкодження" },
+              { id: "hs_dry_ends", label: "Сухі посічені кінчики", selected: true, note: "Потрібне ліпідне запечатування" },
+              { id: "hs_thin", label: "Тонке натуральне волосся", selected: false, note: "Потрібен об'єм без обтяження" },
+              { id: "hs_curly", label: "Кучеряве пористе (пухнасте)", selected: false, note: "Кератинове розгладження" }
+            ]
+          },
+          {
+            id: "h_care", name: "2. Процедура відновлення & Реконструкції", type: "single",
+            options: [
+              { id: "hc_lebel", label: "Spa «Абсолютне щастя для волосся» (Lebel)", selected: true, note: "Глибоке клітинне відновлення", bindInv: { invId: "inv-h3", name: "Ампульний комплекс «Абсолютне щастя»", qty: 1, unit: "шт" } },
+              { id: "hc_cold_botox", label: "Холодний ботокс / Колагеновий концентрат", selected: false, note: "Дзеркальний глянець та шовк", bindInv: { invId: "inv-h4", name: "Холодний ботокс / колагеновий концентрат", qty: 20, unit: "мл" } },
+              { id: "hc_detox", label: "Детокс-пілінг шкіри голови + маска", selected: false, note: "Стимуляція росту та свіжість", bindInv: { invId: "inv-h5", name: "Пілінг-детокс для шкіри голови", qty: 15, unit: "мл" } }
+            ]
+          },
+          {
+            id: "h_prep", name: "3. Препарати, Стайлінг & Термозахист", type: "multi",
+            options: [
+              { id: "hp_shampoo", label: "Шампунь глибокого очищення", selected: true, note: "Підготовка кутикули волосини", bindInv: { invId: "inv-h1", name: "Шампунь глибокого очищення", qty: 25, unit: "мл" } },
+              { id: "hp_thermo", label: "Термозахисний флюїд до 230°C", selected: true, note: "Захист перед сушкою феном/брашем", bindInv: { invId: "inv-h2", name: "Термозахисний спрей / флюїд", qty: 5, unit: "мл" } },
+              { id: "hp_silk", label: "Шовкова олійка для кінчиків", selected: true, note: "Антистатик та блиск", bindInv: { invId: "inv-h6", name: "Шовкова олійка для посічених кінчиків", qty: 2, unit: "мл" } }
+            ]
+          }
+        ]
+      }
+    };
+
     let appState = {
       services: CANONICAL_SERVICES,
       inventory: INITIAL_INVENTORY,
       appointments: INITIAL_APPOINTMENTS,
+      techCards: JSON.parse(JSON.stringify(DEFAULT_TECH_CARDS)),
       currentCat: 'all',
       currentMode: 'client',
       activeBriefAppointmentId: null,
@@ -2032,7 +2499,11 @@
     };
     window.appState = appState;
 
-    const STORAGE_KEY = 'wild_beauty_crm_state_v5';
+    
+    // =========================================================================
+    // DEFAULT TECH CARDS (ТЕХНОЛОГІЧНІ КАРТИ З ПРИВ'ЯЗКОЮ РОЗХОДУ МАТЕРІАЛІВ)
+    // =========================================================================
+    const STORAGE_KEY = 'wild_beauty_crm_state_v6';
 
     // Load from LocalStorage with auto-healing and seamless legacy migration
     const cachedState = localStorage.getItem(STORAGE_KEY) 
@@ -2402,206 +2873,165 @@
       }
     };
 
-    // Helper: Render deeply individualized diagnostic parameters based on appointment direction
+    
+    // =========================================================================
+    // DYNAMIC TECH CARDS ENGINE (З ПРИВ'ЯЗКОЮ РОЗХОДУ МАТЕРІАЛІВ У РЕАЛЬНОМУ ЧАСІ)
+    // =========================================================================
+    
+    // Toggle diagnostic / tech card option
+    function toggleTechCardOption(dir, secId, optId) {
+      if (!appState.techCards || !appState.techCards[dir]) return;
+      const card = appState.techCards[dir];
+      const sec = card.sections.find(s => s.id === secId);
+      if (!sec) return;
+      const opt = sec.options.find(o => o.id === optId);
+      if (!opt) return;
+
+      if (sec.type === 'single') {
+        sec.options.forEach(o => o.selected = false);
+        opt.selected = true;
+      } else {
+        opt.selected = !opt.selected;
+      }
+
+      // Persist in localStorage
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
+
+      // Get current appointment
+      const apt = (appState.activeBriefAppointmentId ? appState.appointments.find(a => a.id === appState.activeBriefAppointmentId) : null)
+        || appState.appointments[0]
+        || INITIAL_APPOINTMENTS[0];
+
+      // Synchronize material write-offs (BOM) with selected options
+      syncTechCardToBOM(apt);
+
+      // Re-render UI
+      renderDynamicDiagnosticFields(apt);
+      renderBOMItemsInBrief();
+      calculateBriefTotals(apt.price);
+    }
+    window.toggleTechCardOption = toggleTechCardOption;
+
+    // Synchronize materials from selected tech card options into currentBriefBOM
+    function syncTechCardToBOM(apt) {
+      if (!apt) return;
+      const dir = apt.dir || 'Манікюр';
+      const card = appState.techCards ? appState.techCards[dir] : DEFAULT_TECH_CARDS[dir];
+      if (!card || !card.sections) return;
+
+      // 1. Gather all required bound materials from selected options
+      const requiredBindings = [];
+      card.sections.forEach(sec => {
+        sec.options.forEach(opt => {
+          if (opt.selected && opt.bindInv && opt.bindInv.invId) {
+            requiredBindings.push({
+              invId: opt.bindInv.invId,
+              name: opt.bindInv.name,
+              qty: Number(opt.bindInv.qty) || 1,
+              unit: opt.bindInv.unit || 'мл',
+              optionLabel: opt.label,
+              fromTechCard: true
+            });
+          }
+        });
+      });
+
+      // 2. Filter out old tech-card items that are no longer selected
+      currentBriefBOM = currentBriefBOM.filter(item => {
+        if (!item.fromTechCard) return true; // keep manually added / standard items
+        // Check if this material is still required by an active option
+        return requiredBindings.some(rb => rb.invId === item.invId);
+      });
+
+      // 3. Add or update required items from active options
+      requiredBindings.forEach(req => {
+        const existing = currentBriefBOM.find(item => item.invId === req.invId);
+        if (existing) {
+          existing.qty = req.qty;
+          existing.fromTechCard = true;
+          existing.optionLabel = req.optionLabel;
+        } else {
+          currentBriefBOM.push({
+            invId: req.invId,
+            name: req.name,
+            qty: req.qty,
+            unit: req.unit,
+            fromTechCard: true,
+            optionLabel: req.optionLabel
+          });
+        }
+      });
+    }
+    window.syncTechCardToBOM = syncTechCardToBOM;
+
+    // Render deeply individualized technical cards with live option pills
     function renderDynamicDiagnosticFields(apt) {
       const dynContainer = document.getElementById('briefDynamicFields');
       if (!dynContainer) return;
-      const dir = apt.dir || 'Манікюр';
+      const dir = (apt && apt.dir) ? apt.dir : 'Манікюр';
 
-      if (dir === 'Манікюр') {
-        dynContainer.innerHTML = `
-          <div style="background: var(--bg-surface-raised); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 14px 16px; margin-bottom: 14px; display: flex; flex-direction: column; gap: 12px;">
-            <div style="font-size: 13.5px; font-weight: 700; color: var(--accent); display: flex; align-items: center; gap: 6px;">
-              <span>💅 Діагностична карта манікюру (Стандарти JuNailCRM)</span>
-            </div>
-            <div class="form-row">
-              <label class="form-lbl">1. Стан попереднього покриття</label>
-              <div style="display: flex; gap: 6px; flex-wrap: wrap;" data-single-select="true">
-                <span class="slot-pill active" onclick="toggleDiagnosticPill(this)">✓ Ідеально (без сколів)</span>
-                <span class="slot-pill" onclick="toggleDiagnosticPill(this)">Відшарування на торцях</span>
-                <span class="slot-pill" onclick="toggleDiagnosticPill(this)">Тріщини / Сколи</span>
-                <span class="slot-pill" onclick="toggleDiagnosticPill(this)">Переношене (>4 тижнів)</span>
-                <span class="slot-pill" onclick="toggleDiagnosticPill(this)">Без покриття</span>
-              </div>
-            </div>
-            <div class="form-row">
-              <label class="form-lbl">2. Тип нігтьової пластини & кутикули</label>
-              <div style="display: flex; gap: 6px; flex-wrap: wrap;">
-                <span class="slot-pill active" onclick="toggleDiagnosticPill(this)">✓ Тонка / Чутлива</span>
-                <span class="slot-pill active" onclick="toggleDiagnosticPill(this)">✓ Суха налипаюча кутикула</span>
-                <span class="slot-pill" onclick="toggleDiagnosticPill(this)">Волога пластина (гіпергідроз)</span>
-                <span class="slot-pill" onclick="toggleDiagnosticPill(this)">Близько капіляри</span>
-              </div>
-            </div>
-            <div class="form-row">
-              <label class="form-lbl">3. База укріплення & Форма</label>
-              <div style="display: flex; gap: 6px; flex-wrap: wrap;">
-                <span class="slot-pill active" onclick="toggleDiagnosticPill(this)">✓ Rubber Base безкислотна</span>
-                <span class="slot-pill" onclick="toggleDiagnosticPill(this)">Hard Gel Clear</span>
-                <span class="slot-pill" onclick="toggleDiagnosticPill(this)">Акригель / Полігель</span>
-                <span class="slot-pill active" onclick="toggleDiagnosticPill(this)">✓ М'який квадрат (довжина 2)</span>
-                <span class="slot-pill" onclick="toggleDiagnosticPill(this)">Мигдаль</span>
-              </div>
-            </div>
-            <div class="form-row" style="margin-bottom: 0;">
-              <label class="form-lbl">4. Відтінок / Дизайн / Технічний протокол</label>
-              <input type="text" class="input-field" value="Dark Cherry Glossy Gel • Безкислотний праймер, форма квадрат, вирівнювання ідеальний блік">
-            </div>
-          </div>
-        `;
-      } else if (dir === 'Педикюр') {
-        dynContainer.innerHTML = `
-          <div style="background: var(--bg-surface-raised); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 14px 16px; margin-bottom: 14px; display: flex; flex-direction: column; gap: 12px;">
-            <div style="font-size: 13.5px; font-weight: 700; color: var(--accent); display: flex; align-items: center; gap: 6px;">
-              <span>🦶 Діагностична карта Smart-педикюру</span>
-            </div>
-            <div class="form-row">
-              <label class="form-lbl">1. Стан стопи & пальчиків</label>
-              <div style="display: flex; gap: 6px; flex-wrap: wrap;">
-                <span class="slot-pill active" onclick="toggleDiagnosticPill(this)">✓ Сухість п'ят / Гіперкератоз</span>
-                <span class="slot-pill" onclick="toggleDiagnosticPill(this)">Мікротріщини на п'ятах</span>
-                <span class="slot-pill" onclick="toggleDiagnosticPill(this)">Омозолілості</span>
-                <span class="slot-pill" onclick="toggleDiagnosticPill(this)">Схильність до вростання кутів</span>
-              </div>
-            </div>
-            <div class="form-row">
-              <label class="form-lbl">2. Техніка педикюру & Безпека</label>
-              <div style="display: flex; gap: 6px; flex-wrap: wrap;">
-                <span class="slot-pill active" onclick="toggleDiagnosticPill(this)">✓ Smart-педикюр (дисковий)</span>
-                <span class="slot-pill active" onclick="toggleDiagnosticPill(this)">✓ Прямий безпечний зпил кутів</span>
-                <span class="slot-pill active" onclick="toggleDiagnosticPill(this)">✓ Плівкове покриття Podofoot</span>
-                <span class="slot-pill" onclick="toggleDiagnosticPill(this)">Апаратний без замочування</span>
-              </div>
-            </div>
-            <div class="form-row" style="margin-bottom: 0;">
-              <label class="form-lbl">3. Домашні призначення подолога</label>
-              <input type="text" class="input-field" value="Smart-диск 180 грит + молекулярна олійка. Крем з сечовиною 15% щовечора. Вільне взуття.">
-            </div>
-          </div>
-        `;
-      } else if (dir === 'Вії') {
-        dynContainer.innerHTML = `
-          <div style="background: var(--bg-surface-raised); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 14px 16px; margin-bottom: 14px; display: flex; flex-direction: column; gap: 12px;">
-            <div style="font-size: 13.5px; font-weight: 700; color: var(--accent); display: flex; align-items: center; gap: 6px;">
-              <span>👁️ Технічна карта моделювання вій</span>
-            </div>
-            <div class="form-row">
-              <label class="form-lbl">1. Ефект & Схема нарощування</label>
-              <div style="display: flex; gap: 6px; flex-wrap: wrap;" data-single-select="true">
-                <span class="slot-pill active" onclick="toggleDiagnosticPill(this)">✓ Тренди: Мокрий ефект</span>
-                <span class="slot-pill" onclick="toggleDiagnosticPill(this)">Тренди: Стрілка Kim</span>
-                <span class="slot-pill" onclick="toggleDiagnosticPill(this)">2D об'єм натуральний</span>
-                <span class="slot-pill" onclick="toggleDiagnosticPill(this)">3D оксамит</span>
-                <span class="slot-pill" onclick="toggleDiagnosticPill(this)">Ламінування + ботокс вій</span>
-              </div>
-            </div>
-            <div class="form-row">
-              <label class="form-lbl">2. Параметри: Вигин, Довжина, Товщина, Колір</label>
-              <div style="display: flex; gap: 6px; flex-wrap: wrap;">
-                <span class="slot-pill active" onclick="toggleDiagnosticPill(this)">✓ Вигин L (ліфтинг)</span>
-                <span class="slot-pill" onclick="toggleDiagnosticPill(this)">Вигин D</span>
-                <span class="slot-pill active" onclick="toggleDiagnosticPill(this)">✓ Довжина 9-12 мм</span>
-                <span class="slot-pill active" onclick="toggleDiagnosticPill(this)">✓ Товщина 0.07 мм</span>
-                <span class="slot-pill active" onclick="toggleDiagnosticPill(this)">✓ Dark Chocolate (Темний шоколад)</span>
-              </div>
-            </div>
-            <div class="form-row" style="margin-bottom: 0;">
-              <label class="form-lbl">3. Чутливість очей & Догляд</label>
-              <input type="text" class="input-field" value="Чутливі очі до випарів, використано антиалергенний спрей. Не мочити 24 години, сухе розчісування.">
-            </div>
-          </div>
-        `;
-      } else if (dir === 'Брови') {
-        dynContainer.innerHTML = `
-          <div style="background: var(--bg-surface-raised); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 14px 16px; margin-bottom: 14px; display: flex; flex-direction: column; gap: 12px;">
-            <div style="font-size: 13.5px; font-weight: 700; color: var(--accent); display: flex; align-items: center; gap: 6px;">
-              <span>🎨 Колористика & Ламінування брів</span>
-            </div>
-            <div class="form-row">
-              <label class="form-lbl">1. Процедура & Форма</label>
-              <div style="display: flex; gap: 6px; flex-wrap: wrap;">
-                <span class="slot-pill active" onclick="toggleDiagnosticPill(this)">✓ Ламінування (довготривала укладка)</span>
-                <span class="slot-pill active" onclick="toggleDiagnosticPill(this)">✓ Ботокс відновлення</span>
-                <span class="slot-pill active" onclick="toggleDiagnosticPill(this)">✓ Моделювання віск + пінцет</span>
-                <span class="slot-pill" onclick="toggleDiagnosticPill(this)">Фарбування хною</span>
-              </div>
-            </div>
-            <div class="form-row">
-              <label class="form-lbl">2. Рівень тону & Барвник</label>
-              <div style="display: flex; gap: 6px; flex-wrap: wrap;">
-                <span class="slot-pill active" onclick="toggleDiagnosticPill(this)">✓ УГТ 7.0 Натуральний коричневий</span>
-                <span class="slot-pill" onclick="toggleDiagnosticPill(this)">УГТ 6.0 Темно-русявий</span>
-                <span class="slot-pill active" onclick="toggleDiagnosticPill(this)">✓ Levissime 7.7 + оксид 1.8%</span>
-                <span class="slot-pill" onclick="toggleDiagnosticPill(this)">Elan SB 02</span>
-              </div>
-            </div>
-            <div class="form-row" style="margin-bottom: 0;">
-              <label class="form-lbl">3. Інструкція майстра</label>
-              <input type="text" class="input-field" value="Натуральний тон 7.0 без затемнення. На ніч олійка усьми. Не мочити 24 години після ламінування.">
-            </div>
-          </div>
-        `;
-      } else if (dir === 'Косметологія') {
-        dynContainer.innerHTML = `
-          <div style="background: var(--bg-surface-raised); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 14px 16px; margin-bottom: 14px; display: flex; flex-direction: column; gap: 12px;">
-            <div style="font-size: 13.5px; font-weight: 700; color: var(--accent); display: flex; align-items: center; gap: 6px;">
-              <span>💆‍♀️ Косметологічний протокол процедури</span>
-            </div>
-            <div class="form-row">
-              <label class="form-lbl">1. Тип та особливості шкіри</label>
-              <div style="display: flex; gap: 6px; flex-wrap: wrap;">
-                <span class="slot-pill active" onclick="toggleDiagnosticPill(this)">✓ Комбінована шкіра</span>
-                <span class="slot-pill active" onclick="toggleDiagnosticPill(this)">✓ Чутлива T-зона</span>
-                <span class="slot-pill" onclick="toggleDiagnosticPill(this)">Схильність до комедонів</span>
-                <span class="slot-pill" onclick="toggleDiagnosticPill(this)">Купероз / судини</span>
-              </div>
-            </div>
-            <div class="form-row">
-              <label class="form-lbl">2. Протокол & Застосовані активи</label>
-              <div style="display: flex; gap: 6px; flex-wrap: wrap;">
-                <span class="slot-pill active" onclick="toggleDiagnosticPill(this)">✓ Комбінована чистка (УЗ + механічна)</span>
-                <span class="slot-pill active" onclick="toggleDiagnosticPill(this)">✓ Гель холодного гідрування</span>
-                <span class="slot-pill active" onclick="toggleDiagnosticPill(this)">✓ Антисептична заспокійлива маска</span>
-                <span class="slot-pill active" onclick="toggleDiagnosticPill(this)">✓ Фінішний SPF 50+ Broad Spectrum</span>
-              </div>
-            </div>
-            <div class="form-row" style="margin-bottom: 0;">
-              <label class="form-lbl">3. Призначення косметолога</label>
-              <input type="text" class="input-field" value="Атравматичний ультразвуковий протокол. Щоденний SPF 50. 3 дні без сауни, спорту та басейну.">
-            </div>
-          </div>
-        `;
-      } else {
-        dynContainer.innerHTML = `
-          <div style="background: var(--bg-surface-raised); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 14px 16px; margin-bottom: 14px; display: flex; flex-direction: column; gap: 12px;">
-            <div style="font-size: 13.5px; font-weight: 700; color: var(--accent); display: flex; align-items: center; gap: 6px;">
-              <span>💇‍♀️ Перукарський діагностичний протокол</span>
-            </div>
-            <div class="form-row">
-              <label class="form-lbl">1. Стан структури волосся</label>
-              <div style="display: flex; gap: 6px; flex-wrap: wrap;">
-                <span class="slot-pill active" onclick="toggleDiagnosticPill(this)">✓ Освітлений блонд (пористе)</span>
-                <span class="slot-pill active" onclick="toggleDiagnosticPill(this)">✓ Сухі кінчики</span>
-                <span class="slot-pill" onclick="toggleDiagnosticPill(this)">Тонке натуральне</span>
-                <span class="slot-pill" onclick="toggleDiagnosticPill(this)">Схильне до пушіння</span>
-              </div>
-            </div>
-            <div class="form-row">
-              <label class="form-lbl">2. Процедура відновлення</label>
-              <div style="display: flex; gap: 6px; flex-wrap: wrap;">
-                <span class="slot-pill active" onclick="toggleDiagnosticPill(this)">✓ Spa-догляд «Абсолютне щастя для волосся»</span>
-                <span class="slot-pill active" onclick="toggleDiagnosticPill(this)">✓ Протеїнова ампула + ліпіди</span>
-                <span class="slot-pill active" onclick="toggleDiagnosticPill(this)">✓ Термозахисний флюїд до 220°C</span>
-              </div>
-            </div>
-            <div class="form-row" style="margin-bottom: 0;">
-              <label class="form-lbl">3. Рекомендації стиліста</label>
-              <input type="text" class="input-field" value="Сушка феном тільки за ростом волосся зверху вниз. Обов'язковий термозахист. Олійка для кінчиків щовечора.">
-            </div>
-          </div>
-        `;
+      if (!appState.techCards) {
+        appState.techCards = JSON.parse(JSON.stringify(DEFAULT_TECH_CARDS));
       }
+      const card = appState.techCards[dir] || DEFAULT_TECH_CARDS[dir] || DEFAULT_TECH_CARDS['Манікюр'];
+
+      let sectionsHtml = '';
+      card.sections.forEach(sec => {
+        const isSingle = sec.type === 'single';
+        const typeHint = isSingle ? 'Один варіант' : 'Декілька варіантів';
+
+        let pillsHtml = '';
+        sec.options.forEach(opt => {
+          const isSel = !!opt.selected;
+          const bindBadge = opt.bindInv
+            ? `<span class="tech-bind-badge" title="Прив'язка розходу матеріалу зі складу">📦 +${opt.bindInv.qty} ${opt.bindInv.unit}</span>`
+            : '';
+
+          pillsHtml += `
+            <span class="tech-opt-pill ${isSel ? 'active' : ''}"
+                  onclick="toggleTechCardOption('${dir}', '${sec.id}', '${opt.id}')"
+                  title="${opt.note || opt.label}">
+              ${isSel ? '✓ ' : ''}${opt.label}
+              ${bindBadge}
+            </span>
+          `;
+        });
+
+        sectionsHtml += `
+          <div class="tech-sec-row">
+            <div class="tech-sec-head">
+              <span class="tech-sec-title">${sec.name}</span>
+              <span class="tech-sec-hint">(${typeHint})</span>
+            </div>
+            <div class="tech-pills-wrap">
+              ${pillsHtml}
+            </div>
+          </div>
+        `;
+      });
+
+      dynContainer.innerHTML = `
+        <div class="tech-card-box">
+          <div class="tech-card-header">
+            <div style="font-size: 14px; font-weight: 700; color: var(--accent); display: flex; align-items: center; gap: 8px;">
+              <span>${card.icon || '💅'} ${card.title}</span>
+            </div>
+            <button class="btn btn-secondary btn-sm" onclick="openTechCardEditor('${dir}')" style="display: flex; align-items: center; gap: 5px; font-size: 11.5px; padding: 4px 10px;">
+              ⚙️ Налаштувати норми розходу & карту
+            </button>
+          </div>
+          ${sectionsHtml}
+        </div>
+      `;
     }
+    window.renderDynamicDiagnosticFields = renderDynamicDiagnosticFields;
+
+    // Legacy diagnostic pill toggle fallback
+    window.toggleDiagnosticPill = function(el) {
+      if (!el) return;
+      el.classList.toggle('active');
+    };
+
 
     // Helper: Build personalized reminder text based on current appointment and preset
     function buildReminderText(presetKey) {
@@ -2879,6 +3309,7 @@
           : (DEFAULT_BOM_MAP[dirVal] || DEFAULT_BOM_MAP['Манікюр']);
         currentBriefBOM = JSON.parse(JSON.stringify(rawBOM));
 
+        syncTechCardToBOM(apt);
         renderBOMItemsInBrief();
         calculateBriefTotals(priceVal);
 
@@ -3239,6 +3670,296 @@
         switchMode('client');
       }
     });
+  
+    // =========================================================================
+    // TECH CARD EDITOR CONTROLLER (ІНТЕРАКТИВНИЙ РЕДАКТОР СТАНДАРТІВ СТУДІЇ)
+    // =========================================================================
+    let currentEditorDir = 'Манікюр';
+
+    function openTechCardEditor(dirKey) {
+      if (dirKey) currentEditorDir = dirKey;
+      const modal = document.getElementById('adminTechCardEditorModal');
+      if (modal) {
+        modal.classList.add('open');
+        renderTechCardEditorContent('techCardEditorSectionsContainer');
+      }
+    }
+    window.openTechCardEditor = openTechCardEditor;
+
+    function closeTechCardEditor() {
+      const modal = document.getElementById('adminTechCardEditorModal');
+      if (modal) modal.classList.remove('open');
+    }
+    window.closeTechCardEditor = closeTechCardEditor;
+
+    function switchTechCardEditorDir(dirKey) {
+      currentEditorDir = dirKey;
+      // Update pills in modal
+      const modalNav = document.getElementById('techCardEditorDirNav');
+      if (modalNav) {
+        modalNav.querySelectorAll('.cat-btn').forEach(btn => {
+          btn.classList.toggle('active', btn.innerText.includes(dirKey));
+        });
+      }
+      // Update badge
+      const badge = document.getElementById('techCardEditorDirBadge');
+      if (badge) {
+        const emoji = (dirKey === 'Манікюр') ? '💅' : (dirKey === 'Педикюр') ? '🦶' : (dirKey === 'Вії') ? '👁️' : (dirKey === 'Брови') ? '🎨' : (dirKey === 'Косметологія') ? '💆‍♀️' : '💇‍♀️';
+        badge.innerText = emoji + ' ' + dirKey;
+      }
+      // Update pills in admin tab
+      const tabNav = document.getElementById('adminTabTechcardsDirNav');
+      if (tabNav) {
+        tabNav.querySelectorAll('.cat-btn').forEach(btn => {
+          btn.classList.toggle('active', btn.innerText.includes(dirKey));
+        });
+      }
+
+      renderTechCardEditorContent('techCardEditorSectionsContainer');
+      renderTechCardEditorContent('adminTabTechcardsSectionsContainer');
+    }
+    window.switchTechCardEditorDir = switchTechCardEditorDir;
+
+    // Render interactive editor list
+    function renderTechCardEditorContent(containerId) {
+      const container = document.getElementById(containerId);
+      if (!container) return;
+
+      if (!appState.techCards) {
+        appState.techCards = JSON.parse(JSON.stringify(DEFAULT_TECH_CARDS));
+      }
+      const card = appState.techCards[currentEditorDir] || DEFAULT_TECH_CARDS[currentEditorDir];
+      if (!card || !card.sections) return;
+
+      const invList = appState.inventory || INITIAL_INVENTORY;
+
+      let htmlContent = '';
+      card.sections.forEach((sec, sIdx) => {
+        let optionsRows = '';
+        sec.options.forEach((opt, oIdx) => {
+          // Build options dropdown for inventory
+          let invOptionsHtml = '<option value="">-- Без списання (тільки запис в карту) --</option>';
+          invList.forEach(inv => {
+            const isSelected = opt.bindInv && opt.bindInv.invId === inv.id;
+            invOptionsHtml += `<option value="${inv.id}" ${isSelected ? 'selected' : ''}>[${inv.cat}] ${inv.name} (${inv.cost} ₴/${inv.unit})</option>`;
+          });
+
+          const currentQty = (opt.bindInv && opt.bindInv.qty !== undefined) ? opt.bindInv.qty : 1;
+          const currentUnit = (opt.bindInv && opt.bindInv.unit) ? opt.bindInv.unit : 'мл';
+
+          optionsRows += `
+            <div class="tech-editor-item-row">
+              <div>
+                <label style="font-size: 10.5px; color: var(--text-muted); display: block; margin-bottom: 2px;">Назва параметра</label>
+                <input type="text" class="input-field" style="padding: 6px 10px; font-size: 12.5px;" value="${opt.label}" onchange="updateTechCardOptionField('${currentEditorDir}', '${sec.id}', '${opt.id}', 'label', this.value)">
+              </div>
+              <div>
+                <label style="font-size: 10.5px; color: var(--text-muted); display: block; margin-bottom: 2px;">Підказка / Стандарт майстра</label>
+                <input type="text" class="input-field" style="padding: 6px 10px; font-size: 12px;" value="${opt.note || ''}" placeholder="Опис чи техніка..." onchange="updateTechCardOptionField('${currentEditorDir}', '${sec.id}', '${opt.id}', 'note', this.value)">
+              </div>
+              <div>
+                <label style="font-size: 10.5px; color: var(--accent); font-weight: 600; display: block; margin-bottom: 2px;">📦 Прив'язка матеріалу зі складу</label>
+                <select class="input-field" style="padding: 6px 8px; font-size: 12px;" onchange="updateTechCardOptionBinding('${currentEditorDir}', '${sec.id}', '${opt.id}', this.value)">
+                  ${invOptionsHtml}
+                </select>
+              </div>
+              <div>
+                <label style="font-size: 10.5px; color: var(--text-muted); display: block; margin-bottom: 2px;">Норма (${currentUnit})</label>
+                <input type="number" step="0.1" min="0" class="input-field" style="padding: 6px 8px; font-size: 12px; text-align: center;" value="${currentQty}" onchange="updateTechCardOptionQty('${currentEditorDir}', '${sec.id}', '${opt.id}', this.value)">
+              </div>
+              <div style="text-align: center;">
+                <button class="btn btn-secondary btn-sm" style="color: var(--danger); padding: 5px 8px; margin-top: 14px;" title="Видалити параметр" onclick="removeTechCardOption('${currentEditorDir}', '${sec.id}', '${opt.id}')">✕</button>
+              </div>
+            </div>
+          `;
+        });
+
+        htmlContent += `
+          <div class="tech-editor-card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+              <div style="display: flex; align-items: center; gap: 10px; flex: 1; min-width: 240px;">
+                <span style="font-weight: 700; color: var(--text-primary); font-size: 13.5px;">Розділ:</span>
+                <input type="text" class="input-field" style="max-width: 320px; padding: 6px 10px; font-weight: 600;" value="${sec.name}" onchange="updateTechCardSectionName('${currentEditorDir}', '${sec.id}', this.value)">
+                <select class="input-field" style="max-width: 170px; padding: 6px 8px; font-size: 12px;" onchange="updateTechCardSectionType('${currentEditorDir}', '${sec.id}', this.value)">
+                  <option value="single" ${sec.type === 'single' ? 'selected' : ''}>Одиночний вибір</option>
+                  <option value="multi" ${sec.type === 'multi' ? 'selected' : ''}>Множинний вибір</option>
+                </select>
+              </div>
+              <div style="display: flex; gap: 6px;">
+                <button class="btn btn-secondary btn-sm" onclick="addTechCardOptionPrompt('${currentEditorDir}', '${sec.id}')">+ Додати параметр</button>
+                <button class="btn btn-secondary btn-sm" style="color: var(--danger);" onclick="removeTechCardSection('${currentEditorDir}', '${sec.id}')">Видалити розділ</button>
+              </div>
+            </div>
+            ${optionsRows}
+          </div>
+        `;
+      });
+
+      container.innerHTML = htmlContent;
+    }
+    window.renderTechCardEditorContent = renderTechCardEditorContent;
+
+    function renderAdminTechcards() {
+      switchTechCardEditorDir(currentEditorDir);
+    }
+    window.renderAdminTechcards = renderAdminTechcards;
+
+    function updateTechCardSectionName(dir, secId, val) {
+      const card = appState.techCards[dir];
+      const sec = card.sections.find(s => s.id === secId);
+      if (sec) sec.name = val.trim();
+    }
+    window.updateTechCardSectionName = updateTechCardSectionName;
+
+    function updateTechCardSectionType(dir, secId, val) {
+      const card = appState.techCards[dir];
+      const sec = card.sections.find(s => s.id === secId);
+      if (sec) sec.type = val;
+    }
+    window.updateTechCardSectionType = updateTechCardSectionType;
+
+    function updateTechCardOptionField(dir, secId, optId, field, val) {
+      const card = appState.techCards[dir];
+      const sec = card.sections.find(s => s.id === secId);
+      if (!sec) return;
+      const opt = sec.options.find(o => o.id === optId);
+      if (opt) opt[field] = val;
+    }
+    window.updateTechCardOptionField = updateTechCardOptionField;
+
+    function updateTechCardOptionBinding(dir, secId, optId, invId) {
+      const card = appState.techCards[dir];
+      const sec = card.sections.find(s => s.id === secId);
+      if (!sec) return;
+      const opt = sec.options.find(o => o.id === optId);
+      if (!opt) return;
+
+      if (!invId) {
+        delete opt.bindInv;
+      } else {
+        const inv = appState.inventory.find(i => i.id === invId);
+        if (inv) {
+          opt.bindInv = {
+            invId: inv.id,
+            name: inv.name,
+            qty: (opt.bindInv && opt.bindInv.qty) ? opt.bindInv.qty : 1,
+            unit: inv.unit
+          };
+        }
+      }
+      renderTechCardEditorContent('techCardEditorSectionsContainer');
+      renderTechCardEditorContent('adminTabTechcardsSectionsContainer');
+    }
+    window.updateTechCardOptionBinding = updateTechCardOptionBinding;
+
+    function updateTechCardOptionQty(dir, secId, optId, qty) {
+      const card = appState.techCards[dir];
+      const sec = card.sections.find(s => s.id === secId);
+      if (!sec) return;
+      const opt = sec.options.find(o => o.id === optId);
+      if (!opt || !opt.bindInv) return;
+      opt.bindInv.qty = Math.max(0, parseFloat(qty) || 0);
+    }
+    window.updateTechCardOptionQty = updateTechCardOptionQty;
+
+    function addTechCardOptionPrompt(dir, secId) {
+      const name = prompt('Введіть назву нового параметра (наприклад: "Викладний френч" або "Вигин M"):');
+      if (!name || !name.trim()) return;
+      const card = appState.techCards[dir];
+      const sec = card.sections.find(s => s.id === secId);
+      if (!sec) return;
+
+      const newId = 'opt_' + Date.now();
+      sec.options.push({
+        id: newId,
+        label: name.trim(),
+        selected: false,
+        note: 'Користувацький параметр'
+      });
+
+      renderTechCardEditorContent('techCardEditorSectionsContainer');
+      renderTechCardEditorContent('adminTabTechcardsSectionsContainer');
+    }
+    window.addTechCardOptionPrompt = addTechCardOptionPrompt;
+
+    function removeTechCardOption(dir, secId, optId) {
+      const card = appState.techCards[dir];
+      const sec = card.sections.find(s => s.id === secId);
+      if (!sec) return;
+      sec.options = sec.options.filter(o => o.id !== optId);
+      renderTechCardEditorContent('techCardEditorSectionsContainer');
+      renderTechCardEditorContent('adminTabTechcardsSectionsContainer');
+    }
+    window.removeTechCardOption = removeTechCardOption;
+
+    function addNewTechCardSection() {
+      const name = prompt('Введіть назву нового розділу техкарти (наприклад: "8. Декоративні елементи та фініш"):');
+      if (!name || !name.trim()) return;
+      const card = appState.techCards[currentEditorDir];
+      if (!card) return;
+
+      const newSecId = 'sec_' + Date.now();
+      card.sections.push({
+        id: newSecId,
+        name: name.trim(),
+        type: 'multi',
+        options: [
+          { id: 'opt_' + Date.now() + '_1', label: 'Базовий варіант', selected: true, note: 'Стандарт' }
+        ]
+      });
+
+      renderTechCardEditorContent('techCardEditorSectionsContainer');
+      renderTechCardEditorContent('adminTabTechcardsSectionsContainer');
+    }
+    window.addNewTechCardSection = addNewTechCardSection;
+
+    function removeTechCardSection(dir, secId) {
+      if (!confirm('Видалити цей розділ технологічної карти?')) return;
+      const card = appState.techCards[dir];
+      if (!card) return;
+      card.sections = card.sections.filter(s => s.id !== secId);
+      renderTechCardEditorContent('techCardEditorSectionsContainer');
+      renderTechCardEditorContent('adminTabTechcardsSectionsContainer');
+    }
+    window.removeTechCardSection = removeTechCardSection;
+
+    function saveTechCardEditorChanges() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
+      alert('💾 Технологічні карти та норми списання матеріалів успішно збережено!');
+
+      // If brief modal is currently open, re-render it
+      const apt = (appState.activeBriefAppointmentId ? appState.appointments.find(a => a.id === appState.activeBriefAppointmentId) : null)
+        || appState.appointments[0]
+        || INITIAL_APPOINTMENTS[0];
+      if (apt) {
+        syncTechCardToBOM(apt);
+        renderDynamicDiagnosticFields(apt);
+        renderBOMItemsInBrief();
+        calculateBriefTotals(apt.price);
+      }
+    }
+    window.saveTechCardEditorChanges = saveTechCardEditorChanges;
+
+    function resetTechCardEditorToDefaults() {
+      if (!confirm('Відновити всі технологічні карти до заводських стандартів JuNailCRM? Усі користувацькі прив\'язки буде скинуто.')) return;
+      appState.techCards = JSON.parse(JSON.stringify(DEFAULT_TECH_CARDS));
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
+      alert('🔄 Заводські стандарти JuNailCRM відновлено!');
+      renderTechCardEditorContent('techCardEditorSectionsContainer');
+      renderTechCardEditorContent('adminTabTechcardsSectionsContainer');
+
+      const apt = (appState.activeBriefAppointmentId ? appState.appointments.find(a => a.id === appState.activeBriefAppointmentId) : null)
+        || appState.appointments[0]
+        || INITIAL_APPOINTMENTS[0];
+      if (apt) {
+        syncTechCardToBOM(apt);
+        renderDynamicDiagnosticFields(apt);
+        renderBOMItemsInBrief();
+        calculateBriefTotals(apt.price);
+      }
+    }
+    window.resetTechCardEditorToDefaults = resetTechCardEditorToDefaults;
+
   </script>
 </body>
 </html>

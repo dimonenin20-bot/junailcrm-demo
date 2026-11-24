@@ -209,6 +209,65 @@
       color: var(--text-primary);
     }
 
+    
+    /* =========================================================================
+       CUSTOM LUXURY SCROLLBARS (Hallmark Obsidian & Orchid)
+       ========================================================================= */
+    * {
+      scrollbar-width: thin;
+      scrollbar-color: var(--border-strong) transparent;
+    }
+
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--border-strong);
+      border-radius: var(--radius-full);
+      transition: background-color 0.15s ease;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--accent);
+    }
+
+    ::-webkit-scrollbar-corner {
+      background: transparent;
+    }
+
+    .table-responsive {
+      width: 100%;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: thin;
+      scrollbar-color: var(--border-strong) transparent;
+    }
+
+    .table-responsive::-webkit-scrollbar {
+      height: 5px;
+    }
+
+    .table-responsive::-webkit-scrollbar-track {
+      background: var(--bg-surface);
+      border-radius: var(--radius-xs);
+    }
+
+    .table-responsive::-webkit-scrollbar-thumb {
+      background: var(--border-strong);
+      border-radius: var(--radius-xs);
+    }
+
+    .table-responsive::-webkit-scrollbar-thumb:hover {
+      background: var(--accent);
+    }
+
+
     button:disabled, .btn:disabled {
       opacity: 0.5;
       cursor: not-allowed;
@@ -1499,6 +1558,7 @@
 
       /* Tables on Mobile */
       .table-responsive {
+        scrollbar-width: none;
         margin: 0 -10px;
         padding: 0 10px;
         width: calc(100% + 20px);
@@ -1587,7 +1647,7 @@
         padding-bottom: 4px;
         margin-bottom: 14px;
       }
-      .cat-nav::-webkit-scrollbar { display: none; }
+      .cat-nav::-webkit-scrollbar, .table-responsive::-webkit-scrollbar { display: none; }
       .cat-btn {
         padding: 7px 14px;
         font-size: 12px;
@@ -3245,7 +3305,7 @@
         customPill.className = 'slot-pill active';
         customPill.style.whiteSpace = 'nowrap';
         customPill.setAttribute('data-date', appState.bookingSelectedDate);
-        customPill.innerText = `📅 ${formatShortDate(customDateObj)} (${UKR_DAYS_SHORT[customDateObj.getDay()]})`;
+        customPill.innerText = `${formatShortDate(customDateObj)} (${UKR_DAYS_SHORT[customDateObj.getDay()]})`;
         customPill.onclick = function() {
           selectDatePill(appState.bookingSelectedDate, this);
         };
@@ -3530,7 +3590,7 @@
           tr.innerHTML = `
             <td style="white-space: nowrap;">
               <strong style="color: var(--text-primary); font-size: 13.5px;">${apt.time || '10:30'}</strong>
-              <div style="font-size: 11px; color: var(--accent); font-weight: 600; margin-top: 2px;">📅 ${apt.date || '24 лист'}</div>
+              <div style="font-size: 11px; color: var(--accent); font-weight: 600; margin-top: 2px;">${apt.date || '24 лист'}</div>
             </td>
             <td>
               <div style="font-weight: 600;">${clientName}</div>
@@ -3545,8 +3605,8 @@
             <td><strong>${price.toLocaleString()} ₴</strong></td>
             <td><span class="badge ${statusClass}">${statusText}</span></td>
             <td style="text-align: right; white-space: nowrap;">
-              <button class="btn btn-primary btn-sm" onclick="openBriefModal('${apt.id}')" style="margin-right: 4px;">📋 Бриф після візиту</button>
-              <button class="btn btn-secondary btn-sm" onclick="openBriefReminderDirect('${apt.id}')" style="margin-right: 4px;" title="Центр нагадувань клієнтці">📲 Нагадування</button>
+              <button class="btn btn-primary btn-sm" onclick="openBriefModal('${apt.id}')" style="margin-right: 4px;">Бриф після візиту</button>
+              <button class="btn btn-secondary btn-sm" onclick="openBriefReminderDirect('${apt.id}')" style="margin-right: 4px;" title="Центр нагадувань клієнтці">Нагадування</button>
               <button class="btn btn-secondary btn-sm" onclick="deleteAppointment('${apt.id}')">✕</button>
             </td>
           `;
@@ -4512,7 +4572,7 @@
           <td>${c.last}</td>
           <td><span style="font-size: 12px; color: var(--text-secondary);">${c.notes}</span></td>
           <td style="text-align: right; white-space: nowrap;">
-            <button class="btn btn-secondary btn-sm" onclick="alert('Електронна картка клієнтки: ${c.name}\nЗакріплений майстер: ${c.masterName}\nПослуга: ${c.dir}\nІсторія брифів: збережено в базі.')">📋 Картка</button>
+            <button class="btn btn-secondary btn-sm" onclick="alert('Електронна картка клієнтки: ${c.name}\nЗакріплений майстер: ${c.masterName}\nПослуга: ${c.dir}\nІсторія брифів: збережено в базі.')">Картка</button>
           </td>
         `;
         tbody.appendChild(tr);
@@ -4770,7 +4830,7 @@
       // Update download button text
       const dlBtn = document.getElementById('btnDownloadStory');
       if (dlBtn) {
-        dlBtn.innerText = `📥 Завантажити Stories (${activeMaster ? activeMaster.name : 'Студія'})`;
+        dlBtn.innerText = `Завантажити Stories (${activeMaster ? activeMaster.name : 'Студія'})`;
       }
 
       ctx.fillStyle = '#090b0e';

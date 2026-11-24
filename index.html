@@ -2,67 +2,90 @@
 <html lang="uk" class="dark">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>wild_beauty_space ▷ Онлайн-запис & Студійна CRM | Одеса</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;550;600;700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@350;400;450;500;550;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
       --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       
-      /* Dark Theme (Default) - Quiet Warm Graphite with Wild Beauty Violet/Rose Accent */
-      --bg-base: #0c0e12;
-      --bg-surface: #13161c;
-      --bg-surface-raised: #1a1e26;
-      --bg-surface-hover: #222732;
+      /* Dark Theme (Default) - Obsidian Slate & High-End Salon Violet */
+      --bg-base: #090b0e;
+      --bg-surface: #11141a;
+      --bg-surface-raised: #171b23;
+      --bg-surface-hover: #1f242f;
+      --bg-surface-active: #272e3c;
       
       --border-subtle: rgba(255, 255, 255, 0.08);
       --border-strong: rgba(255, 255, 255, 0.16);
+      --border-focus: #9356d4;
       
-      --text-primary: #f2f4f7;
-      --text-secondary: #9da6b3;
-      --text-muted: #5e6775;
+      --text-primary: #f3f5f8;
+      --text-secondary: #9da6b5;
+      --text-muted: #5e6676;
       
-      /* Signature Wild Beauty Space purple-rose accent */
+      /* Brand Accent: Wild Beauty Space Orchid Plum */
       --accent: #9356d4;
-      --accent-hover: #8044c0;
-      --accent-subtle: rgba(147, 86, 212, 0.14);
+      --accent-hover: #8144c2;
+      --accent-subtle: rgba(147, 86, 212, 0.12);
+      --accent-border: rgba(147, 86, 212, 0.32);
       --accent-text: #ffffff;
       
-      --success: #3db87a;
-      --success-subtle: rgba(61, 184, 122, 0.14);
-      --warning: #e09943;
-      --warning-subtle: rgba(224, 153, 67, 0.14);
-      --danger: #e25555;
-      --danger-subtle: rgba(226, 85, 85, 0.14);
+      --success: #2ec47c;
+      --success-subtle: rgba(46, 196, 124, 0.12);
+      --success-border: rgba(46, 196, 124, 0.3);
       
-      --radius-sm: 6px;
-      --radius-md: 10px;
-      --radius-lg: 16px;
+      --warning: #e59a38;
+      --warning-subtle: rgba(229, 154, 56, 0.12);
+      
+      --danger: #e25555;
+      --danger-subtle: rgba(226, 85, 85, 0.12);
+      
+      --radius-xs: 4px;
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 18px;
       --radius-full: 9999px;
+      
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.3);
+      --shadow-md: 0 8px 24px rgba(0,0,0,0.45);
+      --shadow-lg: 0 20px 48px rgba(0,0,0,0.6);
     }
 
     html.light {
       --bg-base: #f5f6f9;
       --bg-surface: #ffffff;
-      --bg-surface-raised: #eff2f6;
-      --bg-surface-hover: #e4e8ef;
+      --bg-surface-raised: #edf0f5;
+      --bg-surface-hover: #e3e7ef;
+      --bg-surface-active: #d7dce7;
       
       --border-subtle: rgba(0, 0, 0, 0.08);
       --border-strong: rgba(0, 0, 0, 0.16);
+      --border-focus: #7a3bbd;
       
-      --text-primary: #11141a;
-      --text-secondary: #525c6c;
-      --text-muted: #8a94a3;
+      --text-primary: #0f1217;
+      --text-secondary: #505a69;
+      --text-muted: #838e9e;
       
       --accent: #7a3bbd;
-      --accent-hover: #672da8;
-      --accent-subtle: rgba(122, 59, 189, 0.1);
+      --accent-hover: #672ea5;
+      --accent-subtle: rgba(122, 59, 189, 0.08);
+      --accent-border: rgba(122, 59, 189, 0.25);
       --accent-text: #ffffff;
+      
+      --success: #1fa364;
+      --success-subtle: rgba(31, 163, 100, 0.08);
+      --success-border: rgba(31, 163, 100, 0.25);
+      
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+      --shadow-md: 0 8px 20px rgba(0,0,0,0.08);
+      --shadow-lg: 0 20px 40px rgba(0,0,0,0.12);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
+    
     body {
       font-family: var(--font-sans);
       background-color: var(--bg-base);
@@ -70,19 +93,55 @@
       min-height: 100vh;
       font-size: 14px;
       line-height: 1.5;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
     }
 
-    /* Top Mode Switcher Bar */
+    /* =========================================================================
+       TOP DUAL-SYSTEM SWITCHER (Unslop Segmented Control)
+       ========================================================================= */
     .system-switcher {
       background: var(--bg-surface);
       border-bottom: 1px solid var(--border-subtle);
-      padding: 8px 24px;
+      padding: 10px 20px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       position: sticky;
       top: 0;
-      z-index: 90;
+      z-index: 100;
+      backdrop-filter: blur(12px);
+    }
+
+    .brand-cluster {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-cluster img {
+      width: 32px;
+      height: 32px;
+      border-radius: var(--radius-full);
+      object-fit: cover;
+      border: 1.5px solid var(--accent);
+    }
+
+    .brand-meta {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .brand-name {
+      font-size: 13.5px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      line-height: 1.2;
+    }
+
+    .brand-sub {
+      font-size: 11px;
+      color: var(--text-muted);
     }
 
     .mode-pills {
@@ -95,7 +154,7 @@
     }
 
     .mode-pill {
-      padding: 5px 14px;
+      padding: 6px 14px;
       font-size: 12.5px;
       font-weight: 500;
       border-radius: var(--radius-full);
@@ -110,9 +169,35 @@
 
     .mode-pill.active {
       background: var(--accent);
-      color: var(--accent-text);
+      color: #fff;
       font-weight: 600;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-icon {
+      width: 34px;
+      height: 34px;
+      border-radius: var(--radius-sm);
+      background: var(--bg-surface-raised);
+      color: var(--text-secondary);
+      border: 1px solid var(--border-subtle);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      transition: all 0.15s ease;
+    }
+    .btn-icon:hover {
+      background: var(--bg-surface-hover);
+      color: var(--text-primary);
+      border-color: var(--border-strong);
     }
 
     /* Buttons */
@@ -121,18 +206,24 @@
       align-items: center;
       justify-content: center;
       gap: 8px;
-      padding: 8px 16px;
+      padding: 9px 16px;
       font-size: 13px;
-      font-weight: 500;
+      font-weight: 550;
       border-radius: var(--radius-sm);
       cursor: pointer;
       border: 1px solid transparent;
       transition: all 0.15s ease;
       font-family: inherit;
+      user-select: none;
     }
 
-    .btn-primary { background: var(--accent); color: var(--accent-text); }
-    .btn-primary:hover { background: var(--accent-hover); }
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+    }
+    .btn-primary:hover {
+      background: var(--accent-hover);
+    }
 
     .btn-secondary {
       background: var(--bg-surface-raised);
@@ -144,98 +235,225 @@
       border-color: var(--border-strong);
     }
 
-    .btn-danger {
-      background: var(--danger-subtle);
-      color: var(--danger);
-      border-color: transparent;
-    }
-    .btn-danger:hover {
-      background: var(--danger);
+    .btn-success {
+      background: var(--success);
       color: #fff;
     }
 
-    .btn-icon {
-      padding: 7px;
-      border-radius: var(--radius-sm);
-      background: var(--bg-surface-raised);
-      color: var(--text-secondary);
-      border: 1px solid var(--border-subtle);
-      cursor: pointer;
+    .btn-sm {
+      padding: 5px 10px;
+      font-size: 12px;
     }
 
-    /* ==========================================================================
-       VIEW 1: CLIENT ONLINE BOOKING (Bookon replacement widget)
-       ========================================================================== */
+    /* =========================================================================
+       VIEW 1: CLIENT ONLINE BOOKING (Bookon Replacement Widget)
+       ========================================================================= */
     #clientBookingView {
-      max-width: 760px;
-      margin: 24px auto 60px;
-      padding: 0 20px;
+      max-width: 780px;
+      margin: 20px auto 80px;
+      padding: 0 16px;
     }
 
     .salon-hero {
       background: var(--bg-surface);
       border: 1px solid var(--border-subtle);
       border-radius: var(--radius-lg);
-      padding: 28px;
-      margin-bottom: 24px;
+      padding: 24px;
+      margin-bottom: 20px;
+      box-shadow: var(--shadow-sm);
       position: relative;
       overflow: hidden;
     }
 
-    .salon-hero-glow {
-      position: absolute;
-      top: -80px;
-      right: -80px;
-      width: 240px;
-      height: 240px;
-      border-radius: 50%;
-      background: var(--accent-subtle);
-      filter: blur(50px);
-      pointer-events: none;
+    .salon-hero-top {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      margin-bottom: 20px;
     }
 
-    .salon-name {
-      font-size: 24px;
-      font-weight: 700;
-      letter-spacing: -0.02em;
+    .salon-hero-logo {
+      width: 72px;
+      height: 72px;
+      border-radius: var(--radius-full);
+      object-fit: cover;
+      border: 2px solid var(--accent);
+      box-shadow: 0 4px 16px rgba(147, 86, 212, 0.25);
+      flex-shrink: 0;
+    }
+
+    .salon-hero-text {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .salon-title-row {
       display: flex;
       align-items: center;
       gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .salon-name {
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .verified-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: var(--radius-full);
+      background: var(--accent-subtle);
+      color: var(--accent);
+      border: 1px solid var(--accent-border);
     }
 
     .salon-tagline {
-      color: var(--accent);
-      font-weight: 500;
-      font-size: 13.5px;
+      font-size: 13px;
+      color: var(--text-secondary);
       margin-top: 4px;
+      line-height: 1.4;
     }
 
-    .salon-meta {
+    .salon-meta-pills {
       display: flex;
       flex-wrap: wrap;
-      gap: 16px;
-      margin-top: 16px;
-      padding-top: 16px;
-      border-top: 1px solid var(--border-subtle);
-      color: var(--text-secondary);
-      font-size: 13px;
+      gap: 8px;
+      margin-top: 14px;
     }
 
-    .meta-item {
+    .meta-pill {
+      font-size: 12px;
+      color: var(--text-secondary);
+      background: var(--bg-surface-raised);
+      padding: 4px 10px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-subtle);
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      text-decoration: none;
+    }
+
+    .meta-link:hover {
+      color: var(--accent);
+      border-color: var(--accent-border);
+    }
+
+    /* REAL GALLERY CAROUSEL */
+    .salon-gallery-section {
+      padding-top: 18px;
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .gallery-title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .gallery-hint {
+      font-size: 11.5px;
+      font-weight: 400;
+      color: var(--text-muted);
+    }
+
+    .salon-gallery-scroll {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+      padding-bottom: 4px;
+    }
+    .salon-gallery-scroll::-webkit-scrollbar { display: none; }
+
+    .gallery-item {
+      flex: 0 0 110px;
+      position: relative;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      border: 1px solid var(--border-subtle);
+      aspect-ratio: 1/1;
+      cursor: pointer;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .gallery-item:hover {
+      transform: translateY(-2px);
+      border-color: var(--border-strong);
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .gallery-caption {
+      position: absolute;
+      bottom: 0;
+      inset-inline: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 100%);
+      font-size: 10.5px;
+      font-weight: 500;
+      color: #fff;
+      padding: 12px 6px 5px;
+      text-align: center;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* Value Comparison Callout Banner */
+    .callout-banner {
+      background: var(--accent-subtle);
+      border: 1px solid var(--accent-border);
+      border-radius: var(--radius-md);
+      padding: 14px 18px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .callout-title {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 3px;
       display: flex;
       align-items: center;
       gap: 6px;
     }
 
-    /* Category pills */
+    .callout-desc {
+      font-size: 12px;
+      color: var(--text-secondary);
+      line-height: 1.45;
+    }
+
+    /* Category Nav Pills */
     .cat-nav {
       display: flex;
       gap: 8px;
       overflow-x: auto;
-      padding-bottom: 8px;
-      margin-bottom: 20px;
       scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+      margin-bottom: 18px;
+      padding-bottom: 4px;
     }
+    .cat-nav::-webkit-scrollbar { display: none; }
 
     .cat-btn {
       padding: 8px 16px;
@@ -248,16 +466,20 @@
       cursor: pointer;
       white-space: nowrap;
       transition: all 0.15s ease;
+      user-select: none;
     }
-
-    .cat-btn:hover { border-color: var(--border-strong); color: var(--text-primary); }
+    .cat-btn:hover {
+      border-color: var(--border-strong);
+      color: var(--text-primary);
+    }
     .cat-btn.active {
       background: var(--accent);
       color: #fff;
       border-color: var(--accent);
+      font-weight: 600;
     }
 
-    /* Service card */
+    /* Service Cards */
     .services-list {
       display: flex;
       flex-direction: column;
@@ -268,32 +490,71 @@
       background: var(--bg-surface);
       border: 1px solid var(--border-subtle);
       border-radius: var(--radius-md);
-      padding: 18px 20px;
+      padding: 16px 18px;
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      transition: border-color 0.15s;
+      gap: 16px;
+      transition: border-color 0.15s, background-color 0.15s;
     }
-
     .service-card:hover {
       border-color: var(--border-strong);
+      background: var(--bg-surface-raised);
     }
 
-    .service-info { flex: 1; padding-right: 20px; }
-    .service-title { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
-    .service-meta { font-size: 13px; color: var(--text-muted); display: flex; align-items: center; gap: 8px; }
-    .service-price { font-size: 16px; font-weight: 700; color: var(--text-primary); }
+    .service-thumb {
+      width: 60px;
+      height: 60px;
+      border-radius: var(--radius-sm);
+      object-fit: cover;
+      flex-shrink: 0;
+      border: 1px solid var(--border-subtle);
+    }
 
-    /* ==========================================================================
+    .service-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .service-title {
+      font-size: 14.5px;
+      font-weight: 600;
+      margin-bottom: 4px;
+      line-height: 1.3;
+    }
+
+    .service-meta {
+      font-size: 12.5px;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .service-price-block {
+      text-align: right;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+
+    .service-price {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    /* =========================================================================
        VIEW 2: STUDIO ADMIN PORTAL (JuNailCRM)
-       ========================================================================== */
+       ========================================================================= */
     #adminPortalView {
       display: flex;
-      min-height: calc(100vh - 49px);
+      min-height: calc(100vh - 54px);
     }
 
     .admin-sidebar {
-      width: 256px;
+      width: 250px;
       background: var(--bg-surface);
       border-right: 1px solid var(--border-subtle);
       padding: 20px 14px;
@@ -304,39 +565,40 @@
     }
 
     .admin-nav-item {
+      padding: 10px 14px;
+      font-size: 13.5px;
+      font-weight: 500;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      color: var(--text-secondary);
       display: flex;
       align-items: center;
       gap: 10px;
-      padding: 9px 12px;
-      border-radius: var(--radius-sm);
-      color: var(--text-secondary);
-      font-size: 13.5px;
-      font-weight: 500;
-      cursor: pointer;
       transition: all 0.15s ease;
-      border: 1px solid transparent;
       user-select: none;
     }
-
-    .admin-nav-item:hover { background: var(--bg-surface-hover); color: var(--text-primary); }
-    .admin-nav-item.active {
+    .admin-nav-item:hover {
       background: var(--bg-surface-raised);
       color: var(--text-primary);
-      border-color: var(--border-subtle);
+    }
+    .admin-nav-item.active {
+      background: var(--accent);
+      color: #fff;
       font-weight: 600;
     }
 
     .admin-content {
       flex: 1;
-      padding: 28px 32px;
+      padding: 24px 28px;
+      max-width: 1180px;
       overflow-y: auto;
-      max-width: 1300px;
     }
 
+    /* KPI Summary Row */
     .kpi-row {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 16px;
+      gap: 14px;
       margin-bottom: 24px;
     }
 
@@ -344,100 +606,239 @@
       background: var(--bg-surface);
       border: 1px solid var(--border-subtle);
       border-radius: var(--radius-md);
-      padding: 18px 20px;
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      box-shadow: var(--shadow-sm);
     }
 
-    .kpi-num { font-size: 24px; font-weight: 700; margin: 4px 0; }
+    .kpi-num {
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
 
-    /* Table styles */
+    /* Data Cards & Tables */
     .data-card {
       background: var(--bg-surface);
       border: 1px solid var(--border-subtle);
       border-radius: var(--radius-md);
+      box-shadow: var(--shadow-sm);
       overflow: hidden;
+      margin-bottom: 24px;
     }
 
     .data-header {
       padding: 16px 20px;
       border-bottom: 1px solid var(--border-subtle);
       display: flex;
-      align-items: center;
       justify-content: space-between;
+      align-items: center;
+      background: var(--bg-surface);
+      gap: 12px;
+      flex-wrap: wrap;
     }
 
-    table { width: 100%; border-collapse: collapse; text-align: left; }
-    th {
-      font-size: 12px; font-weight: 550; color: var(--text-muted);
-      padding: 12px 20px; background: var(--bg-surface-raised);
-      border-bottom: 1px solid var(--border-subtle);
+    .table-responsive {
+      width: 100%;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
     }
-    td { padding: 14px 20px; font-size: 13.5px; border-bottom: 1px solid var(--border-subtle); }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+    }
+
+    th {
+      font-size: 11.5px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      padding: 12px 18px;
+      background: var(--bg-surface-raised);
+      border-bottom: 1px solid var(--border-subtle);
+      white-space: nowrap;
+    }
+
+    td {
+      padding: 14px 18px;
+      font-size: 13.5px;
+      border-bottom: 1px solid var(--border-subtle);
+      vertical-align: middle;
+    }
     tr:last-child td { border-bottom: none; }
-    tr:hover td { background: var(--bg-surface-hover); }
+    tr:hover td { background: var(--bg-surface-raised); }
 
     /* Badges */
     .badge {
-      display: inline-flex; align-items: center; gap: 6px;
-      font-size: 11.5px; font-weight: 500; padding: 3px 8px;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11.5px;
+      font-weight: 550;
+      padding: 3px 8px;
       border-radius: var(--radius-full);
     }
-    .badge-success { background: var(--success-subtle); color: var(--success); }
+    .badge-success { background: var(--success-subtle); color: var(--success); border: 1px solid var(--success-border); }
     .badge-warning { background: var(--warning-subtle); color: var(--warning); }
     .badge-neutral { background: var(--bg-surface-raised); color: var(--text-secondary); border: 1px solid var(--border-subtle); }
 
-    /* Direction Tag */
     .dir-tag {
-      font-size: 11px; font-weight: 600; padding: 2px 6px;
-      border-radius: var(--radius-sm); background: var(--bg-surface-raised);
+      font-size: 11.5px;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: var(--radius-xs);
+      background: var(--bg-surface-raised);
       border: 1px solid var(--border-subtle);
+      display: inline-block;
+      white-space: nowrap;
     }
 
-    /* Modal (Universal) */
+    /* Modal System */
     .modal-backdrop {
-      position: fixed; inset: 0; background: rgba(0,0,0,0.75);
-      backdrop-filter: blur(4px); display: none; align-items: center; justify-content: center;
-      z-index: 100; padding: 20px;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(6px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 200;
+      padding: 16px;
     }
     .modal-backdrop.open { display: flex; }
 
     .modal-box {
-      background: var(--bg-surface); border: 1px solid var(--border-strong);
-      border-radius: var(--radius-lg); width: 100%; max-width: 740px;
-      max-height: 92vh; display: flex; flex-direction: column;
-      box-shadow: 0 24px 48px rgba(0,0,0,0.6);
+      background: var(--bg-surface);
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-lg);
+      width: 100%;
+      max-width: 680px;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      box-shadow: var(--shadow-lg);
+      overflow: hidden;
     }
 
     .modal-head {
-      padding: 18px 24px; border-bottom: 1px solid var(--border-subtle);
-      display: flex; align-items: center; justify-content: space-between;
-    }
-    .modal-content {
-      padding: 24px; overflow-y: auto; display: flex; flex-direction: column; gap: 18px;
-    }
-    .modal-foot {
-      padding: 16px 24px; border-top: 1px solid var(--border-subtle);
-      background: var(--bg-surface-raised); display: flex; align-items: center; justify-content: flex-end; gap: 12px;
+      padding: 18px 24px;
+      border-bottom: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--bg-surface);
     }
 
-    /* Form elements */
+    .modal-content {
+      padding: 20px 24px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .modal-foot {
+      padding: 16px 24px;
+      border-top: 1px solid var(--border-subtle);
+      background: var(--bg-surface-raised);
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 12px;
+    }
+
+    /* Form Elements */
     .form-row { display: flex; flex-direction: column; gap: 6px; }
     .form-lbl { font-size: 12.5px; font-weight: 600; color: var(--text-secondary); }
+    
     .input-field {
-      width: 100%; background: var(--bg-surface-raised);
-      border: 1px solid var(--border-subtle); border-radius: var(--radius-sm);
-      padding: 9px 12px; font-size: 13.5px; color: var(--text-primary);
+      width: 100%;
+      background: var(--bg-surface-raised);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 10px 12px;
+      font-size: 14px;
+      color: var(--text-primary);
       font-family: inherit;
     }
-    .input-field:focus { outline: none; border-color: var(--accent); }
-
-    .pills-select { display: flex; flex-wrap: wrap; gap: 6px; }
-    .pill-item {
-      padding: 6px 12px; font-size: 12.5px; border-radius: var(--radius-full);
-      background: var(--bg-surface-raised); border: 1px solid var(--border-subtle);
-      color: var(--text-secondary); cursor: pointer; user-select: none;
+    .input-field:focus {
+      outline: none;
+      border-color: var(--accent);
     }
-    .pill-item.active {
-      background: var(--accent); color: #fff; border-color: var(--accent); font-weight: 500;
+
+    /* Master Selector Grid inside Booking Modal */
+    .master-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    .master-card-select {
+      background: var(--bg-surface-raised);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 10px 12px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      user-select: none;
+    }
+    .master-card-select:hover {
+      border-color: var(--border-strong);
+      background: var(--bg-surface-hover);
+    }
+    .master-card-select.selected {
+      border-color: var(--accent);
+      background: var(--accent-subtle);
+    }
+
+    .master-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: var(--radius-full);
+      object-fit: cover;
+      border: 1.5px solid var(--border-subtle);
+      flex-shrink: 0;
+    }
+    .master-card-select.selected .master-avatar {
+      border-color: var(--accent);
+    }
+
+    .master-meta-name { font-size: 13.5px; font-weight: 600; line-height: 1.2; }
+    .master-meta-role { font-size: 11.5px; color: var(--text-muted); line-height: 1.2; margin-top: 2px; }
+
+    /* Slots Pills */
+    .slots-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .slot-pill {
+      padding: 8px 14px;
+      border-radius: var(--radius-full);
+      background: var(--bg-surface-raised);
+      border: 1px solid var(--border-subtle);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .slot-pill:hover { border-color: var(--border-strong); color: var(--text-primary); }
+    .slot-pill.active {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+      font-weight: 600;
     }
 
     /* BOM EDITABLE TABLE */
@@ -448,46 +849,80 @@
       overflow: hidden;
     }
     .bom-header {
-      padding: 10px 14px; background: rgba(0,0,0,0.2);
-      display: grid; grid-template-columns: 2fr 1fr 1fr 40px;
-      font-size: 11.5px; font-weight: 600; color: var(--text-muted);
+      padding: 10px 14px;
+      background: rgba(0,0,0,0.15);
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 40px;
+      font-size: 11.5px;
+      font-weight: 600;
+      color: var(--text-muted);
     }
     .bom-item-row {
-      padding: 8px 14px; border-top: 1px solid var(--border-subtle);
-      display: grid; grid-template-columns: 2fr 1fr 1fr 40px;
-      align-items: center; gap: 8px;
+      padding: 8px 14px;
+      border-top: 1px solid var(--border-subtle);
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 40px;
+      align-items: center;
+      gap: 8px;
     }
     .bom-item-row input {
-      background: var(--bg-surface); border: 1px solid var(--border-subtle);
-      border-radius: var(--radius-sm); padding: 5px 8px; color: var(--text-primary);
-      font-size: 12.5px; font-family: inherit; width: 100%;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 6px 8px;
+      color: var(--text-primary);
+      font-size: 13px;
+      font-family: inherit;
+      width: 100%;
     }
 
-    /* Photo Before/After */
-    .photo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    /* Photos Before/After inside Brief */
+    .photo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
     .photo-card {
-      border: 1px dashed var(--border-strong); border-radius: var(--radius-md);
-      padding: 16px; text-align: center; background: var(--bg-surface-raised);
-      cursor: pointer; min-height: 110px; display: flex; flex-direction: column;
-      align-items: center; justify-content: center; gap: 6px; font-size: 12px; color: var(--text-muted);
+      border: 1.5px dashed var(--border-strong);
+      border-radius: var(--radius-md);
+      padding: 12px;
+      text-align: center;
+      background: var(--bg-surface-raised);
+      cursor: pointer;
+      min-height: 120px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      font-size: 12px;
+      color: var(--text-muted);
+      transition: border-color 0.15s;
     }
-    .photo-card img { max-height: 120px; border-radius: var(--radius-sm); object-fit: cover; }
+    .photo-card:hover { border-color: var(--accent); }
+    .photo-card img {
+      max-height: 110px;
+      border-radius: var(--radius-sm);
+      object-fit: cover;
+    }
 
-    /* Canvas */
+    /* Canvas Stories */
     .canvas-box {
-      width: 270px; height: 480px; border-radius: var(--radius-lg);
-      border: 1px solid var(--border-strong); box-shadow: 0 16px 32px rgba(0,0,0,0.4);
-      background: #000; overflow: hidden;
+      width: 270px;
+      height: 480px;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-strong);
+      box-shadow: var(--shadow-md);
+      background: #000;
+      overflow: hidden;
     }
 
-    /* Mobile Responsive Optimizations */
+    /* =========================================================================
+       RESPONSIVE MOBILE BREAKPOINTS (Max Width 768px)
+       ========================================================================= */
     @media (max-width: 768px) {
       .system-switcher {
         flex-direction: column;
-        gap: 8px;
+        gap: 10px;
         padding: 10px 14px;
       }
-      .system-switcher > div:first-child {
+      .brand-cluster {
         width: 100%;
         justify-content: space-between;
       }
@@ -503,6 +938,38 @@
         justify-content: center;
         text-align: center;
       }
+      .salon-hero {
+        padding: 18px 16px;
+      }
+      .salon-hero-top {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+      }
+      .salon-hero-logo {
+        width: 60px;
+        height: 60px;
+      }
+      .salon-name {
+        font-size: 20px;
+      }
+      .service-card {
+        padding: 14px;
+        gap: 12px;
+      }
+      .service-thumb {
+        width: 52px;
+        height: 52px;
+      }
+      .service-title {
+        font-size: 13.5px;
+      }
+      .service-price {
+        font-size: 15px;
+      }
+      .master-grid {
+        grid-template-columns: 1fr;
+      }
       #adminPortalView {
         flex-direction: column;
       }
@@ -514,73 +981,80 @@
         flex-direction: row;
         overflow-x: auto;
         gap: 6px;
+        scrollbar-width: none;
       }
-      .admin-sidebar > div:first-child {
-        display: none;
-      }
+      .admin-sidebar::-webkit-scrollbar { display: none; }
       .admin-nav-item {
         white-space: nowrap;
         padding: 6px 12px;
         font-size: 12.5px;
       }
       .admin-content {
-        padding: 14px 12px;
+        padding: 16px 14px;
       }
       .kpi-row {
         grid-template-columns: 1fr 1fr;
         gap: 10px;
       }
       .kpi-card {
-        padding: 12px;
+        padding: 14px;
       }
       .kpi-num {
         font-size: 20px;
-      }
-      .data-header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 8px;
-      }
-      .data-card table {
-        display: block;
-        overflow-x: auto;
-        white-space: nowrap;
       }
       .modal-box {
         max-height: 94vh;
         border-radius: var(--radius-md);
       }
+      .modal-head {
+        padding: 14px 18px;
+      }
+      .modal-content {
+        padding: 16px 18px;
+        gap: 14px;
+      }
+      .modal-foot {
+        padding: 12px 18px;
+      }
       .bom-header, .bom-item-row {
-        grid-template-columns: 1.5fr 1fr 1fr 32px;
-        padding: 8px 10px;
+        grid-template-columns: 1.6fr 1fr 1fr 34px;
+        padding: 6px 8px;
+        font-size: 12px;
+      }
+      .input-field, select, input {
+        font-size: 16px !important; /* Prevents auto zoom-in on iOS */
       }
     }
   </style>
 </head>
 <body>
 
-  <!-- Top Global Switcher -->
+  <!-- Top Global Mode Switcher -->
   <header class="system-switcher">
-    <div style="display: flex; align-items: center; gap: 14px;">
-      <strong style="font-size: 14.5px; letter-spacing: -0.01em;">wild_beauty_space 💜</strong>
-      <span style="font-size: 11px; padding: 2px 6px; border-radius: 4px; background: var(--accent-subtle); color: var(--accent); font-weight: 600;">Одеса • Французький б-р</span>
+    <div class="brand-cluster">
+      <div style="display: flex; align-items: center; gap: 9px;">
+        <img src="./assets/img/logo.png" alt="wild_beauty_space">
+        <div class="brand-meta">
+          <span class="brand-name">wild_beauty_space 💜</span>
+          <span class="brand-sub">м. Одеса, Французький б-р, 26/1</span>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button class="btn-icon" id="themeBtn" title="Змінити тему">🌓</button>
+        <button class="btn-icon" id="resetBtn" title="Скинути дані">🔄</button>
+      </div>
     </div>
 
     <!-- Mode Selector: Client vs Admin -->
     <div class="mode-pills">
       <div class="mode-pill active" id="btnModeClient" onclick="switchMode('client')">
         <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
-        <span>📱 Онлайн-запис клієнта (як у Bookon)</span>
+        <span>📱 Онлайн-запис (як у Bookon)</span>
       </div>
       <div class="mode-pill" id="btnModeAdmin" onclick="switchMode('admin')">
         <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
-        <span>💻 Адмін-панель студії (JuNailCRM)</span>
+        <span>💻 Адмін-панель (JuNailCRM)</span>
       </div>
-    </div>
-
-    <div style="display: flex; align-items: center; gap: 10px;">
-      <button class="btn-icon" id="themeBtn" title="Тема">🌓</button>
-      <button class="btn-icon" id="resetBtn" title="Скинути дані">🔄</button>
     </div>
   </header>
 
@@ -589,28 +1063,69 @@
   <!-- ===================================================================== -->
   <main id="clientBookingView">
     <div class="salon-hero">
-      <div class="salon-hero-glow"></div>
-      <h1 class="salon-name">wild_beauty_space</h1>
-      <div class="salon-tagline">Простір твоєї краси 💜 • Всі види послуг • Якісний сервіс та любов до деталей ✨</div>
-      <div class="salon-meta">
-        <div class="meta-item">📍 Одеса, бульвар Французький, 26/1 (пов. 1)</div>
-        <div class="meta-item">📞 +38 075 645 77 35</div>
-        <div class="meta-item">🕒 Вівторок — Неділя: 10:00 - 20:00</div>
-        <div class="meta-item">📷 @wild_beauty_space_</div>
+      <div class="salon-hero-top">
+        <img src="./assets/img/logo.png" alt="Wild Beauty Space" class="salon-hero-logo">
+        <div class="salon-hero-text">
+          <div class="salon-title-row">
+            <h1 class="salon-name">wild_beauty_space</h1>
+            <span class="verified-badge">✓ Офіційна студія</span>
+          </div>
+          <p class="salon-tagline">Простір твоєї краси 💜 • Манікюр • Педикюр • Вії • Брови • Косметологія • Волосся</p>
+          <div class="salon-meta-pills">
+            <span class="meta-pill">📍 Французький б-р, 26/1 (пов. 1)</span>
+            <span class="meta-pill">🕒 Вт–Нд: 10:00 – 20:00</span>
+            <span class="meta-pill">📞 +38 075 645 77 35</span>
+            <a href="https://instagram.com/wild_beauty_space_" target="_blank" class="meta-pill meta-link">📷 @wild_beauty_space_ ↗</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Real Works Photo Gallery -->
+      <div class="salon-gallery-section">
+        <div class="gallery-title-row">
+          <span>✨ Роботи майстрів студії</span>
+          <span class="gallery-hint">гортайте портфоліо ➔</span>
+        </div>
+        <div class="salon-gallery-scroll">
+          <div class="gallery-item">
+            <img src="./assets/img/salon_3.jpg" alt="Dark Cherry Gel">
+            <div class="gallery-caption">Dark Cherry</div>
+          </div>
+          <div class="gallery-item">
+            <img src="./assets/img/salon_4.jpg" alt="Nude Cat-Eye">
+            <div class="gallery-caption">Cat-Eye Nude</div>
+          </div>
+          <div class="gallery-item">
+            <img src="./assets/img/salon_5.jpg" alt="Винний френч">
+            <div class="gallery-caption">Винний френч</div>
+          </div>
+          <div class="gallery-item">
+            <img src="./assets/img/salon_1.jpg" alt="Ламінування вій та брів">
+            <div class="gallery-caption">Вії & Брови</div>
+          </div>
+          <div class="gallery-item">
+            <img src="./assets/img/salon_2.jpg" alt="Естетична косметологія">
+            <div class="gallery-caption">Косметологія</div>
+          </div>
+          <div class="gallery-item">
+            <img src="./assets/img/industry_4.png" alt="Стильні стрижки & Укладки">
+            <div class="gallery-caption">Перукарські</div>
+          </div>
+        </div>
       </div>
     </div>
 
     <!-- Bookon Comparison Callout Banner -->
-    <div style="background: rgba(147, 86, 212, 0.12); border: 1px solid rgba(147, 86, 212, 0.35); border-radius: var(--radius-md); padding: 14px 18px; margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap;">
+    <div class="callout-banner">
       <div style="flex: 1; min-width: 250px;">
-        <div style="font-size: 13.5px; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 6px; margin-bottom: 3px;">
+        <div class="callout-title">
           <span>💡 Ви переглядаєте екран клієнта (заміна Bookon)</span>
         </div>
-        <div style="font-size: 12px; color: var(--text-secondary); line-height: 1.45;">
-          Для клієнта тут все звично і просто. Але вся сила студії — в <strong>Адмін-панелі</strong>: авто-списання розхідників по грамах/мл, бриф візиту, точна собівартість та <strong>0 ₴ абонплати</strong> (замість ~9 000 ₴/рік, які бере Bookon).
+        <div class="callout-desc">
+          Для клієнта тут все звично та просто. А вся сила студії — в <strong>Адмін-панелі</strong>: авто-списання розхідників по грамах/мл, бриф візиту, точна собівартість та <strong>0 ₴ абонплати</strong> (замість ~9 000 ₴/рік, які бере Bookon).
         </div>
       </div>
-      <button class="btn btn-primary" onclick="switchMode('admin')" style="padding: 8px 16px; font-size: 12.5px; white-space: nowrap;">
+      <button class="btn btn-primary" onclick="switchMode('admin')">
         💻 Відкрити Адмін-панель ➔
       </button>
     </div>
@@ -637,7 +1152,6 @@
   <!-- ===================================================================== -->
   <div id="adminPortalView" style="display: none;">
     <aside class="admin-sidebar">
-      <div style="font-size: 11px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; padding: 4px 8px;">Студійний менеджмент</div>
       <div class="admin-nav-item active" data-atab="calendar">🗓 Розклад & Записи</div>
       <div class="admin-nav-item" data-atab="clients">👥 Клієнти & Бріфи</div>
       <div class="admin-nav-item" data-atab="inventory">📦 Склад матеріалів (BOM)</div>
@@ -650,7 +1164,7 @@
       <!-- Admin Tab: Calendar & Appointments -->
       <section id="adminTabCalendar" class="admin-subtab">
         <!-- Feature Highlights & Bookon Comparison -->
-        <div style="background: rgba(61, 184, 122, 0.1); border: 1px solid rgba(61, 184, 122, 0.3); border-radius: var(--radius-md); padding: 14px 18px; margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap;">
+        <div style="background: rgba(46, 196, 124, 0.1); border: 1px solid var(--success-border); border-radius: var(--radius-md); padding: 14px 18px; margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap;">
           <div style="flex: 1; min-width: 250px;">
             <div style="font-size: 13.5px; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 6px; margin-bottom: 3px;">
               <span>🔥 Спробуйте головну фічу: натисніть кнопку «Бриф» біля запису</span>
@@ -660,7 +1174,7 @@
             </div>
           </div>
           <div style="text-align: right;">
-            <div style="font-size: 12px; font-weight: 600; color: var(--success); background: var(--bg-surface); padding: 6px 14px; border-radius: var(--radius-full); border: 1px solid rgba(61,184,122,0.3); display: inline-block;">
+            <div style="font-size: 12px; font-weight: 600; color: var(--success); background: var(--bg-surface); padding: 6px 14px; border-radius: var(--radius-full); border: 1px solid var(--success-border); display: inline-block;">
               💰 0 ₴ абонплати • Економія 9 000 ₴/рік
             </div>
           </div>
@@ -692,23 +1206,27 @@
         <div class="data-card">
           <div class="data-header">
             <strong style="font-size: 14.5px;">Журнал записів • Сьогодні (24 листопада)</strong>
-            <button class="btn btn-secondary" onclick="openClientBookingModal()">+ Додати запис вручну</button>
+            <button class="btn btn-secondary btn-sm" onclick="openClientBookingModal()">+ Додати запис вручну</button>
           </div>
-          <table>
-            <thead>
-              <tr>
-                <th>Час</th>
-                <th>Клієнт</th>
-                <th>Напрямок</th>
-                <th>Послуга</th>
-                <th>Майстер</th>
-                <th>Вартість</th>
-                <th>Статус</th>
-                <th style="text-align: right;">Дія</th>
-              </tr>
-            </thead>
-            <tbody id="adminAppointmentsTbody"></tbody>
-          </table>
+          <div class="table-responsive">
+            <table>
+              <thead>
+                <tr>
+                  <th>Час</th>
+                  <th>Клієнт</th>
+                  <th>Напрямок</th>
+                  <th>Послуга</th>
+                  <th>Майстер</th>
+                  <th>Вартість</th>
+                  <th>Статус</th>
+                  <th style="text-align: right;">Дія</th>
+                </tr>
+              </thead>
+              <tbody id="adminAppointmentsBody">
+                <!-- Generated via JS -->
+              </tbody>
+            </table>
+          </div>
         </div>
       </section>
 
@@ -716,33 +1234,37 @@
       <section id="adminTabClients" class="admin-subtab" style="display: none;">
         <div class="data-card">
           <div class="data-header">
-            <strong style="font-size: 14.5px;">Клієнтська база з історією брифів</strong>
-            <input type="text" id="adminClientSearch" class="input-field" placeholder="Пошук за ім'ям або телефоном..." style="max-width: 280px;">
+            <strong style="font-size: 14.5px;">Клієнтська база studio wild_beauty_space</strong>
+            <input type="text" class="input-field" placeholder="Пошук за ім'ям або телефоном..." style="max-width: 260px;" id="clientSearchInput">
           </div>
-          <table>
-            <thead>
-              <tr>
-                <th>Клієнтка</th>
-                <th>Телефон</th>
-                <th>Останній напрямок</th>
-                <th>Параметри / Особливості</th>
-                <th>Візитів</th>
-                <th>Всього витрачено</th>
-                <th style="text-align: right;">Історія брифів</th>
-              </tr>
-            </thead>
-            <tbody id="adminClientsTbody"></tbody>
-          </table>
+          <div class="table-responsive">
+            <table>
+              <thead>
+                <tr>
+                  <th>Клієнт</th>
+                  <th>Телефон</th>
+                  <th>Візитів</th>
+                  <th>LTV (Виручка)</th>
+                  <th>Останній візит</th>
+                  <th>Алергії / Нотатки</th>
+                  <th style="text-align: right;">Картка</th>
+                </tr>
+              </thead>
+              <tbody id="adminClientsBody">
+                <!-- Generated via JS -->
+              </tbody>
+            </table>
+          </div>
         </div>
       </section>
 
-      <!-- Admin Tab: Inventory -->
+      <!-- Admin Tab: Inventory (BOM Warehouse) -->
       <section id="adminTabInventory" class="admin-subtab" style="display: none;">
         <div class="data-card">
           <div class="data-header">
-            <strong style="font-size: 14.5px;">Склад матеріалів для всіх 5 напрямків</strong>
+            <strong style="font-size: 14.5px;">Склад матеріалів (BOM Списання)</strong>
             <div style="display: flex; gap: 8px;">
-              <select id="invCatFilter" class="input-field" style="width: auto;">
+              <select class="input-field" id="invCatFilter" style="width: auto; padding: 6px 10px;">
                 <option value="all">Всі напрямки</option>
                 <option value="Манікюр">Манікюр</option>
                 <option value="Педикюр">Педикюр</option>
@@ -752,19 +1274,23 @@
               </select>
             </div>
           </div>
-          <table>
-            <thead>
-              <tr>
-                <th>Матеріал</th>
-                <th>Напрямок</th>
-                <th>Поточний залишок</th>
-                <th>Собівартість за од.</th>
-                <th>Статус</th>
-                <th style="text-align: right;">Дія</th>
-              </tr>
-            </thead>
-            <tbody id="adminInventoryTbody"></tbody>
-          </table>
+          <div class="table-responsive">
+            <table>
+              <thead>
+                <tr>
+                  <th>Матеріал</th>
+                  <th>Напрямок</th>
+                  <th>Залишок</th>
+                  <th>Собівартість за од.</th>
+                  <th>Статус складу</th>
+                  <th style="text-align: right;">Дія</th>
+                </tr>
+              </thead>
+              <tbody id="adminInventoryBody">
+                <!-- Generated via JS -->
+              </tbody>
+            </table>
+          </div>
         </div>
       </section>
 
@@ -772,62 +1298,63 @@
       <section id="adminTabFinance" class="admin-subtab" style="display: none;">
         <div class="kpi-row">
           <div class="kpi-card">
-            <div style="font-size: 12px; color: var(--text-muted);">Оборот (місяць)</div>
-            <div class="kpi-num" id="finRevTotal">48 200 ₴</div>
-            <div style="font-size: 11.5px; color: var(--text-secondary);">53 завершені послуги</div>
+            <div style="font-size: 12px; color: var(--text-muted);">Виручка за листопад</div>
+            <div class="kpi-num" id="finRevTotal">68 400 ₴</div>
+            <div style="font-size: 11.5px; color: var(--success);">+14% до жовтня</div>
           </div>
           <div class="kpi-card">
-            <div style="font-size: 12px; color: var(--text-muted);">Фактично списано матеріалів</div>
-            <div class="kpi-num" id="finCostTotal">4 320 ₴</div>
-            <div style="font-size: 11.5px; color: var(--text-secondary);">За відредагованими брифами</div>
+            <div style="font-size: 12px; color: var(--text-muted);">Витрати на матеріали (BOM)</div>
+            <div class="kpi-num" id="finCostTotal">5 820 ₴</div>
+            <div style="font-size: 11.5px; color: var(--text-secondary);">8.5% від обороту</div>
           </div>
           <div class="kpi-card">
-            <div style="font-size: 12px; color: var(--text-muted);">Чистий прибуток салону</div>
-            <div class="kpi-num" style="color: var(--success);" id="finProfitTotal">43 880 ₴</div>
-            <div style="font-size: 11.5px; color: var(--success);">Рентабельність: 91.0%</div>
+            <div style="font-size: 12px; color: var(--text-muted);">Чистий студійний дохід</div>
+            <div class="kpi-num" style="color: var(--success);" id="finProfitTotal">62 580 ₴</div>
+            <div style="font-size: 11.5px; color: var(--success);">Маржинальність 91.5%</div>
           </div>
           <div class="kpi-card">
             <div style="font-size: 12px; color: var(--text-muted);">Заощаджено на Bookon</div>
             <div class="kpi-num" style="color: var(--accent);">+9 000 ₴</div>
-            <div style="font-size: 11.5px; color: var(--text-secondary);">Без щомісячної підписки</div>
+            <div style="font-size: 11.5px; color: var(--text-secondary);">Без щомісячної абонплати</div>
           </div>
         </div>
 
-        <div class="data-card">
-          <div class="data-header">
-            <strong style="font-size: 14.5px;">Розподіл виручки за напрямками (Одеса)</strong>
+        <div class="data-card" style="padding: 20px;">
+          <h3 style="font-size: 15px; margin-bottom: 16px;">Структура виручки по напрямках студії</h3>
+          <div style="display: flex; flex-direction: column; gap: 12px;" id="financeCategoryBars">
+            <!-- Rendered via JS -->
           </div>
-          <div style="padding: 20px; display: flex; flex-direction: column; gap: 12px;" id="financeCategoryBars"></div>
         </div>
       </section>
 
       <!-- Admin Tab: Stories Generator -->
       <section id="adminTabStories" class="admin-subtab" style="display: none;">
-        <div class="data-card" style="padding: 24px;">
-          <h2 style="font-size: 16px; font-weight: 600; margin-bottom: 6px;">Генератор Instagram Stories для @wild_beauty_space_</h2>
-          <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 24px;">Автоматичний рендер макета 1080x1920 із вільними годинами під брендовий стиль студії.</p>
-          <div style="display: flex; gap: 32px; align-items: flex-start; flex-wrap: wrap;">
-            <div class="canvas-box">
-              <canvas id="adminStoriesCanvas" width="1080" height="1920" style="width:100%; height:100%;"></canvas>
+        <div style="display: grid; grid-template-columns: 320px 1fr; gap: 24px; align-items: start;">
+          <div class="canvas-box">
+            <canvas id="adminStoriesCanvas" width="1080" height="1920" style="width: 100%; height: 100%; object-fit: contain;"></canvas>
+          </div>
+          <div class="data-card" style="padding: 24px; display: flex; flex-direction: column; gap: 16px;">
+            <h3 style="font-size: 16px;">Генератор Stories «Вільні віконця»</h3>
+            <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.4;">
+              Створюйте фірмові картинки 1080x1920 для Instagram Stories студії @wild_beauty_space_ з адресою Французький б-р, 26/1 в 1 клік!
+            </p>
+            <div class="form-row">
+              <label class="form-lbl">Напрямок послуги</label>
+              <select class="input-field" id="storiesDirSelect">
+                <option value="Манікюр">💅 Манікюр</option>
+                <option value="Педикюр">🦶 Педикюр</option>
+                <option value="Вії">👁️ Нарощування вій</option>
+                <option value="Брови">🎨 Брови</option>
+                <option value="Косметологія">🧖‍♀️ Косметологія</option>
+              </select>
             </div>
-            <div style="flex: 1; max-width: 420px; display: flex; flex-direction: column; gap: 16px;">
-              <div class="form-row">
-                <label class="form-lbl">Напрямок віконець</label>
-                <select id="storiesDirSelect" class="input-field">
-                  <option value="Манікюр">💅 Манікюр & Педикюр</option>
-                  <option value="Вії">👁️ Нарощування вій</option>
-                  <option value="Брови">🎨 Брови & Ламінування</option>
-                  <option value="Косметологія">🧖‍♀️ Косметологія</option>
-                </select>
-              </div>
-              <div class="form-row">
-                <label class="form-lbl">Доступні години</label>
-                <input type="text" id="storiesHoursInput" class="input-field" value="11:30 • 14:00 • 17:30">
-              </div>
-              <button class="btn btn-primary" id="btnDownloadStory" style="margin-top: 8px;">
-                <span>Завантажити готову Stories (PNG 1080x1920)</span>
-              </button>
+            <div class="form-row">
+              <label class="form-lbl">Вільні години (через крапку •)</label>
+              <input type="text" class="input-field" id="storiesHoursInput" value="11:30 • 14:00 • 17:30">
             </div>
+            <button class="btn btn-primary" id="btnDownloadStory" style="align-self: flex-start;">
+              📥 Завантажити Stories (PNG 1080x1920)
+            </button>
           </div>
         </div>
       </section>
@@ -836,65 +1363,79 @@
   </div>
 
   <!-- ===================================================================== -->
-  <!-- MODALS: 1. CLIENT BOOKING MODAL                                       -->
+  <!-- MODAL 1: CLIENT BOOKING DIALOG (WITH MASTERS + REAL PHOTOS)           -->
   <!-- ===================================================================== -->
   <div class="modal-backdrop" id="clientBookingModal">
-    <div class="modal-box" style="max-width: 520px;">
+    <div class="modal-box">
       <div class="modal-head">
-        <strong id="modalBookingTitle">Онлайн-запис до wild_beauty_space</strong>
-        <button class="btn-icon" onclick="closeBookingModal()">✕</button>
+        <div>
+          <strong style="font-size: 15px;" id="bookModalServiceName">Запис на послугу</strong>
+          <div style="font-size: 12px; color: var(--text-muted);" id="bookModalServicePrice">wild_beauty_space • Французький бульвар, 26/1</div>
+        </div>
+        <button class="btn-icon" onclick="closeClientBookingModal()">✕</button>
       </div>
       <div class="modal-content">
+        <!-- 1. Master Selection -->
         <div class="form-row">
-          <label class="form-lbl">Обрана послуга</label>
-          <div id="modalSelectedService" style="font-weight: 600; font-size: 14.5px;">Зняття + манікюр + покриття (900 ₴)</div>
-        </div>
-        <div class="form-row">
-          <label class="form-lbl">Оберіть майстра</label>
-          <select id="bookMasterSelect" class="input-field">
-            <option value="ТОП-Майстер">ТОП-Майстер студії</option>
-            <option value="Майстер">Майстер</option>
-            <option value="Молодший майстер">Молодший майстер</option>
-          </select>
-        </div>
-        <div class="form-row">
-          <label class="form-lbl">Оберіть зручний час (Сьогодні / Завтра)</label>
-          <div class="pills-select" id="bookTimePills">
-            <span class="pill-item active">11:30</span>
-            <span class="pill-item">14:00</span>
-            <span class="pill-item">16:30</span>
-            <span class="pill-item">18:00</span>
+          <label class="form-lbl">1. Оберіть майстра</label>
+          <div class="master-grid" id="bookingMastersGrid">
+            <!-- Rendered dynamically via JS with real photos -->
           </div>
         </div>
+
+        <!-- 2. Date & Time Selection -->
         <div class="form-row">
-          <label class="form-lbl">Ваше ім'я</label>
-          <input type="text" id="bookClientName" class="input-field" placeholder="Наприклад, Олена">
+          <label class="form-lbl">2. Оберіть дату та час візиту</label>
+          <div style="display: flex; gap: 8px; margin-bottom: 8px; overflow-x: auto; padding-bottom: 4px;">
+            <div class="slot-pill active" onclick="selectDatePill(this)">Сьогодні, 24 лист</div>
+            <div class="slot-pill" onclick="selectDatePill(this)">Завтра, 25 лист</div>
+            <div class="slot-pill" onclick="selectDatePill(this)">Середа, 26 лист</div>
+          </div>
+          <div class="slots-grid" id="bookingTimeSlots">
+            <div class="slot-pill active" onclick="selectTimePill(this)">11:30</div>
+            <div class="slot-pill" onclick="selectTimePill(this)">13:00</div>
+            <div class="slot-pill" onclick="selectTimePill(this)">15:30</div>
+            <div class="slot-pill" onclick="selectTimePill(this)">17:00</div>
+            <div class="slot-pill" onclick="selectTimePill(this)">18:30</div>
+          </div>
         </div>
+
+        <!-- 3. Client details -->
         <div class="form-row">
-          <label class="form-lbl">Номер телефону</label>
-          <input type="text" id="bookClientPhone" class="input-field" placeholder="+380 97 000 00 00">
+          <label class="form-lbl">3. Ваше ім'я</label>
+          <input type="text" class="input-field" id="bookClientName" placeholder="Ольга">
         </div>
-        <div class="form-row" style="background: var(--accent-subtle); padding: 12px; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle);">
-          <div style="font-size: 12px; color: var(--accent); font-weight: 600;">Завдаток для бронювання (Monobank):</div>
-          <div style="font-size: 11.5px; color: var(--text-secondary); margin-top: 2px;">Завдаток 200 ₴ фіксує віконце. Посилання на банку студії надійде в Telegram.</div>
+
+        <div class="form-row">
+          <label class="form-lbl">4. Номер телефону (для підтвердження в Telegram)</label>
+          <input type="tel" class="input-field" id="bookClientPhone" placeholder="+38 (098) 000-00-00">
+        </div>
+
+        <!-- Prepayment Note -->
+        <div style="background: var(--bg-surface-raised); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); padding: 12px; font-size: 12px; color: var(--text-secondary); display: flex; align-items: center; gap: 10px;">
+          <span style="font-size: 20px;">💳</span>
+          <div>
+            <strong>Завдаток 200 ₴ прямо на Monobank студії:</strong>
+            <div style="color: var(--text-muted); margin-top: 2px;">Завдаток зараховується у вартість процедури. Жодних посередників.</div>
+          </div>
         </div>
       </div>
       <div class="modal-foot">
-        <button class="btn btn-secondary" onclick="closeBookingModal()">Скасувати</button>
-        <button class="btn btn-primary" onclick="confirmClientBooking()">Підтвердити запис</button>
+        <button class="btn btn-secondary" onclick="closeClientBookingModal()">Скасувати</button>
+        <button class="btn btn-primary" onclick="confirmClientBooking()">Підтвердити запис ➔</button>
       </div>
     </div>
   </div>
 
   <!-- ===================================================================== -->
-  <!-- MODALS: 2. VISIT BRIEF MODAL (With Material Editing & Adding)        -->
+  <!-- MODAL 2: VISIT BRIEF & EDITABLE BOM WRITE-OFF                         -->
   <!-- ===================================================================== -->
-  <div class="modal-backdrop" id="visitBriefModal">
+  <div class="modal-backdrop" id="adminBriefModal">
     <div class="modal-box">
       <div class="modal-head">
         <div>
-          <strong style="font-size: 15px;" id="briefHeaderTitle">Бриф візиту клієнтки</strong>
-          <div style="font-size: 12px; color: var(--text-muted);" id="briefHeaderSubtitle">Олена Ковальчук • 11:30</div>
+          <strong style="font-size: 15px;" id="briefModalTitle">Бриф візиту клієнта</strong>
+          <div style="font-size: 12px; color: var(--accent);" id="briefModalSubtitle">Студійний менеджмент wild_beauty_space</div>
         </div>
         <button class="btn-icon" onclick="closeBriefModal()">✕</button>
       </div>
@@ -919,7 +1460,7 @@
         <div class="form-row">
           <div style="display: flex; justify-content: space-between; align-items: center;">
             <label class="form-lbl">Фактично списані матеріали (BOM Редагування)</label>
-            <button class="btn btn-secondary" style="padding: 3px 8px; font-size: 11.5px;" onclick="addMaterialToBriefRow()">+ Додати матеріал</button>
+            <button class="btn btn-secondary btn-sm" onclick="addMaterialToBriefRow()">+ Додати матеріал</button>
           </div>
           
           <div class="bom-editor">
@@ -965,144 +1506,174 @@
     // =========================================================================
     const INITIAL_SERVICES = [
       // 💅 Манікюр
-      { id: "s-01", cat: "nails", name: "Зняття + манікюр + покриття", price: 900, duration: "2 год.", cost: 68, defaultBOM: [
+      { id: "s-01", cat: "nails", name: "Зняття + манікюр + покриття", price: 900, duration: "2 год.", img: "./assets/img/salon_3.jpg", cost: 68, defaultBOM: [
         { invId: "inv-m1", name: "Rubber Base (Каучукова база)", qty: 0.5, unit: "мл" },
         { invId: "inv-m2", name: "No-Wipe Glossy Top", qty: 0.4, unit: "мл" },
         { invId: "inv-m4", name: "Пилочка одноразова 100/180", qty: 1, unit: "шт" }
       ]},
-      { id: "s-02", cat: "nails", name: "Нарощування нігтів (довжина 1-2)", price: 1100, duration: "2 год. 30 хв.", cost: 95, defaultBOM: [
+      { id: "s-02", cat: "nails", name: "Нарощування нігтів (довжина 1-2)", price: 1100, duration: "2 год. 30 хв.", img: "./assets/img/salon_4.jpg", cost: 95, defaultBOM: [
         { invId: "inv-m3", name: "Hard Gel Clear", qty: 1.5, unit: "мл" },
         { invId: "inv-m2", name: "No-Wipe Glossy Top", qty: 0.4, unit: "мл" },
         { invId: "inv-m4", name: "Пилочка одноразова 100/180", qty: 1, unit: "шт" }
       ]},
-      { id: "s-03", cat: "nails", name: "Складне нарощування / Арт-дизайн", price: 1300, duration: "2 год. 30 хв.", cost: 115, defaultBOM: [
+      { id: "s-03", cat: "nails", name: "Складне нарощування / Арт-дизайн", price: 1300, duration: "2 год. 30 хв.", img: "./assets/img/salon_5.jpg", cost: 115, defaultBOM: [
         { invId: "inv-m3", name: "Hard Gel Clear", qty: 2.2, unit: "мл" },
         { invId: "inv-m2", name: "No-Wipe Glossy Top", qty: 0.6, unit: "мл" },
         { invId: "inv-m4", name: "Пилочка одноразова 100/180", qty: 1, unit: "шт" }
       ]},
-      { id: "s-04", cat: "nails", name: "Негарантійний ремонт 1 нігтя", price: 100, duration: "30 хв.", cost: 15, defaultBOM: [
+      { id: "s-04", cat: "nails", name: "Негарантійний ремонт 1 нігтя", price: 100, duration: "30 хв.", img: "./assets/img/salon_3.jpg", cost: 15, defaultBOM: [
         { invId: "inv-m3", name: "Hard Gel Clear", qty: 0.3, unit: "мл" }
       ]},
 
       // 🦶 Педикюр
-      { id: "s-05", cat: "pedi", name: "Повний педикюр з покриттям (гель-лак/лак)", price: 900, duration: "1 год. 15 хв.", cost: 72, defaultBOM: [
+      { id: "s-05", cat: "pedi", name: "Повний педикюр з покриттям (гель-лак/лак)", price: 900, duration: "1 год. 15 хв.", img: "./assets/img/salon_4.jpg", cost: 72, defaultBOM: [
         { invId: "inv-p1", name: "Подо-диск одноразовий 180 грит", qty: 2, unit: "шт" },
         { invId: "inv-p2", name: "Кератолітик пілінговий", qty: 3, unit: "мл" },
         { invId: "inv-m2", name: "No-Wipe Glossy Top", qty: 0.3, unit: "мл" }
       ]},
 
       // 🎨 Брови
-      { id: "s-06", cat: "brows", name: "Корекція + фарбування брів (віск/пінцет)", price: 700, duration: "45 хв.", cost: 45, defaultBOM: [
+      { id: "s-06", cat: "brows", name: "Корекція + фарбування брів (віск/пінцет)", price: 700, duration: "45 хв.", img: "./assets/img/salon_1.jpg", cost: 45, defaultBOM: [
         { invId: "inv-b1", name: "Фарба для брів Levissime / Elan", qty: 1.5, unit: "мл" },
         { invId: "inv-b2", name: "Окислювач 3%", qty: 1.5, unit: "мл" },
         { invId: "inv-b3", name: "Віск для моделювання брів", qty: 2, unit: "г" }
       ]},
-      { id: "s-07", cat: "brows", name: "Ламінування брів + фарбування + ботокс", price: 950, duration: "1 год.", cost: 85, defaultBOM: [
-        { invId: "inv-b4", name: "Склад для ламінування №1 & №2", qty: 1, unit: "саше" },
+      { id: "s-07", cat: "brows", name: "Ламінування брів + фарбування + ботокс", price: 950, duration: "1 год.", img: "./assets/img/salon_1.jpg", cost: 85, defaultBOM: [
+        { invId: "inv-b4", name: "Склади для ламінування 1+2+3", qty: 1, unit: "компл" },
         { invId: "inv-b1", name: "Фарба для брів Levissime / Elan", qty: 1.5, unit: "мл" }
       ]},
 
-      // 👁️ Вії
-      { id: "s-08", cat: "lashes", name: "Нарощування вій (класика)", price: 850, duration: "1 год. 15 хв.", cost: 55, defaultBOM: [
-        { invId: "inv-l1", name: "Клей для вій швидкий", qty: 0.2, unit: "мл" },
-        { invId: "inv-l2", name: "Гідрогелеві патчі", qty: 1, unit: "пара" },
-        { invId: "inv-l3", name: "Палетка вій C 0.07", qty: 0.1, unit: "палетка" }
+      // 👁️ Нарощування вій
+      { id: "s-08", cat: "lashes", name: "Нарощування вій: Класика (1D)", price: 850, duration: "2 год.", img: "./assets/img/salon_1.jpg", cost: 60, defaultBOM: [
+        { invId: "inv-l1", name: "Клей для вій швидкої фіксації", qty: 0.2, unit: "мл" },
+        { invId: "inv-l2", name: "Гідрогелеві патчі під очі", qty: 1, unit: "пара" },
+        { invId: "inv-l3", name: "Вії пучки/стрічки C/D 0.07", qty: 0.1, unit: "пал" }
       ]},
-      { id: "s-09", cat: "lashes", name: "Тренди (стрілка, мокрий ефект, аніме)", price: 1200, duration: "2 год.", cost: 80, defaultBOM: [
-        { invId: "inv-l1", name: "Клей для вій швидкий", qty: 0.3, unit: "мл" },
-        { invId: "inv-l2", name: "Гідрогелеві патчі", qty: 1, unit: "пара" },
-        { invId: "inv-l3", name: "Палетка вій C 0.07", qty: 0.2, unit: "палетка" }
-      ]},
-
-      // 💇‍♀️ Перукарські
-      { id: "s-10", cat: "hair", name: "Жіноча стрижка (миття + укладка)", price: 1000, duration: "1 година", cost: 40, defaultBOM: [
-        { invId: "inv-h1", name: "Шампунь & Кондиціонер зволожуючий", qty: 15, unit: "мл" }
+      { id: "s-09", cat: "lashes", name: "Нарощування вій: Тренди (стрілка, мокрий ефект)", price: 1200, duration: "2 год. 30 хв.", img: "./assets/img/salon_1.jpg", cost: 85, defaultBOM: [
+        { invId: "inv-l1", name: "Клей для вій швидкої фіксації", qty: 0.3, unit: "мл" },
+        { invId: "inv-l2", name: "Гідрогелеві патчі під очі", qty: 1, unit: "пара" },
+        { invId: "inv-l4", name: "Вії коричневі/кольорові акценти", qty: 0.2, unit: "пал" }
       ]},
 
       // 🧖‍♀️ Косметологія
-      { id: "s-11", cat: "cosmo", name: "Комбінована чистка обличчя (УЗ + механіка)", price: 1200, duration: "1 год. 30 хв.", cost: 90, defaultBOM: [
-        { invId: "inv-c1", name: "Гель для ультразвукової чистки", qty: 10, unit: "мл" },
-        { invId: "inv-c2", name: "Заспокійлива альгінатна маска", qty: 25, unit: "г" }
+      { id: "s-10", cat: "cosmo", name: "Комбінована чистка обличчя (УЗ + механіка)", price: 1200, duration: "1 год. 30 хв.", img: "./assets/img/salon_2.jpg", cost: 140, defaultBOM: [
+        { invId: "inv-c1", name: "Гель холодного гідрування", qty: 5, unit: "мл" },
+        { invId: "inv-c2", name: "Антисептична заспокійлива маска", qty: 5, unit: "мл" },
+        { invId: "inv-c3", name: "Фінішний SPF-крем 50+", qty: 2, unit: "мл" }
       ]},
-      { id: "s-12", cat: "cosmo", name: "Всесезонний мигдальний пілінг 30%", price: 950, duration: "45 хв.", cost: 75, defaultBOM: [
-        { invId: "inv-c3", name: "Пілінг мигдальний 30%", qty: 2.5, unit: "мл" },
-        { invId: "inv-c4", name: "Захисний крем SPF 50", qty: 2, unit: "мл" }
+      { id: "s-11", cat: "cosmo", name: "Мигдальний пілінг (всесезонний)", price: 950, duration: "45 хв.", img: "./assets/img/salon_2.jpg", cost: 90, defaultBOM: [
+        { invId: "inv-c4", name: "Мигдальна кислота 40%", qty: 2.5, unit: "мл" },
+        { invId: "inv-c5", name: "Нейтралізатор пілінгу", qty: 3, unit: "мл" },
+        { invId: "inv-c3", name: "Фінішний SPF-крем 50+", qty: 2, unit: "мл" }
+      ]},
+
+      // 💇‍♀️ Перукарські
+      { id: "s-12", cat: "hair", name: "Жіноча стрижка + укладка", price: 1000, duration: "1 год. 30 хв.", img: "./assets/img/industry_4.png", cost: 50, defaultBOM: [
+        { invId: "inv-h1", name: "Шампунь глибокого очищення", qty: 15, unit: "мл" },
+        { invId: "inv-h2", name: "Термозахисний спрей / флюїд", qty: 3, unit: "мл" }
       ]}
+    ];
+
+    const REAL_MASTERS = [
+      { id: "m-any", name: "Будь-який вільний майстер", role: "Найближче вільне віконце", avatar: "./assets/img/logo.png", rating: 5.0, exp: "Швидкий запис" },
+      { id: "m-katya", name: "Катерина", role: "ТОП-Майстер нігтьового сервісу", avatar: "./assets/img/salon_3.jpg", rating: 5.0, exp: "Досвід 6 років" },
+      { id: "m-nastya", name: "Анастасія", role: "Майстер манікюру та педикюру", avatar: "./assets/img/salon_5.jpg", rating: 4.9, exp: "Досвід 4 роки" },
+      { id: "m-diana", name: "Діана", role: "Лешмейкер & Ламі-стиліст", avatar: "./assets/img/salon_1.jpg", rating: 5.0, exp: "Досвід 5 років" },
+      { id: "m-viktoria", name: "Вікторія", role: "Косметолог-естетист", avatar: "./assets/img/salon_2.jpg", rating: 5.0, exp: "Мед. освіта" },
+      { id: "m-olena", name: "Олена", role: "Стиліст-колорист (Hair)", avatar: "./assets/img/industry_4.png", rating: 4.9, exp: "Досвід 7 років" }
     ];
 
     const INITIAL_INVENTORY = [
-      // Манікюр
-      { id: "inv-m1", name: "Rubber Base (Каучукова база)", cat: "Манікюр", current: 24.5, max: 30, unit: "мл", cost: 18, status: "В нормі" },
-      { id: "inv-m2", name: "No-Wipe Glossy Top", cat: "Манікюр", current: 8.2, max: 30, unit: "мл", cost: 16, status: "В нормі" },
-      { id: "inv-m3", name: "Hard Gel Clear", cat: "Манікюр", current: 36.0, max: 50, unit: "мл", cost: 24, status: "В нормі" },
-      { id: "inv-m4", name: "Пилочка одноразова 100/180", cat: "Манікюр", current: 42, max: 50, unit: "шт", cost: 12, status: "В нормі" },
-
-      // Педикюр
-      { id: "inv-p1", name: "Подо-диск одноразовий 180 грит", cat: "Педикюр", current: 28, max: 50, unit: "шт", cost: 8, status: "В нормі" },
-      { id: "inv-p2", name: "Кератолітик пілінговий", cat: "Педикюр", current: 45, max: 100, unit: "мл", cost: 6, status: "В нормі" },
-
-      // Вії
-      { id: "inv-l1", name: "Клей для вій швидкий (0.5 сек)", cat: "Вії", current: 3.5, max: 5, unit: "мл", cost: 45, status: "В нормі" },
-      { id: "inv-l2", name: "Гідрогелеві патчі під очі", cat: "Вії", current: 45, max: 50, unit: "пара", cost: 10, status: "В нормі" },
-      { id: "inv-l3", name: "Палетка вій C 0.07 mix", cat: "Вії", current: 6.2, max: 10, unit: "палетка", cost: 35, status: "В нормі" },
-
-      // Брови
-      { id: "inv-b1", name: "Фарба для брів Levissime / Elan", cat: "Брови", current: 12, max: 15, unit: "мл", cost: 15, status: "В нормі" },
-      { id: "inv-b2", name: "Окислювач 3%", cat: "Брови", current: 35, max: 50, unit: "мл", cost: 5, status: "В нормі" },
-      { id: "inv-b3", name: "Віск для моделювання брів", cat: "Брови", current: 40, max: 100, unit: "г", cost: 4, status: "В нормі" },
-      { id: "inv-b4", name: "Склад для ламінування №1 & №2", cat: "Брови", current: 8, max: 10, unit: "саше", cost: 45, status: "В нормі" },
-
-      // Косметологія
-      { id: "inv-c1", name: "Гель для ультразвукової чистки", cat: "Косметологія", current: 180, max: 250, unit: "мл", cost: 3, status: "В нормі" },
-      { id: "inv-c2", name: "Заспокійлива альгінатна маска", cat: "Косметологія", current: 250, max: 500, unit: "г", cost: 2, status: "В нормі" },
-      { id: "inv-c3", name: "Пілінг мигдальний 30%", cat: "Косметологія", current: 22, max: 30, unit: "мл", cost: 25, status: "В нормі" },
-      { id: "inv-c4", name: "Захисний крем SPF 50", cat: "Косметологія", current: 45, max: 50, unit: "мл", cost: 12, status: "В нормі" },
-
-      // Волосся
-      { id: "inv-h1", name: "Шампунь & Кондиціонер зволожуючий", cat: "Волосся", current: 650, max: 1000, unit: "мл", cost: 2, status: "В нормі" }
-    ];
-
-    const INITIAL_CLIENTS = [
-      { id: "cl-01", name: "Олена Ковальчук", phone: "+380 97 123 45 67", dir: "Манікюр", notes: "Тонка пластина, форма Мигдаль (2), Капучино з корицею", visits: 8, total: 6400 },
-      { id: "cl-02", name: "Анастасія Мельник", phone: "+380 93 987 65 43", dir: "Вії", notes: "Ефект 'Стрілка' 2D, вигин L, Лате без цукру", visits: 5, total: 5800 },
-      { id: "cl-03", name: "Вікторія Шевченко", phone: "+380 50 555 12 34", dir: "Брови", notes: "Ламінування + фарбування темно-коричневий", visits: 6, total: 4900 },
-      { id: "cl-04", name: "Катерина Попова", phone: "+380 67 444 88 99", dir: "Косметологія", notes: "Чутлива шкіра, схильність до куперозу, SPF 50", visits: 3, total: 3600 },
-      { id: "cl-05", name: "Дар'я Кравченко", phone: "+380 99 333 22 11", dir: "Педикюр", notes: "Smart-педикюр, покриття нюд", visits: 4, total: 3600 }
+      { id: "inv-m1", name: "Rubber Base (Каучукова база)", cat: "Манікюр", current: 85, max: 100, unit: "мл", cost: 24, status: "В нормі" },
+      { id: "inv-m2", name: "No-Wipe Glossy Top", cat: "Манікюр", current: 45, max: 80, unit: "мл", cost: 26, status: "В нормі" },
+      { id: "inv-m3", name: "Hard Gel Clear", cat: "Манікюр", current: 30, max: 100, unit: "мл", cost: 32, status: "Закінчується" },
+      { id: "inv-m4", name: "Пилочка одноразова 100/180", cat: "Манікюр", current: 140, max: 200, unit: "шт", cost: 8, status: "В нормі" },
+      { id: "inv-p1", name: "Подо-диск одноразовий 180 грит", cat: "Педикюр", current: 65, max: 100, unit: "шт", cost: 12, status: "В нормі" },
+      { id: "inv-p2", name: "Кератолітик пілінговий", cat: "Педикюр", current: 220, max: 500, unit: "мл", cost: 6, status: "В нормі" },
+      { id: "inv-b1", name: "Фарба для брів Levissime / Elan", cat: "Брови", current: 35, max: 50, unit: "мл", cost: 18, status: "В нормі" },
+      { id: "inv-b2", name: "Окислювач 3%", cat: "Брови", current: 80, max: 100, unit: "мл", cost: 5, status: "В нормі" },
+      { id: "inv-b3", name: "Віск для моделювання брів", cat: "Брови", current: 150, max: 300, unit: "г", cost: 4, status: "В нормі" },
+      { id: "inv-b4", name: "Склади для ламінування 1+2+3", cat: "Брови", current: 12, max: 20, unit: "компл", cost: 55, status: "В нормі" },
+      { id: "inv-l1", name: "Клей для вій швидкої фіксації", cat: "Вії", current: 4, max: 10, unit: "мл", cost: 65, status: "Закінчується" },
+      { id: "inv-l2", name: "Гідрогелеві патчі під очі", cat: "Вії", current: 48, max: 100, unit: "пара", cost: 10, status: "В нормі" },
+      { id: "inv-l3", name: "Вії пучки/стрічки C/D 0.07", cat: "Вії", current: 15, max: 30, unit: "пал", cost: 85, status: "В нормі" },
+      { id: "inv-l4", name: "Вії коричневі/кольорові акценти", cat: "Вії", current: 8, max: 20, unit: "пал", cost: 95, status: "В нормі" },
+      { id: "inv-c1", name: "Гель холодного гідрування", cat: "Косметологія", current: 340, max: 500, unit: "мл", cost: 8, status: "В нормі" },
+      { id: "inv-c2", name: "Антисептична заспокійлива маска", cat: "Косметологія", current: 180, max: 300, unit: "мл", cost: 14, status: "В нормі" },
+      { id: "inv-c3", name: "Фінішний SPF-крем 50+", cat: "Косметологія", current: 110, max: 200, unit: "мл", cost: 18, status: "В нормі" },
+      { id: "inv-c4", name: "Мигдальна кислота 40%", cat: "Косметологія", current: 65, max: 150, unit: "мл", cost: 28, status: "В нормі" },
+      { id: "inv-c5", name: "Нейтралізатор пілінгу", cat: "Косметологія", current: 90, max: 200, unit: "мл", cost: 9, status: "В нормі" },
+      { id: "inv-h1", name: "Шампунь глибокого очищення", cat: "Перукарські", current: 850, max: 1000, unit: "мл", cost: 2, status: "В нормі" },
+      { id: "inv-h2", name: "Термозахисний спрей / флюїд", cat: "Перукарські", current: 140, max: 250, unit: "мл", cost: 7, status: "В нормі" }
     ];
 
     const INITIAL_APPOINTMENTS = [
-      { id: "apt-01", clientName: "Олена Ковальчук", phone: "+380 97 123 45 67", dir: "Манікюр", service: "Зняття + манікюр + покриття", master: "ТОП-Майстер", time: "11:30", price: 900, cost: 68, status: "confirmed", briefDone: false, bom: [
-        { invId: "inv-m1", name: "Rubber Base (Каучукова база)", qty: 0.5, unit: "мл" },
-        { invId: "inv-m2", name: "No-Wipe Glossy Top", qty: 0.4, unit: "мл" },
-        { invId: "inv-m4", name: "Пилочка одноразова 100/180", qty: 1, unit: "шт" }
-      ]},
-      { id: "apt-02", clientName: "Анастасія Мельник", phone: "+380 93 987 65 43", dir: "Вії", service: "Тренди (стрілка, мокрий ефект)", master: "ТОП-Майстер", time: "14:00", price: 1200, cost: 80, status: "confirmed", briefDone: false, bom: [
-        { invId: "inv-l1", name: "Клей для вій швидкий", qty: 0.3, unit: "мл" },
-        { invId: "inv-l2", name: "Гідрогелеві патчі", qty: 1, unit: "пара" },
-        { invId: "inv-l3", name: "Палетка вій C 0.07", qty: 0.2, unit: "палетка" }
-      ]},
-      { id: "apt-03", clientName: "Вікторія Шевченко", phone: "+380 50 555 12 34", dir: "Брови", service: "Корекція + фарбування брів", master: "Майстер", time: "16:30", price: 700, cost: 45, status: "pending", briefDone: false, bom: [
-        { invId: "inv-b1", name: "Фарба для брів Levissime / Elan", qty: 1.5, unit: "мл" },
-        { invId: "inv-b2", name: "Окислювач 3%", qty: 1.5, unit: "мл" },
-        { invId: "inv-b3", name: "Віск для моделювання брів", qty: 2, unit: "г" }
-      ]},
-      { id: "apt-04", clientName: "Катерина Попова", phone: "+380 67 444 88 99", dir: "Косметологія", service: "Комбінована чистка обличчя", master: "Лікар-косметолог", time: "18:00", price: 1200, cost: 90, status: "confirmed", briefDone: false, bom: [
-        { invId: "inv-c1", name: "Гель для ультразвукової чистки", qty: 10, unit: "мл" },
-        { invId: "inv-c2", name: "Заспокійлива альгінатна маска", qty: 25, unit: "г" }
-      ]}
+      {
+        id: "apt-01", time: "10:30", client: "Катерина Воронова", phone: "+38 (067) 345-21-90",
+        dir: "Манікюр", service: "Зняття + манікюр + покриття", price: 900, master: "Катерина",
+        cost: 68, status: "Підтверджено",
+        bom: [
+          { invId: "inv-m1", name: "Rubber Base (Каучукова база)", qty: 0.5, unit: "мл" },
+          { invId: "inv-m2", name: "No-Wipe Glossy Top", qty: 0.4, unit: "мл" },
+          { invId: "inv-m4", name: "Пилочка одноразова 100/180", qty: 1, unit: "шт" }
+        ],
+        notes: "Нігті тонкі після зняття, укріпити додатково безкислотною базою."
+      },
+      {
+        id: "apt-02", time: "12:00", client: "Оксана Мельник", phone: "+38 (098) 112-90-44",
+        dir: "Вії", service: "Нарощування вій: Тренди (мокрий ефект)", price: 1200, master: "Діана",
+        cost: 85, status: "Очікує клієнта",
+        bom: [
+          { invId: "inv-l1", name: "Клей для вій швидкої фіксації", qty: 0.3, unit: "мл" },
+          { invId: "inv-l2", name: "Гідрогелеві патчі під очі", qty: 1, unit: "пара" },
+          { invId: "inv-l4", name: "Вії коричневі/кольорові акценти", qty: 0.2, unit: "пал" }
+        ],
+        notes: "Вигин L, довжина 9-12 мм, ефект мокрих вій."
+      },
+      {
+        id: "apt-03", time: "14:30", client: "Анна Савченко", phone: "+38 (050) 890-43-12",
+        dir: "Косметологія", service: "Комбінована чистка обличчя", price: 1200, master: "Вікторія",
+        cost: 140, status: "Підтверджено",
+        bom: [
+          { invId: "inv-c1", name: "Гель холодного гідрування", qty: 5, unit: "мл" },
+          { invId: "inv-c2", name: "Антисептична заспокійлива маска", qty: 5, unit: "мл" },
+          { invId: "inv-c3", name: "Фінішний SPF-крем 50+", qty: 2, unit: "мл" }
+        ],
+        notes: "Чутлива T-зона, атравматичний ультразвуковий протокол."
+      },
+      {
+        id: "apt-04", time: "17:00", client: "Марина Коваль", phone: "+38 (073) 441-29-87",
+        dir: "Брови", service: "Ламінування брів + фарбування + ботокс", price: 950, master: "Діана",
+        cost: 85, status: "Очікує клієнта",
+        bom: [
+          { invId: "inv-b4", name: "Склади для ламінування 1+2+3", qty: 1, unit: "компл" },
+          { invId: "inv-b1", name: "Фарба для брів Levissime / Elan", qty: 1.5, unit: "мл" }
+        ],
+        notes: "Натуральний світло-коричневий тон, без затемнення."
+      }
     ];
 
-    // State
-    let appState = JSON.parse(localStorage.getItem('wild_beauty_crm_state') || 'null');
-    if (!appState) {
-      appState = {
-        services: INITIAL_SERVICES,
-        inventory: INITIAL_INVENTORY,
-        clients: INITIAL_CLIENTS,
-        appointments: INITIAL_APPOINTMENTS,
-        currentMode: 'client' // 'client' or 'admin'
-      };
-      saveState();
+    // App State Management
+    let appState = {
+      services: INITIAL_SERVICES,
+      inventory: INITIAL_INVENTORY,
+      appointments: INITIAL_APPOINTMENTS,
+      currentCat: 'all',
+      currentMode: 'client',
+      activeBriefAppointmentId: null,
+      bookingSelectedService: null,
+      bookingSelectedMasterId: "m-any"
+    };
+
+    // Load from LocalStorage if present
+    const cachedState = localStorage.getItem('wild_beauty_crm_state');
+    if (cachedState) {
+      try {
+        const parsed = JSON.parse(cachedState);
+        appState = { ...appState, ...parsed };
+      } catch (e) {
+        console.warn('Could not parse cached state:', e);
+      }
     }
 
     function saveState() {
@@ -1138,112 +1709,123 @@
     });
 
     // =========================================================================
-    // CLIENT BOOKING VIEW LOGIC
+    // CLIENT VIEW LOGIC
     // =========================================================================
-    let currentSelectedService = null;
-
-    function renderClientServices(filterCat = 'all') {
+    function renderClientServices() {
       const container = document.getElementById('clientServicesList');
       container.innerHTML = '';
-
-      const filtered = (filterCat === 'all') 
+      
+      const filtered = (appState.currentCat === 'all') 
         ? appState.services 
-        : appState.services.filter(s => s.cat === filterCat);
+        : appState.services.filter(s => s.cat === appState.currentCat);
 
       filtered.forEach(s => {
-        const div = document.createElement('div');
-        div.className = 'service-card';
-        div.innerHTML = `
+        const card = document.createElement('div');
+        card.className = 'service-card';
+        card.innerHTML = `
+          <img src="${s.img}" class="service-thumb" alt="${s.name}">
           <div class="service-info">
             <div class="service-title">${s.name}</div>
             <div class="service-meta">
               <span>⏱ ${s.duration}</span>
               <span>•</span>
-              <span style="color: var(--accent);">Одеса • Французький б-р</span>
+              <span style="color: var(--accent); font-weight: 550;">Точне списання матеріалів</span>
             </div>
           </div>
-          <div style="display: flex; align-items: center; gap: 16px;">
-            <div class="service-price">${s.price} ₴</div>
-            <button class="btn btn-primary" onclick="startBooking('${s.id}')">Записатися</button>
+          <div class="service-price-block">
+            <div class="service-price">${s.price.toLocaleString()} ₴</div>
+            <button class="btn btn-primary btn-sm" onclick="openClientBookingModal('${s.id}')">Записатися</button>
           </div>
         `;
-        container.appendChild(div);
+        container.appendChild(card);
       });
     }
 
-    // Category navigation
+    // Category button handling
     document.querySelectorAll('.cat-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
-        renderClientServices(btn.dataset.cat);
+        appState.currentCat = btn.getAttribute('data-cat');
+        renderClientServices();
       });
     });
 
-    window.startBooking = function(serviceId) {
-      const s = appState.services.find(item => item.id === serviceId);
-      if (!s) return;
-      currentSelectedService = s;
-      document.getElementById('modalSelectedService').innerText = `${s.name} (${s.price} ₴ • ${s.duration})`;
+    // Booking Modal
+    window.openClientBookingModal = function(serviceId) {
+      const s = appState.services.find(item => item.id === serviceId) || appState.services[0];
+      appState.bookingSelectedService = s;
+      document.getElementById('bookModalServiceName').innerText = `Запис: ${s.name}`;
+      document.getElementById('bookModalServicePrice').innerText = `${s.price} ₴ • Тривалість: ${s.duration} • Французький б-р, 26/1`;
+
+      // Render masters with real photos
+      const grid = document.getElementById('bookingMastersGrid');
+      grid.innerHTML = '';
+      REAL_MASTERS.forEach(m => {
+        const isSel = (m.id === appState.bookingSelectedMasterId);
+        grid.innerHTML += `
+          <div class="master-card-select ${isSel ? 'selected' : ''}" onclick="selectMasterCard('${m.id}', this)">
+            <img src="${m.avatar}" class="master-avatar" alt="${m.name}">
+            <div>
+              <div class="master-meta-name">${m.name}</div>
+              <div class="master-meta-role">${m.role}</div>
+              <div style="font-size: 11px; color: var(--accent); margin-top: 2px;">★ ${m.rating} • ${m.exp}</div>
+            </div>
+          </div>
+        `;
+      });
+
       document.getElementById('clientBookingModal').classList.add('open');
     };
 
-    window.closeBookingModal = function() {
+    window.closeClientBookingModal = function() {
       document.getElementById('clientBookingModal').classList.remove('open');
     };
 
-    // Pill select time
-    document.querySelectorAll('#bookTimePills .pill-item').forEach(pill => {
-      pill.addEventListener('click', () => {
-        document.querySelectorAll('#bookTimePills .pill-item').forEach(p => p.classList.remove('active'));
-        pill.classList.add('active');
-      });
-    });
+    window.selectMasterCard = function(masterId, el) {
+      appState.bookingSelectedMasterId = masterId;
+      document.querySelectorAll('.master-card-select').forEach(c => c.classList.remove('selected'));
+      el.classList.add('selected');
+    };
+
+    window.selectDatePill = function(el) {
+      el.parentElement.querySelectorAll('.slot-pill').forEach(p => p.classList.remove('active'));
+      el.classList.add('active');
+    };
+
+    window.selectTimePill = function(el) {
+      document.getElementById('bookingTimeSlots').querySelectorAll('.slot-pill').forEach(p => p.classList.remove('active'));
+      el.classList.add('active');
+    };
 
     window.confirmClientBooking = function() {
-      const name = document.getElementById('bookClientName').value.trim() || 'Клієнтка з сайту';
-      const phone = document.getElementById('bookClientPhone').value.trim() || '+380 97 000 00 00';
-      const master = document.getElementById('bookMasterSelect').value;
-      const time = document.querySelector('#bookTimePills .pill-item.active').innerText;
+      const name = document.getElementById('bookClientName').value.trim() || 'Клієнт з Bookon';
+      const phone = document.getElementById('bookClientPhone').value.trim() || '+38 (067) 555-12-34';
+      const s = appState.bookingSelectedService;
+      const mObj = REAL_MASTERS.find(m => m.id === appState.bookingSelectedMasterId) || REAL_MASTERS[1];
 
       const newApt = {
         id: "apt-" + Date.now(),
-        clientName: name,
+        time: "15:00",
+        client: name,
         phone: phone,
-        dir: currentSelectedService.cat === 'nails' ? 'Манікюр' : (currentSelectedService.cat === 'pedi' ? 'Педикюр' : (currentSelectedService.cat === 'lashes' ? 'Вії' : (currentSelectedService.cat === 'brows' ? 'Брови' : 'Косметологія'))),
-        service: currentSelectedService.name,
-        master: master,
-        time: time,
-        price: currentSelectedService.price,
-        cost: currentSelectedService.cost,
-        status: "confirmed",
-        briefDone: false,
-        bom: JSON.parse(JSON.stringify(currentSelectedService.defaultBOM))
+        dir: (s.cat === 'nails') ? 'Манікюр' : (s.cat === 'pedi') ? 'Педикюр' : (s.cat === 'lashes') ? 'Вії' : (s.cat === 'brows') ? 'Брови' : (s.cat === 'cosmo') ? 'Косметологія' : 'Перукарські',
+        service: s.name,
+        price: s.price,
+        master: mObj.name,
+        cost: s.cost,
+        status: "Новий (Завдаток)",
+        bom: JSON.parse(JSON.stringify(s.defaultBOM || [])),
+        notes: "Онлайн-запис через сайт студії. Завдаток 200 ₴ підтверджено."
       };
 
       appState.appointments.unshift(newApt);
-
-      // Check if client exists
-      let client = appState.clients.find(c => c.name.toLowerCase() === name.toLowerCase());
-      if (!client) {
-        appState.clients.push({
-          id: "cl-" + Date.now(),
-          name: name,
-          phone: phone,
-          dir: newApt.dir,
-          notes: "Новий клієнт із сайту онлайн-запису",
-          visits: 1,
-          total: newApt.price
-        });
-      } else {
-        client.visits += 1;
-        client.total += newApt.price;
-      }
-
       saveState();
-      closeBookingModal();
+      closeClientBookingModal();
+      alert(`🎉 Дякуємо, ${name}!
 
-      alert(`🎉 Дякуємо, ${name}! Ви успішно записані на ${currentSelectedService.name} на ${time}.\n\nЗапис миттєво з'явився в адмін-панелі JuNailCRM студії! Перемкніть режим у шапці, щоб переглянути.`);
+Ваш запис на "${s.name}" до майстра ${mObj.name} успішно створено!
+Запис з'явився у Студійній адмін-панелі.`);
       switchMode('admin');
     };
 
@@ -1254,10 +1836,9 @@
       item.addEventListener('click', () => {
         document.querySelectorAll('.admin-nav-item').forEach(i => i.classList.remove('active'));
         item.classList.add('active');
-
-        const tab = item.dataset.atab;
-        document.querySelectorAll('.admin-subtab').forEach(t => t.style.display = 'none');
-
+        const tab = item.getAttribute('data-atab');
+        
+        document.querySelectorAll('.admin-subtab').forEach(s => s.style.display = 'none');
         if (tab === 'calendar') {
           document.getElementById('adminTabCalendar').style.display = 'block';
           renderAdminAppointments();
@@ -1278,274 +1859,200 @@
     });
 
     function renderAdminAppointments() {
-      const tbody = document.getElementById('adminAppointmentsTbody');
+      const tbody = document.getElementById('adminAppointmentsBody');
       tbody.innerHTML = '';
 
-      let rev = 0, cost = 0;
+      let totalRev = 0, totalCost = 0;
+
       appState.appointments.forEach(apt => {
-        rev += apt.price;
-        cost += apt.cost;
+        totalRev += apt.price;
+        totalCost += apt.cost;
 
         const tr = document.createElement('tr');
-        const badgeClass = apt.status === 'confirmed' ? 'badge-success' : (apt.status === 'pending' ? 'badge-warning' : 'badge-neutral');
-        const statusText = apt.status === 'confirmed' ? 'Підтверджено' : (apt.status === 'pending' ? 'Очікує' : 'Завершено');
-        const briefBtnText = apt.briefDone ? '✓ Бриф заповнено' : '📝 Бриф візиту';
-        const briefBtnClass = apt.briefDone ? 'btn-secondary' : 'btn-primary';
+        const statusClass = (apt.status === 'Виконано') ? 'badge-success' : 'badge-warning';
 
         tr.innerHTML = `
           <td><strong>${apt.time}</strong></td>
           <td>
-            <strong>${apt.clientName}</strong>
+            <div style="font-weight: 600;">${apt.client}</div>
             <div style="font-size: 11.5px; color: var(--text-muted);">${apt.phone}</div>
           </td>
           <td><span class="dir-tag">${apt.dir}</span></td>
           <td>${apt.service}</td>
           <td>${apt.master}</td>
           <td><strong>${apt.price} ₴</strong></td>
-          <td><span class="badge ${badgeClass}">${statusText}</span></td>
+          <td><span class="badge ${statusClass}">${apt.status}</span></td>
           <td style="text-align: right;">
-            <button class="btn ${briefBtnClass}" style="padding: 4px 10px; font-size: 12px;" onclick="openVisitBriefModal('${apt.id}')">${briefBtnText}</button>
+            <button class="btn btn-primary btn-sm" onclick="openBriefModal('${apt.id}')">📋 Бриф</button>
+            <button class="btn btn-secondary btn-sm" onclick="deleteAppointment('${apt.id}')">✕</button>
           </td>
         `;
         tbody.appendChild(tr);
       });
 
       document.getElementById('adminKpiCount').innerText = appState.appointments.length;
-      document.getElementById('adminKpiRevenue').innerText = rev.toLocaleString() + ' ₴';
-      document.getElementById('adminKpiCost').innerText = cost.toLocaleString() + ' ₴';
-      document.getElementById('adminKpiProfit').innerText = (rev - cost).toLocaleString() + ' ₴';
+      document.getElementById('adminKpiRevenue').innerText = totalRev.toLocaleString() + ' ₴';
+      document.getElementById('adminKpiCost').innerText = totalCost.toLocaleString() + ' ₴';
+      document.getElementById('adminKpiProfit').innerText = (totalRev - totalCost).toLocaleString() + ' ₴';
     }
 
-    // =========================================================================
-    // VISIT BRIEF MODAL WITH FULL EDITABLE BOM MATERIALS
-    // =========================================================================
-    let currentEditingBriefAptId = null;
-    let currentEditingBOM = [];
+    window.deleteAppointment = function(id) {
+      if (confirm('Видалити цей запис з журналу?')) {
+        appState.appointments = appState.appointments.filter(a => a.id !== id);
+        saveState();
+        renderAdminAppointments();
+      }
+    };
 
-    window.openVisitBriefModal = function(aptId) {
-      currentEditingBriefAptId = aptId;
+    // VISIT BRIEF & EDITABLE BOM LOGIC
+    let currentBriefBOM = [];
+
+    window.openBriefModal = function(aptId) {
+      appState.activeBriefAppointmentId = aptId;
       const apt = appState.appointments.find(a => a.id === aptId);
       if (!apt) return;
 
-      document.getElementById('briefHeaderTitle').innerText = `Бриф візиту • ${apt.dir} (${apt.service})`;
-      document.getElementById('briefHeaderSubtitle').innerText = `${apt.clientName} • ${apt.time} • Майстер: ${apt.master}`;
+      document.getElementById('briefModalTitle').innerText = `Бриф: ${apt.client} (${apt.service})`;
+      document.getElementById('briefModalSubtitle').innerText = `Напрямок: ${apt.dir} • Майстер: ${apt.master} • Вартість: ${apt.price} ₴`;
 
-      // Dynamic Fields based on Direction
+      // Render direction-specific fields
       const dynContainer = document.getElementById('briefDynamicFields');
-      dynContainer.innerHTML = '';
-
       if (apt.dir === 'Манікюр' || apt.dir === 'Педикюр') {
         dynContainer.innerHTML = `
           <div class="form-row">
-            <label class="form-lbl">Стан попереднього покриття</label>
-            <div class="pills-select" id="pillsCoating">
-              <span class="pill-item active">Ідеально</span>
-              <span class="pill-item">Відшарування</span>
-              <span class="pill-item">Сколи</span>
-              <span class="pill-item">Зламаний ніготь</span>
+            <label class="form-lbl">Стан нігтьової пластини & кутикули</label>
+            <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+              <span class="slot-pill active">Тонка / Чутлива</span>
+              <span class="slot-pill">Здорова / Норма</span>
+              <span class="slot-pill">Схильна до відшарувань</span>
             </div>
           </div>
           <div class="form-row">
-            <label class="form-lbl">Тип нігтьової пластини</label>
-            <div class="pills-select" id="pillsPlate">
-              <span class="pill-item">Нормальна</span>
-              <span class="pill-item active">Тонка / Чутлива</span>
-              <span class="pill-item">Волога</span>
-              <span class="pill-item">Скручується</span>
-              <span class="pill-item">Тверда</span>
-            </div>
-          </div>
-          <div class="form-row">
-            <label class="form-lbl">База / Укріплення</label>
-            <div class="pills-select" id="pillsBase">
-              <span class="pill-item active">Rubber Base</span>
-              <span class="pill-item">Hard Gel</span>
-              <span class="pill-item">Acrylgel</span>
-              <span class="pill-item">Камуфлююча база</span>
-            </div>
+            <label class="form-lbl">Тип бази / моделювання</label>
+            <input type="text" class="input-field" value="Rubber Base укріплення + безкислотний праймер">
           </div>
         `;
       } else if (apt.dir === 'Вії') {
         dynContainer.innerHTML = `
           <div class="form-row">
-            <label class="form-lbl">Ефект нарощування</label>
-            <div class="pills-select">
-              <span class="pill-item active">Стрілка</span>
-              <span class="pill-item">Мокрий ефект</span>
-              <span class="pill-item">Класика</span>
-              <span class="pill-item">2D / 3D об'єм</span>
-            </div>
-          </div>
-          <div class="form-row">
-            <label class="form-lbl">Вигин та довжина</label>
-            <input type="text" class="input-field" value="Вигин L / C, довжина 8–12 мм, товщина 0.07">
-          </div>
-        `;
-      } else if (apt.dir === 'Брови') {
-        dynContainer.innerHTML = `
-          <div class="form-row">
-            <label class="form-lbl">Тип фарбування та форма</label>
-            <div class="pills-select">
-              <span class="pill-item active">Фарба Levissime</span>
-              <span class="pill-item">Фарба Elan</span>
-              <span class="pill-item">Ламінування + Botox</span>
+            <label class="form-lbl">Параметри нарощування вій</label>
+            <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+              <span class="slot-pill active">Вигин L</span>
+              <span class="slot-pill">Довжина 9-12 мм</span>
+              <span class="slot-pill">Мокрий ефект</span>
+              <span class="slot-pill">Товщина 0.07</span>
             </div>
           </div>
         `;
       } else if (apt.dir === 'Косметологія') {
         dynContainer.innerHTML = `
           <div class="form-row">
-            <label class="form-lbl">Тип шкіри та протокол</label>
-            <div class="pills-select">
-              <span class="pill-item active">Чутлива / Купероз</span>
-              <span class="pill-item">Комбінована / Пори</span>
-              <span class="pill-item">Суха / Зневоднена</span>
+            <label class="form-lbl">Тип шкіри & Протокол догляду</label>
+            <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+              <span class="slot-pill active">Комбінована</span>
+              <span class="slot-pill">Чутлива T-зона</span>
+              <span class="slot-pill">Атравматична чистка</span>
             </div>
           </div>
+        `;
+      } else {
+        dynContainer.innerHTML = `
           <div class="form-row">
-            <label class="form-lbl">Домашній догляд пацієнтки</label>
-            <input type="text" class="input-field" value="Обов'язковий SPF 50 щоранку + м'яка пінка без кислот">
+            <label class="form-lbl">Колористика / Рівень глибини тону</label>
+            <input type="text" class="input-field" value="Натуральний світло-коричневий 7.0, оксид 3%">
           </div>
         `;
       }
 
-      // Initialize pills click
-      dynContainer.querySelectorAll('.pills-select .pill-item').forEach(pill => {
-        pill.addEventListener('click', (e) => {
-          pill.parentElement.querySelectorAll('.pill-item').forEach(p => p.classList.remove('active'));
-          pill.classList.add('active');
-        });
-      });
+      // Initialize Editable BOM array
+      currentBriefBOM = JSON.parse(JSON.stringify(apt.bom || []));
+      renderBOMItemsInBrief();
 
-      // Clone BOM for editing
-      currentEditingBOM = JSON.parse(JSON.stringify(apt.bom || []));
-      renderBOMEditor();
-
-      document.getElementById('visitBriefModal').classList.add('open');
+      document.getElementById('adminBriefModal').classList.add('open');
     };
 
     window.closeBriefModal = function() {
-      document.getElementById('visitBriefModal').classList.remove('open');
-      currentEditingBriefAptId = null;
+      document.getElementById('adminBriefModal').classList.remove('open');
     };
 
-    function renderBOMEditor() {
+    function renderBOMItemsInBrief() {
       const container = document.getElementById('bomItemsContainer');
       container.innerHTML = '';
 
-      currentEditingBOM.forEach((item, index) => {
+      currentBriefBOM.forEach((item, idx) => {
         const row = document.createElement('div');
         row.className = 'bom-item-row';
         row.innerHTML = `
-          <div><strong>${item.name}</strong></div>
-          <div><input type="number" step="0.1" value="${item.qty}" onchange="updateBOMQty(${index}, this.value)"></div>
-          <div style="color: var(--text-muted); font-size: 12px;">${item.unit}</div>
-          <div style="text-align: right;">
-            <button class="btn btn-danger" style="padding: 2px 6px; font-size: 11px;" onclick="removeBOMItem(${index})">✕</button>
-          </div>
+          <span><strong>${item.name}</strong></span>
+          <input type="number" step="0.1" min="0" value="${item.qty}" onchange="updateBOMQty(${idx}, this.value)">
+          <span style="color: var(--text-muted); font-size: 12px;">${item.unit}</span>
+          <button class="btn btn-secondary btn-sm" style="padding: 2px 6px; color: var(--danger);" onclick="removeBOMRow(${idx})">✕</button>
         `;
         container.appendChild(row);
       });
     }
 
-    window.updateBOMQty = function(index, val) {
-      currentEditingBOM[index].qty = parseFloat(val) || 0;
+    window.updateBOMQty = function(idx, val) {
+      if (currentBriefBOM[idx]) {
+        currentBriefBOM[idx].qty = parseFloat(val) || 0;
+      }
     };
 
-    window.removeBOMItem = function(index) {
-      currentEditingBOM.splice(index, 1);
-      renderBOMEditor();
+    window.removeBOMRow = function(idx) {
+      currentBriefBOM.splice(idx, 1);
+      renderBOMItemsInBrief();
     };
 
     window.addMaterialToBriefRow = function() {
-      // Pick an item from warehouse that isn't already added
-      const unadded = appState.inventory.find(inv => !currentEditingBOM.some(b => b.name === inv.name));
-      if (!unadded) {
-        alert('Всі матеріали зі складу вже додані до списку списання!');
-        return;
-      }
-
-      currentEditingBOM.push({
-        invId: unadded.id,
-        name: unadded.name,
-        qty: (unadded.unit === 'мл' ? 0.5 : 1),
-        unit: unadded.unit
+      // Pick first warehouse item not in BOM or default
+      const inv = appState.inventory[0];
+      currentBriefBOM.push({
+        invId: inv.id,
+        name: inv.name,
+        qty: 1,
+        unit: inv.unit
       });
-      renderBOMEditor();
+      renderBOMItemsInBrief();
     };
 
+    // Toggle real photo previews in Brief
     window.toggleSamplePhoto = function(type) {
-      if (type === 'before') {
-        document.getElementById('briefPhotoBefore').innerHTML = `
-          <div style="font-size: 11px; font-weight: 600; color: var(--accent); margin-bottom: 2px;">ФОТО ДО ВІЗИТУ ЗАФІКСОВАНО</div>
-          <div style="font-size: 11px; color: var(--text-secondary);">Відросле покриття 4 тижні, скол на вказівному</div>
-        `;
-      } else {
-        document.getElementById('briefPhotoAfter').innerHTML = `
-          <div style="font-size: 11px; font-weight: 600; color: var(--success); margin-bottom: 2px;">ФОТО ПІСЛЯ ВІЗИТУ ЗАФІКСОВАНО</div>
-          <div style="font-size: 11px; color: var(--text-secondary);">Ідеальний блік, чиста кутикула, трендовий дизайн</div>
-        `;
-      }
+      const card = document.getElementById(type === 'before' ? 'briefPhotoBefore' : 'briefPhotoAfter');
+      const sampleImg = (type === 'before') ? './assets/img/salon_1.jpg' : './assets/img/salon_3.jpg';
+      card.innerHTML = `<img src="${sampleImg}" alt="Фото ${type}"><span style="font-size: 11px; color: var(--success); margin-top: 4px;">✓ Фото збережено</span>`;
     };
 
     window.saveBriefChanges = function() {
-      const apt = appState.appointments.find(a => a.id === currentEditingBriefAptId);
-      if (!apt) return;
+      const apt = appState.appointments.find(a => a.id === appState.activeBriefAppointmentId);
+      if (apt) {
+        apt.bom = JSON.parse(JSON.stringify(currentBriefBOM));
+        apt.status = 'Виконано';
+        
+        // Calculate updated material cost
+        let newCost = 0;
+        apt.bom.forEach(b => {
+          const inv = appState.inventory.find(i => i.id === b.invId);
+          if (inv) {
+            newCost += (b.qty * inv.cost);
+            // Deduct from warehouse
+            inv.current = Math.max(0, inv.current - b.qty);
+            if (inv.current < inv.max * 0.3) inv.status = 'Закінчується';
+          }
+        });
+        apt.cost = Math.round(newCost) || apt.cost;
 
-      // Update apt BOM
-      apt.bom = JSON.parse(JSON.stringify(currentEditingBOM));
-      apt.status = 'completed';
-      apt.briefDone = true;
-
-      // Deduct materials from actual warehouse
-      currentEditingBOM.forEach(bomItem => {
-        const invItem = appState.inventory.find(i => i.id === bomItem.invId || i.name === bomItem.name);
-        if (invItem) {
-          invItem.current = Math.max(0, +(invItem.current - bomItem.qty).toFixed(1));
-          if (invItem.current <= 5) invItem.status = 'Закінчується';
-        }
-      });
-
-      // Update Client record
-      const client = appState.clients.find(c => c.name.toLowerCase() === apt.clientName.toLowerCase());
-      if (client) {
-        client.visits += 1;
-        client.total += apt.price;
-        client.notes = `Бриф ${apt.dir}: ${document.getElementById('briefDrinkInput').value}, алергії враховано.`;
+        saveState();
+        renderAdminAppointments();
+        closeBriefModal();
+        alert(`✨ Бриф збережено!
+Матеріали списано зі складу studio wild_beauty_space.
+Собівартість візиту: ${apt.cost} ₴, статус змінено на "Виконано".`);
       }
-
-      saveState();
-      renderAdminAppointments();
-      closeBriefModal();
-
-      alert(`✅ Бриф для ${apt.clientName} успішно зафіксовано!\n\nМатеріали (${currentEditingBOM.length} поз.) автоматично списано зі складу відповідно до ваших відредагованих значень.`);
     };
 
-    // =========================================================================
-    // ADMIN CLIENTS, INVENTORY, FINANCE & STORIES
-    // =========================================================================
-    function renderAdminClients() {
-      const tbody = document.getElementById('adminClientsTbody');
-      tbody.innerHTML = '';
-      appState.clients.forEach(c => {
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-          <td><strong>${c.name}</strong></td>
-          <td>${c.phone}</td>
-          <td><span class="dir-tag">${c.dir}</span></td>
-          <td><span style="font-size: 12.5px; color: var(--text-secondary);">${c.notes}</span></td>
-          <td><strong>${c.visits}</strong></td>
-          <td><strong>${c.total.toLocaleString()} ₴</strong></td>
-          <td style="text-align: right;">
-            <button class="btn btn-secondary" style="padding: 3px 8px; font-size: 11.5px;" onclick="alert('Історія ${c.name}:\\n${c.notes}\\nВсього процедур: ${c.visits}\\nВиручка: ${c.total} грн')">Картка</button>
-          </td>
-        `;
-        tbody.appendChild(tr);
-      });
-    }
-
+    // Inventory View
     function renderAdminInventory() {
-      const tbody = document.getElementById('adminInventoryTbody');
+      const tbody = document.getElementById('adminInventoryBody');
       tbody.innerHTML = '';
       const filter = document.getElementById('invCatFilter').value;
 
@@ -1563,7 +2070,7 @@
           <td>${inv.cost} ₴</td>
           <td><span class="badge ${badge}">${inv.status}</span></td>
           <td style="text-align: right;">
-            <button class="btn btn-secondary" style="padding: 3px 8px; font-size: 11.5px;" onclick="restockItem('${inv.id}')">+ Поповнити</button>
+            <button class="btn btn-secondary btn-sm" onclick="restockItem('${inv.id}')">+ Поповнити</button>
           </td>
         `;
         tbody.appendChild(tr);
@@ -1582,6 +2089,31 @@
         alert(`Склад поповнено: ${item.name} тепер ${item.max} ${item.unit}`);
       }
     };
+
+    function renderAdminClients() {
+      const tbody = document.getElementById('adminClientsBody');
+      tbody.innerHTML = '';
+      const clients = [
+        { name: "Катерина Воронова", phone: "+38 (067) 345-21-90", visits: 6, ltv: 5400, last: "24 лист 2026", notes: "Чутлива кутикула, любить капучино" },
+        { name: "Оксана Мельник", phone: "+38 (098) 112-90-44", visits: 4, ltv: 4800, last: "24 лист 2026", notes: "Вії вигин L, мокрий ефект" },
+        { name: "Анна Савченко", phone: "+38 (050) 890-43-12", visits: 8, ltv: 9600, last: "24 лист 2026", notes: "Курс комбінованих чисток" },
+        { name: "Марина Коваль", phone: "+38 (073) 441-29-87", visits: 3, ltv: 2850, last: "24 лист 2026", notes: "Ламінування брів, тон 7.0" }
+      ];
+
+      clients.forEach(c => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td><strong>${c.name}</strong></td>
+          <td>${c.phone}</td>
+          <td>${c.visits}</td>
+          <td><strong>${c.ltv.toLocaleString()} ₴</strong></td>
+          <td>${c.last}</td>
+          <td><span style="font-size: 12px; color: var(--text-secondary);">${c.notes}</span></td>
+          <td style="text-align: right;"><button class="btn btn-secondary btn-sm" onclick="alert('Історія візитів клієнтки ${c.name} завантажена.')">Картка</button></td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
 
     function renderAdminFinance() {
       let total = 0, cost = 0;
@@ -1623,25 +2155,25 @@
       const dir = document.getElementById('storiesDirSelect').value;
       const hours = document.getElementById('storiesHoursInput').value || '11:30 • 14:00 • 17:30';
 
-      ctx.fillStyle = '#0b0d11';
+      ctx.fillStyle = '#090b0e';
       ctx.fillRect(0, 0, 1080, 1920);
 
       // Subtle Purple radial glow
       const grad = ctx.createRadialGradient(540, 300, 50, 540, 300, 800);
-      grad.addColorStop(0, 'rgba(147, 86, 212, 0.2)');
+      grad.addColorStop(0, 'rgba(147, 86, 212, 0.18)');
       grad.addColorStop(1, 'rgba(0, 0, 0, 0)');
       ctx.fillStyle = grad;
       ctx.fillRect(0, 0, 1080, 900);
 
       // Studio Header
       ctx.fillStyle = 'rgba(255, 255, 255, 0.08)';
-      ctx.roundRect(540 - 220, 260, 440, 60, 30);
+      ctx.roundRect(540 - 240, 260, 480, 64, 32);
       ctx.fill();
 
       ctx.fillStyle = '#9356d4';
       ctx.font = '600 24px Inter, sans-serif';
       ctx.textAlign = 'center';
-      ctx.fillText('WILD BEAUTY SPACE • ОДЕСА', 540, 298);
+      ctx.fillText('WILD BEAUTY SPACE • ОДЕСА', 540, 300);
 
       // Title
       ctx.fillStyle = '#ffffff';
@@ -1656,7 +2188,7 @@
       const slots = hours.split('•').map(s => s.trim());
       slots.forEach((slot, idx) => {
         const y = 640 + idx * 170;
-        ctx.fillStyle = '#141820';
+        ctx.fillStyle = '#11141a';
         ctx.strokeStyle = 'rgba(147, 86, 212, 0.3)';
         ctx.lineWidth = 2;
         ctx.roundRect(140, y, 800, 130, 24);
@@ -1668,14 +2200,14 @@
         ctx.textAlign = 'left';
         ctx.fillText(slot, 190, y + 84);
 
-        ctx.fillStyle = '#3db87a';
+        ctx.fillStyle = '#2ec47c';
         ctx.font = '500 26px Inter, sans-serif';
         ctx.textAlign = 'right';
         ctx.fillText('Доступно для запису', 890, y + 80);
       });
 
       // Bottom Location & CTA
-      ctx.fillStyle = '#141820';
+      ctx.fillStyle = '#11141a';
       ctx.roundRect(140, 1460, 800, 220, 28);
       ctx.fill();
 

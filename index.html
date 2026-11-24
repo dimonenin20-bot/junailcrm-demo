@@ -911,6 +911,133 @@
       overflow: hidden;
     }
 
+    /* REMINDER ENGINE & MESSENGER PREVIEW */
+    .reminder-box {
+      background: rgba(147, 86, 212, 0.05);
+      border: 1px solid var(--accent-border);
+      border-radius: var(--radius-md);
+      padding: 16px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .reminder-preset-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .reminder-pill {
+      padding: 6px 12px;
+      border-radius: var(--radius-full);
+      background: var(--bg-surface-raised);
+      border: 1px solid var(--border-subtle);
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .reminder-pill:hover {
+      border-color: var(--accent);
+      color: var(--text-primary);
+    }
+    .reminder-pill.active {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+      font-weight: 600;
+    }
+    .channel-toggles {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+    .channel-checkbox {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: var(--text-secondary);
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 5px 10px;
+      cursor: pointer;
+    }
+    .channel-checkbox input {
+      accent-color: var(--accent);
+    }
+    .tg-chat-mockup {
+      background: #17212b;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 12px;
+      color: #fff;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+    .tg-chat-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      margin-bottom: 10px;
+    }
+    .tg-chat-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    .tg-bubble {
+      background: #242f3d;
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-size: 13px;
+      line-height: 1.45;
+      color: #e4ecf2;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.25);
+    }
+    .tg-bubble-photo {
+      width: 100%;
+      max-height: 160px;
+      object-fit: cover;
+      border-radius: 6px;
+      margin-bottom: 8px;
+    }
+    .tg-inline-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-top: 8px;
+    }
+    .tg-btn {
+      background: rgba(82, 136, 193, 0.25);
+      border: 1px solid rgba(82, 136, 193, 0.5);
+      color: #64b5f6;
+      border-radius: 6px;
+      padding: 6px 10px;
+      font-size: 12px;
+      font-weight: 500;
+      text-align: center;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .tg-btn:hover {
+      background: rgba(82, 136, 193, 0.4);
+    }
+    .send-action-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      margin-top: 6px;
+    }
+
     /* =========================================================================
        RESPONSIVE MOBILE BREAKPOINTS (Max Width 768px)
        ========================================================================= */
@@ -1460,11 +1587,12 @@
   <!-- MODAL 2: VISIT BRIEF & EDITABLE BOM WRITE-OFF                         -->
   <!-- ===================================================================== -->
   <div class="modal-backdrop" id="adminBriefModal">
-    <div class="modal-box" style="max-width: 800px;">
+    <div class="modal-box" style="max-width: 860px;">
       <div class="modal-head">
         <div>
-          <div style="display: flex; align-items: center; gap: 8px;">
+          <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
             <strong style="font-size: 16px;" id="briefModalTitle">📋 Електронний Бриф після візиту (Картка процедури)</strong>
+            <span class="badge badge-accent" id="briefDirBadge">💅 Манікюр</span>
             <span class="badge badge-success" id="briefStatusBadge">✓ Процедуру завершено</span>
           </div>
           <div style="font-size: 12px; color: var(--text-muted);" id="briefModalSubtitle">Студія wild_beauty_space • Французький бульвар, 26/1</div>
@@ -1472,7 +1600,7 @@
         <button class="btn-icon" onclick="closeBriefModal()">✕</button>
       </div>
 
-      <div class="modal-content">
+      <div class="modal-content" style="max-height: 80vh; overflow-y: auto;">
         <!-- Client & Appointment Info Strip -->
         <div style="background: var(--bg-surface-raised); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 14px 18px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px;" id="briefInfoStrip">
           <div>
@@ -1494,17 +1622,17 @@
 
         <!-- Before / After Real Photo Comparison -->
         <div class="form-row">
-          <div style="display: flex; justify-content: space-between; align-items: center;">
-            <label class="form-lbl" style="font-size: 13px;">📸 Фотофіксація результату (ДО та ПІСЛЯ процедури)</label>
-            <span style="font-size: 11.5px; color: var(--text-muted);">Зберігається в картці клієнта назавжди</span>
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 6px;">
+            <label class="form-lbl" style="font-size: 13px; margin: 0;">📸 Фотофіксація результату (ДО та ПІСЛЯ процедури)</label>
+            <span style="font-size: 11.5px; color: var(--text-muted);">Зберігається в особистій картці клієнтки назавжди</span>
           </div>
           <div class="photo-grid">
-            <div class="photo-card" style="padding: 10px; cursor: pointer; text-align: left;" onclick="changeBriefPhoto('before')" title="Натисніть для зміни фото">
+            <div class="photo-card" style="padding: 10px; cursor: pointer; text-align: left;" onclick="changeBriefPhoto('before')" title="Натисніть для зміни фото ДО">
               <div style="font-size: 11.5px; font-weight: 600; color: var(--text-muted); margin-bottom: 6px;">ФОТО ДО (Початковий стан)</div>
               <img id="briefImgBefore" src="./assets/img/salon_4.jpg" alt="Фото ДО" style="width: 100%; height: 160px; object-fit: cover; border-radius: 8px;">
               <div style="font-size: 11.5px; color: var(--text-secondary); margin-top: 6px;" id="briefImgBeforeLbl">Відросле покриття (4 тижні), суха кутикула</div>
             </div>
-            <div class="photo-card" style="padding: 10px; cursor: pointer; border-color: var(--accent); text-align: left;" onclick="changeBriefPhoto('after')" title="Натисніть для зміни фото">
+            <div class="photo-card" style="padding: 10px; cursor: pointer; border-color: var(--accent); text-align: left;" onclick="changeBriefPhoto('after')" title="Натисніть для зміни фото ПІСЛЯ">
               <div style="font-size: 11.5px; font-weight: 600; color: var(--accent); margin-bottom: 6px;">✨ ФОТО ПІСЛЯ (Результат майстра)</div>
               <img id="briefImgAfter" src="./assets/img/salon_3.jpg" alt="Фото ПІСЛЯ" style="width: 100%; height: 160px; object-fit: cover; border-radius: 8px;">
               <div style="font-size: 11.5px; color: var(--success); margin-top: 6px; font-weight: 600;" id="briefImgAfterLbl">Dark Cherry Glossy Gel • Ідеальний блік</div>
@@ -1512,26 +1640,27 @@
           </div>
         </div>
 
-        <!-- Direction Specific Diagnostic Parameters -->
+        <!-- DIRECTION-SPECIFIC DEEP DIAGNOSTIC SUITE -->
         <div id="briefDynamicFields">
-          <!-- Rendered dynamically depending on direction -->
+          <!-- Rendered dynamically via renderDynamicDiagnosticFields() for Manicure, Pedicure, Lashes, Brows, Cosmo, Hair -->
         </div>
 
+        <!-- CLIENT SERVICE PREFERENCES & HEALTH NOTES -->
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
           <div class="form-row">
-            <label class="form-lbl">☕ Улюблений напій клієнтки</label>
-            <input type="text" class="input-field" id="briefDrinkInput" value="Капучино з корицею">
+            <label class="form-lbl">☕ Улюблений напій / Сервіс для клієнтки</label>
+            <input type="text" class="input-field" id="briefDrinkInput" value="Капучино з корицею (вівсяне молоко)">
           </div>
           <div class="form-row">
-            <label class="form-lbl">⚠️ Особливості здоров'я / алергії</label>
+            <label class="form-lbl">⚠️ Особливості здоров'я / Чутливість / Алергії</label>
             <input type="text" class="input-field" id="briefHealthInput" value="Чутлива шкіра біля нігтьового валика, без кислотного праймера">
           </div>
         </div>
 
         <!-- EDITABLE BOM CONSUMED MATERIALS -->
         <div class="form-row">
-          <div style="display: flex; justify-content: space-between; align-items: center;">
-            <label class="form-lbl" style="font-size: 13px;">📦 Фактично списані розхідники (BOM Списання зі складу)</label>
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+            <label class="form-lbl" style="font-size: 13px; margin: 0;">📦 Фактично списані розхідники (BOM Списання зі складу JuNailCRM)</label>
             <button class="btn btn-secondary btn-sm" onclick="addMaterialToBriefRow()">+ Додати матеріал зі складу</button>
           </div>
           
@@ -1546,7 +1675,7 @@
               <!-- Rendered via JS with steppers -->
             </div>
           </div>
-          <div style="display: flex; justify-content: space-between; font-size: 12.5px; margin-top: 6px; padding: 0 4px;">
+          <div style="display: flex; justify-content: space-between; font-size: 12.5px; margin-top: 6px; padding: 0 4px; flex-wrap: wrap; gap: 4px;">
             <span style="color: var(--text-muted);">💡 Змінюйте кількість стрілками або вручну — залишки на складі автоматично спишуться.</span>
             <span style="font-weight: 600;">Разом собівартість матеріалів: <span id="briefLiveCostText" style="color: var(--warning);">45.40 ₴</span></span>
           </div>
@@ -1571,24 +1700,94 @@
           </div>
         </div>
 
-        <!-- Retention Next Visit & Telegram -->
-        <div style="background: rgba(147, 86, 212, 0.08); border: 1px solid var(--accent-border); border-radius: var(--radius-md); padding: 16px 20px;">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-            <strong style="font-size: 14px; color: var(--text-primary);">📅 Рекомендований наступний візит (Retention)</strong>
-            <span class="badge badge-success" style="font-size: 11px;">✓ Telegram нагадування</span>
+        <!-- ADVANCED REMINDER & RETENTION ENGINE -->
+        <div class="reminder-box" id="briefReminderSection">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+            <div>
+              <strong style="font-size: 14.5px; color: var(--text-primary); display: flex; align-items: center; gap: 6px;">
+                <span>📲 Центр нагадувань та комунікації з клієнткою</span>
+                <span class="badge badge-accent" style="font-size: 11px;">Smart Retention</span>
+              </strong>
+              <div style="font-size: 12px; color: var(--text-muted); margin-top: 2px;">
+                Оберіть готовий автоматичний сценарій або введіть власний текст для надсилання в 1 клік:
+              </div>
+            </div>
+            <span class="badge badge-success" style="font-size: 11px;">✓ AI-ланцюжок активовано</span>
           </div>
-          <div style="font-size: 13px; color: var(--text-secondary); line-height: 1.4;">
-            Фізіологічний цикл оновлення: 3 тижні • <strong>15 грудня 2026 о 11:30</strong> (запис заброньовано як попередній).
+
+          <!-- Preset Selector Pills -->
+          <div class="reminder-preset-pills" id="reminderPresetContainer">
+            <span class="reminder-pill active" onclick="selectReminderPreset('post_visit')">📸 1. Одразу після візиту (До/Після + Чек)</span>
+            <span class="reminder-pill" onclick="selectReminderPreset('quality_24h')">⭐️ 2. Контроль якості (24 год)</span>
+            <span class="reminder-pill" onclick="selectReminderPreset('care_14d')">🧴 3. Проміжний догляд (14 днів)</span>
+            <span class="reminder-pill" onclick="selectReminderPreset('retention_renewal')">⏰ 4. Планове оновлення (3-4 тижні)</span>
+            <span class="reminder-pill" onclick="selectReminderPreset('special_promo')">🎁 5. Спецпропозиція (-15%)</span>
+            <span class="reminder-pill" onclick="selectReminderPreset('sos_warning')">⚠️ 6. Пам'ятка безпеки / SOS</span>
           </div>
-          <div style="margin-top: 12px; background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); padding: 12px 14px; font-size: 12.5px; color: var(--text-primary); font-style: italic; line-height: 1.45;" id="briefTelegramPreview">
-            💬 «Катерино, дякуємо за візит у wild_beauty_space! 💜 Ваш майстер зафіксувала результат (Dark Cherry Gel) та нагадує про олійку для кутикули. Чекаємо на оновлення 15 грудня о 11:30 ✨»
+
+          <!-- Channel Selection Toggles -->
+          <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; border-top: 1px dashed var(--border-subtle); padding-top: 8px;">
+            <div style="font-size: 12px; font-weight: 600; color: var(--text-secondary);">Канали надсилання:</div>
+            <div class="channel-toggles">
+              <label class="channel-checkbox"><input type="checkbox" id="chkChannelTelegram" checked> ✈️ Telegram-бот (0 ₴)</label>
+              <label class="channel-checkbox"><input type="checkbox" id="chkChannelViber" checked> 🟣 Viber</label>
+              <label class="channel-checkbox"><input type="checkbox" id="chkChannelWhatsApp" checked> 🟢 WhatsApp</label>
+              <label class="channel-checkbox"><input type="checkbox" id="chkChannelSMS"> 💬 SMS</label>
+            </div>
+          </div>
+
+          <!-- Text Editor for the Reminder -->
+          <div class="form-row" style="margin-bottom: 4px;">
+            <label class="form-lbl" style="font-size: 12px; display: flex; justify-content: space-between;">
+              <span>Текст повідомлення (підтримує персоналізацію {ім'я}, {послуга}, {майстер}):</span>
+              <span style="font-size: 11px; color: var(--text-muted); cursor: pointer;" onclick="resetReminderTextToDefault()">↺ Скинути до стандарту</span>
+            </label>
+            <textarea id="briefReminderCustomText" class="input-field" rows="3" style="resize: vertical; font-size: 13px; line-height: 1.45;" oninput="onReminderTextManualChange(this.value)"></textarea>
+          </div>
+
+          <!-- Live Telegram / Messenger Mockup Preview -->
+          <div class="tg-chat-mockup">
+            <div class="tg-chat-header">
+              <img src="./assets/img/logo.png" class="tg-chat-avatar" alt="wild_beauty_space">
+              <div>
+                <div style="font-weight: 600; font-size: 13px;">Wild Beauty Space • Офіційний бот</div>
+                <div style="font-size: 11px; color: #4fa5e2;">бот • онлайн</div>
+              </div>
+            </div>
+            <div class="tg-bubble">
+              <img id="tgPreviewPhoto" src="./assets/img/salon_3.jpg" class="tg-bubble-photo" alt="Фото процедури">
+              <div id="tgPreviewText" style="white-space: pre-wrap;"></div>
+              <div class="tg-inline-buttons" id="tgPreviewInlineButtons">
+                <div class="tg-btn" onclick="sendTgActionDemo('rate')">⭐️⭐️⭐️⭐️⭐️ Оцінити якість візиту</div>
+                <div class="tg-btn" onclick="sendTgActionDemo('book')">📅 Записатися на наступний візит в 1 клік</div>
+                <div class="tg-btn" onclick="sendTgActionDemo('route')">📍 Французький бульвар, 26/1 (Маршрут на карті)</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Action Buttons Bar -->
+          <div class="send-action-bar">
+            <button class="btn btn-primary" onclick="sendSelectedReminderTelegram()" style="background: #2481cc; border-color: #2481cc;">
+              ✈️ Надіслати в Telegram зараз
+            </button>
+            <button class="btn btn-secondary" onclick="sendSelectedReminderViber()" style="color: #7360f2; border-color: rgba(115, 96, 242, 0.4);">
+              🟣 Відкрити у Viber
+            </button>
+            <button class="btn btn-secondary" onclick="sendSelectedReminderWhatsApp()" style="color: #25d366; border-color: rgba(37, 211, 102, 0.4);">
+              🟢 Відкрити у WhatsApp
+            </button>
+            <button class="btn btn-secondary" onclick="copyReminderTextToClipboard()">
+              📋 Скопіювати текст
+            </button>
+            <button class="btn btn-secondary" onclick="scheduleAutomatedReminderDemo()">
+              ⏰ Запланувати в календарі
+            </button>
           </div>
         </div>
 
       </div>
 
       <div class="modal-foot">
-        <button class="btn btn-secondary" onclick="sendBriefTelegramDemo()">📲 Надіслати бриф клієнтці в Telegram</button>
         <button class="btn btn-secondary" onclick="closeBriefModal()">Закрити</button>
         <button class="btn btn-primary" onclick="saveBriefChanges()">💾 Зберегти бриф та списати матеріали</button>
       </div>
@@ -1685,6 +1884,7 @@
       { id: "inv-m4", name: "Пилочка одноразова 100/180", cat: "Манікюр", current: 140, max: 200, unit: "шт", cost: 8, status: "В нормі" },
       { id: "inv-p1", name: "Подо-диск одноразовий 180 грит", cat: "Педикюр", current: 65, max: 100, unit: "шт", cost: 12, status: "В нормі" },
       { id: "inv-p2", name: "Кератолітик пілінговий", cat: "Педикюр", current: 220, max: 500, unit: "мл", cost: 6, status: "В нормі" },
+      { id: "inv-p3", name: "Молекулярна олійка Smart для стоп", cat: "Педикюр", current: 180, max: 250, unit: "мл", cost: 8, status: "В нормі" },
       { id: "inv-b1", name: "Фарба для брів Levissime / Elan", cat: "Брови", current: 35, max: 50, unit: "мл", cost: 18, status: "В нормі" },
       { id: "inv-b2", name: "Окислювач 3%", cat: "Брови", current: 80, max: 100, unit: "мл", cost: 5, status: "В нормі" },
       { id: "inv-b3", name: "Віск для моделювання брів", cat: "Брови", current: 150, max: 300, unit: "г", cost: 4, status: "В нормі" },
@@ -1699,7 +1899,8 @@
       { id: "inv-c4", name: "Мигдальна кислота 40%", cat: "Косметологія", current: 65, max: 150, unit: "мл", cost: 28, status: "В нормі" },
       { id: "inv-c5", name: "Нейтралізатор пілінгу", cat: "Косметологія", current: 90, max: 200, unit: "мл", cost: 9, status: "В нормі" },
       { id: "inv-h1", name: "Шампунь глибокого очищення", cat: "Перукарські", current: 850, max: 1000, unit: "мл", cost: 2, status: "В нормі" },
-      { id: "inv-h2", name: "Термозахисний спрей / флюїд", cat: "Перукарські", current: 140, max: 250, unit: "мл", cost: 7, status: "В нормі" }
+      { id: "inv-h2", name: "Термозахисний спрей / флюїд", cat: "Перукарські", current: 140, max: 250, unit: "мл", cost: 7, status: "В нормі" },
+      { id: "inv-h3", name: "Ампульний комплекс «Абсолютне щастя»", cat: "Перукарські", current: 24, max: 40, unit: "шт", cost: 65, status: "В нормі" }
     ];
 
     const INITIAL_APPOINTMENTS = [
@@ -1742,11 +1943,70 @@
         cost: 85, status: "Очікує клієнта",
         bom: [
           { invId: "inv-b4", name: "Склади для ламінування 1+2+3", qty: 1, unit: "компл" },
-          { invId: "inv-b1", name: "Фарба для брів Levissime / Elan", qty: 1.5, unit: "мл" }
+          { invId: "inv-b1", name: "Фарба для брів Levissime / Elan", qty: 1.5, unit: "мл" },
+          { invId: "inv-b2", name: "Окислювач 3%", qty: 1.5, unit: "мл" }
         ],
-        notes: "Натуральний світло-коричневий тон, без затемнення."
+        notes: "Натуральний світло-коричневий тон 7.0, без затемнення."
+      },
+      {
+        id: "apt-05", time: "15:45", client: "Олена Шевченко", phone: "+38 (063) 789-11-22",
+        dir: "Педикюр", service: "Повний педикюр з покриттям (Smart)", price: 900, master: "Катерина",
+        cost: 72, status: "Підтверджено",
+        bom: [
+          { invId: "inv-p1", name: "Подо-диск одноразовий 180 грит", qty: 2, unit: "шт" },
+          { invId: "inv-p2", name: "Кератолітик пілінговий", qty: 3, unit: "мл" },
+          { invId: "inv-p3", name: "Молекулярна олійка Smart для стоп", qty: 1, unit: "мл" },
+          { invId: "inv-m2", name: "No-Wipe Glossy Top", qty: 0.3, unit: "мл" }
+        ],
+        notes: "Плівкове ультратонке покриття Podofoot, сухість п'ят."
+      },
+      {
+        id: "apt-06", time: "18:30", client: "Юлія Бондаренко", phone: "+38 (095) 432-88-99",
+        dir: "Перукарські", service: "Spa-догляд «Абсолютне щастя для волосся»", price: 1600, master: "Вікторія",
+        cost: 95, status: "Очікує клієнта",
+        bom: [
+          { invId: "inv-h1", name: "Шампунь глибокого очищення", qty: 25, unit: "мл" },
+          { invId: "inv-h3", name: "Ампульний комплекс «Абсолютне щастя»", qty: 1, unit: "шт" },
+          { invId: "inv-h2", name: "Термозахисний спрей / флюїд", qty: 5, unit: "мл" }
+        ],
+        notes: "Освітлений блонд, сухі кінчики. Обов'язковий термозахист перед сушкою."
       }
     ];
+
+    // Standard BOM Fallback Map
+    const DEFAULT_BOM_MAP = {
+      'Манікюр': [
+        { invId: "inv-m1", name: "Rubber Base (Каучукова база)", qty: 0.5, unit: "мл" },
+        { invId: "inv-m2", name: "No-Wipe Glossy Top", qty: 0.4, unit: "мл" },
+        { invId: "inv-m4", name: "Пилочка одноразова 100/180", qty: 1, unit: "шт" }
+      ],
+      'Педикюр': [
+        { invId: "inv-p1", name: "Подо-диск одноразовий 180 грит", qty: 2, unit: "шт" },
+        { invId: "inv-p2", name: "Кератолітик пілінговий", qty: 3, unit: "мл" },
+        { invId: "inv-p3", name: "Молекулярна олійка Smart для стоп", qty: 1, unit: "мл" },
+        { invId: "inv-m2", name: "No-Wipe Glossy Top", qty: 0.3, unit: "мл" }
+      ],
+      'Вії': [
+        { invId: "inv-l1", name: "Клей для вій швидкої фіксації", qty: 0.3, unit: "мл" },
+        { invId: "inv-l2", name: "Гідрогелеві патчі під очі", qty: 1, unit: "пара" },
+        { invId: "inv-l4", name: "Вії коричневі/кольорові акценти", qty: 0.2, unit: "пал" }
+      ],
+      'Косметологія': [
+        { invId: "inv-c1", name: "Гель холодного гідрування", qty: 5, unit: "мл" },
+        { invId: "inv-c2", name: "Антисептична заспокійлива маска", qty: 5, unit: "мл" },
+        { invId: "inv-c3", name: "Фінішний SPF-крем 50+", qty: 2, unit: "мл" }
+      ],
+      'Брови': [
+        { invId: "inv-b4", name: "Склади для ламінування 1+2+3", qty: 1, unit: "компл" },
+        { invId: "inv-b1", name: "Фарба для брів Levissime / Elan", qty: 1.5, unit: "мл" },
+        { invId: "inv-b2", name: "Окислювач 3%", qty: 1.5, unit: "мл" }
+      ],
+      'Перукарські': [
+        { invId: "inv-h1", name: "Шампунь глибокого очищення", qty: 25, unit: "мл" },
+        { invId: "inv-h3", name: "Ампульний комплекс «Абсолютне щастя»", qty: 1, unit: "шт" },
+        { invId: "inv-h2", name: "Термозахисний спрей / флюїд", qty: 5, unit: "мл" }
+      ]
+    };
 
     // Helper: Always resolve a valid image for service
     function getServicePhoto(s) {
@@ -1772,46 +2032,17 @@
     };
     window.appState = appState;
 
-    // Standard BOM Fallback Map
-    const DEFAULT_BOM_MAP = {
-      'Манікюр': [
-        { invId: "inv-m1", name: "Rubber Base (Каучукова база)", qty: 0.5, unit: "мл" },
-        { invId: "inv-m2", name: "No-Wipe Glossy Top", qty: 0.4, unit: "мл" },
-        { invId: "inv-m4", name: "Пилочка одноразова 100/180", qty: 1, unit: "шт" }
-      ],
-      'Педикюр': [
-        { invId: "inv-m1", name: "Rubber Base (Каучукова база)", qty: 0.4, unit: "мл" },
-        { invId: "inv-m2", name: "No-Wipe Glossy Top", qty: 0.4, unit: "мл" },
-        { invId: "inv-m5", name: "Змінний файл для Smart-диска", qty: 2, unit: "шт" }
-      ],
-      'Вії': [
-        { invId: "inv-l1", name: "Клей для вій швидкої фіксації", qty: 0.3, unit: "мл" },
-        { invId: "inv-l2", name: "Гідрогелеві патчі під очі", qty: 1, unit: "пара" },
-        { invId: "inv-l4", name: "Вії коричневі/кольорові акценти", qty: 0.2, unit: "пал" }
-      ],
-      'Косметологія': [
-        { invId: "inv-c1", name: "Гель холодного гідрування", qty: 5, unit: "мл" },
-        { invId: "inv-c2", name: "Антисептична заспокійлива маска", qty: 5, unit: "мл" },
-        { invId: "inv-c3", name: "Фінішний SPF-крем 50+", qty: 2, unit: "мл" }
-      ],
-      'Брови': [
-        { invId: "inv-b4", name: "Склади для ламінування 1+2+3", qty: 1, unit: "компл" },
-        { invId: "inv-b1", name: "Фарба для брів Levissime / Elan", qty: 1.5, unit: "мл" }
-      ]
-    };
-
-    const STORAGE_KEY = 'wild_beauty_crm_state_v4';
+    const STORAGE_KEY = 'wild_beauty_crm_state_v5';
 
     // Load from LocalStorage with auto-healing and seamless legacy migration
     const cachedState = localStorage.getItem(STORAGE_KEY) 
+      || localStorage.getItem('wild_beauty_crm_state_v4') 
       || localStorage.getItem('wild_beauty_crm_state_v3') 
       || localStorage.getItem('wild_beauty_crm_state');
 
     // Clean legacy obsolete cache keys
     try {
-      localStorage.removeItem('wild_beauty_crm_state');
-      localStorage.removeItem('wild_beauty_crm_state_v2');
-      localStorage.removeItem('wild_beauty_crm_state_v3');
+      ['wild_beauty_crm_state', 'wild_beauty_crm_state_v2', 'wild_beauty_crm_state_v3', 'wild_beauty_crm_state_v4'].forEach(k => localStorage.removeItem(k));
     } catch(e){}
 
     if (cachedState) {
@@ -1826,11 +2057,9 @@
         });
 
         // Robust migration & repair of appointments
-        if (Array.isArray(parsed.appointments) && parsed.appointments.length > 0) {
+        if (Array.isArray(parsed.appointments) && parsed.appointments.length >= 6) {
           const hasBrokenClients = parsed.appointments.some(a => (!a.client && !a.clientName) || a.client === 'undefined');
-          const isOldDummySet = parsed.appointments.length <= 3 && parsed.appointments.every(a => a.status === 'confirmed' || a.status === 'pending');
-
-          if (isOldDummySet || hasBrokenClients) {
+          if (hasBrokenClients) {
             appState.appointments = INITIAL_APPOINTMENTS;
           } else {
             appState.appointments = parsed.appointments.map(apt => {
@@ -1893,7 +2122,7 @@
     // Reset Data
     document.getElementById('resetBtn').addEventListener('click', () => {
       if (confirm('Скинути всі дані студії wild_beauty_space до початкового стану?')) {
-        ['wild_beauty_crm_state', 'wild_beauty_crm_state_v2', 'wild_beauty_crm_state_v3', 'wild_beauty_crm_state_v4'].forEach(k => {
+        ['wild_beauty_crm_state', 'wild_beauty_crm_state_v2', 'wild_beauty_crm_state_v3', 'wild_beauty_crm_state_v4', 'wild_beauty_crm_state_v5'].forEach(k => {
           try { localStorage.removeItem(k); } catch(e){}
         });
         location.reload();
@@ -2083,6 +2312,7 @@
           <td><span class="badge ${statusClass}">${statusText}</span></td>
           <td style="text-align: right; white-space: nowrap;">
             <button class="btn btn-primary btn-sm" onclick="openBriefModal('${apt.id}')" style="margin-right: 4px;">📋 Бриф після візиту</button>
+            <button class="btn btn-secondary btn-sm" onclick="openBriefReminderDirect('${apt.id}')" style="margin-right: 4px;" title="Центр нагадувань клієнтці">📲 Нагадування</button>
             <button class="btn btn-secondary btn-sm" onclick="deleteAppointment('${apt.id}')">✕</button>
           </td>
         `;
@@ -2103,10 +2333,436 @@
       }
     };
 
-    // VISIT BRIEF & EDITABLE BOM LOGIC
+    // =========================================================================
+    // VISIT BRIEF, INDIVIDUALIZED DIAGNOSTICS & REMINDER ENGINE (JuNailCRM)
+    // =========================================================================
     let currentBriefBOM = [];
+    let currentReminderPresetKey = 'post_visit';
 
-    function openBriefModal(aptId) {
+    // REMINDER TEMPLATES PER CATEGORY & PRESET
+    const REMINDER_TEMPLATES = {
+      'Манікюр': {
+        post_visit: `💬 «{ім'я}, дякуємо за візит у @wild_beauty_space_! 💜 Ваш майстер {майстер} зафіксувала бездоганний результат ({послуга}). Фото результату додано до вашої картки! Нагадуємо наносити олійку на кутикулу щодня. Чекаємо на оновлення {дата_оновлення} о 11:30 ✨»`,
+        quality_24h: `💬 «{ім'я}, доброго дня! Це @wild_beauty_space_ 💅 Як почуваються ваші нігтики після процедури? Чи все комфортно з покриттям? Оцініть якість роботи майстра {майстер} від 1 до 5 зірочок! ⭐»`,
+        care_14d: `💬 «{ім'я}, минуло 2 тижні з візиту на манікюр! 💅 Покриття зараз на піку стійкості. Не забувайте зволожувати руки та кутикулу. Якщо бажаєте заздалегідь зафіксувати зручний час на оновлення — тисніть кнопку нижче! 🌸»`,
+        retention_renewal: `💬 «{ім'я}, наближається оптимальний фізіологічний термін оновлення манікюру (3-4 тижні)! ⏰ Щоб нігтьова пластина не перевантажувалася відрослим покриттям, пропонуємо затишні віконця на {дата_оновлення} до майстра {майстер}. Запис в 1 клік: 👇»`,
+        special_promo: `💬 «{ім'я}, спеціально для вас як постійної гості @wild_beauty_space_ діє привілей: -15% на комплекс "Манікюр + Педикюр" або Spa-догляд для рук при записі до кінця місяця! 🎁»`,
+        sos_warning: `💬 «{ім'я}, важлива пам'ятка від майстра {майстер}: якщо раптом трапиться скол або зачіпка нігтя — будь ласка, не здирайте покриття самостійно! Напишіть нам, і ми швидко та безкоштовно відремонтуємо нігтик 🩹»`
+      },
+      'Педикюр': {
+        post_visit: `💬 «{ім'я}, дякуємо за візит на Smart-педикюр у @wild_beauty_space_! 🦶 Ваші ніжки ідеально гладенькі та доглянуті. Майстер {майстер} рекомендує щовечора наносити крем з сечовиною для пролонгації ефекту шовкових п'ят ✨»`,
+        quality_24h: `💬 «{ім'я}, добрий день! Як ваші відчуття після вчорашнього Smart-педикюру? Чи відчуваєте легкість у кожному кроці? Будемо вдячні за оцінку роботи майстра {майстер}! 💜»`,
+        care_14d: `💬 «{ім'я}, минуло 2 тижні після педикюру! 🦶 Нагадуємо наносити зволожуючий крем або молекулярну олійку на ніч — це збереже гладкість стоп ще довше 🌿»`,
+        retention_renewal: `💬 «{ім'я}, час для планового гігієнічного педикюру (4-5 тижнів)! ⏰ Підтримуйте легкість та здоров'я стоп. Забронюйте улюблене віконце на {дата_оновлення} до майстра {майстер} в 1 клік 👇»`,
+        special_promo: `💬 «{ім'я}, підготуйте ніжки до ідеального вигляду! Для вас діє спеціальна пропозиція: безкоштовний парафінотерапевтичний Spa-догляд для стоп при наступному записі на педикюр 🎁»`,
+        sos_warning: `💬 «{ім'я}, пам'ятка від подолога студії: ніколи не зрізайте глибоко куточки нігтів на пальчиках ніг, щоб запобігти вростанню. При будь-якому дискомфорті одразу звертайтеся до нашої студії!»`
+      },
+      'Вії': {
+        post_visit: `💬 «{ім'я}, ваші вії після нарощування ({послуга}) виглядають неймовірно виразно! ✨ Перші 24 години уникайте гарячого пару, сауни та контакту з водою. Розчісуйте вії тільки сухими щіточкою від майстра {майстер} 👁️»`,
+        quality_24h: `💬 «{ім'я}, доброго дня! Як ваші оченята після вчорашнього нарощування? Чи не коле вигин L, чи комфортно спалося? Будемо раді вашому відгуку! ⭐»`,
+        care_14d: `💬 «{ім'я}, минуло 2 тижні після нарощування вій! Якщо окремі вії оновилися за природним циклом — це здорова норма. Очищуйте повіки безмасляною пінкою для максимальної стійкості клею 🌸»`,
+        retention_renewal: `💬 «{ім'я}, підходить час для корекції або свіжого нарощування вій (3-4 тижні)! ⏰ Погляд завжди має залишатися бездоганним. Запрошуємо на {дата_оновлення} до майстра {майстер}: 👇»`,
+        special_promo: `💬 «{ім'я}, ваш погляд чарівний! Отримайте -15% на послугу моделювання та ламінування брів при одночасному записі з віями до майстра {майстер} 🎁»`,
+        sos_warning: `💬 «{ім'я}, пам'ятка лешмейкера: не наносьте жирні креми та гідрофільні олії на зону навколо очей, і ні в якому разі не знімайте вії самостійно механічним шляхом — це травмує рідні волоски!»`
+      },
+      'Брови': {
+        post_visit: `💬 «{ім'я}, ваші брівки після процедури ({послуга}) мають ідеальну форму та натуральний тон! ✨ Перші 24 години після ламінування уникайте контакту з водою. Вранці фіксуйте волоски щіточкою за ростом 🎨»`,
+        quality_24h: `💬 «{ім'я}, доброго дня! Як вам відтінок та форма брів сьогодні? Чи гармонійно виглядає тон при денному світлі? Поділіться вашим враженням про візит до майстра {майстер}! ⭐»`,
+        care_14d: `💬 «{ім'я}, минуло 2 тижні після оформлення брів! Нанесіть крапельку олійки усьми або арганової олії на ніч — це живить волоски та подовжує ефект ламінування 🌿»`,
+        retention_renewal: `💬 «{ім'я}, час освіжити колір та контур брів (3-4 тижні)! ⏰ Щоб лінії залишалися чіткими та виразними, пропонуємо віконця на {дата_оновлення} до майстра {майстер} 👇»`,
+        special_promo: `💬 «{ім'я}, сезонний комплімент від @wild_beauty_space_: безкоштовний ампульний ботокс для брів та вій при записі на комплексне ламінування! 🎁»`,
+        sos_warning: `💬 «{ім'я}, порада бровиста: не вищипуйте волоски самостійно між візитами — ми відрощуємо природну правильну форму та симетрію брів!»`
+      },
+      'Косметологія': {
+        post_visit: `💬 «{ім'я}, дякуємо за візит до нашого косметолога на {послуга}! 💆‍♀️ Шкіра зараз очищена та оновлюється. Обов'язково наносьте крем SPF 50+ перед виходом на сонце і не торкайтеся обличчя руками. 3 дні без сауни, спорту та басейну!»`,
+        quality_24h: `💬 «{ім'я}, добрий день! Як почувається ваша шкіра сьогодні? Чи зменшилися почервоніння після чистки? Нагадуємо про делікатне вмивання м'якою пінкою та зволоження. Якщо виникають питання — ми завжди на зв'язку! 🌿»`,
+        care_14d: `💬 «{ім'я}, минуло 2 тижні після косметологічної процедури! Шкіра зараз максимально сприйнятлива до поживних сироваток та масок. Нанесіть зволожуючу маску для підтримання сяйва 💧»`,
+        retention_renewal: `💬 «{ім'я}, час для планового сеансу догляду або пілінгу (4-6 тижнів)! ⏰ Підтримуйте чистий рельєф та молодість шкіри разом з косметологом {майстер}. Забронюйте час на {дата_оновлення} в 1 клік 👇»`,
+        special_promo: `💬 «{ім'я}, персональний подарунок від косметологічного кабінету: альгінатна відновлююча маска з водоростями в подарунок до вашої наступної процедури! 🎁»`,
+        sos_warning: `💬 «{ім'я}, пам'ятка безпеки: у разі появи лущення після пілінгу ніколи не здирайте шкірочки та не використовуйте скраби! Тільки зволожуючий пантенол та щоденний SPF 50!»`
+      },
+      'Перукарські': {
+        post_visit: `💬 «{ім'я}, ваше волосся після процедури ({послуга}) виглядає розкішно — сяюче, гладеньке та живильне! 💇‍♀️ Майстер {майстер} нагадує: обов'язково використовуйте термозахисний спрей перед кожною сушкою феном до 220°C ✨»`,
+        quality_24h: `💬 «{ім'я}, добрий день! Як веде себе волосся після вчорашнього догляду? Чи легко розчісується та тримає форму? Будемо дуже вдячні за вашу оцінку роботи майстра {майстер}! ⭐»`,
+        care_14d: `💬 «{ім'я}, минуло 2 тижні після догляду за волоссям! Використайте глибоку поживну маску на 15 хвилин під теплий рушник для підтримки салонного блиску 🌿»`,
+        retention_renewal: `💬 «{ім'я}, час освіжити кінчики або оновити тонування волосся (4-6 тижнів)! ⏰ Запрошуємо на плановий догляд на {дата_оновлення} до майстра {майстер} 👇»`,
+        special_promo: `💬 «{ім'я}, для вас діє спеціальна пропозиція: безкоштовна процедура кератинового запечатування кінчиків при стрижці або фарбуванні волосся! 🎁»`,
+        sos_warning: `💬 «{ім'я}, порада стиліста: не розчісуйте мокре волосся грубими гребінцями, сушіть феном тільки за напрямком росту кутикули зверху вниз!»`
+      }
+    };
+
+    // Helper: Toggle chip state in diagnostic fields
+    window.toggleDiagnosticPill = function(el) {
+      const parent = el.parentElement;
+      if (parent && parent.getAttribute('data-single-select') === 'true') {
+        parent.querySelectorAll('.slot-pill').forEach(p => p.classList.remove('active'));
+        el.classList.add('active');
+      } else {
+        el.classList.toggle('active');
+      }
+    };
+
+    // Helper: Render deeply individualized diagnostic parameters based on appointment direction
+    function renderDynamicDiagnosticFields(apt) {
+      const dynContainer = document.getElementById('briefDynamicFields');
+      if (!dynContainer) return;
+      const dir = apt.dir || 'Манікюр';
+
+      if (dir === 'Манікюр') {
+        dynContainer.innerHTML = `
+          <div style="background: var(--bg-surface-raised); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 14px 16px; margin-bottom: 14px; display: flex; flex-direction: column; gap: 12px;">
+            <div style="font-size: 13.5px; font-weight: 700; color: var(--accent); display: flex; align-items: center; gap: 6px;">
+              <span>💅 Діагностична карта манікюру (Стандарти JuNailCRM)</span>
+            </div>
+            <div class="form-row">
+              <label class="form-lbl">1. Стан попереднього покриття</label>
+              <div style="display: flex; gap: 6px; flex-wrap: wrap;" data-single-select="true">
+                <span class="slot-pill active" onclick="toggleDiagnosticPill(this)">✓ Ідеально (без сколів)</span>
+                <span class="slot-pill" onclick="toggleDiagnosticPill(this)">Відшарування на торцях</span>
+                <span class="slot-pill" onclick="toggleDiagnosticPill(this)">Тріщини / Сколи</span>
+                <span class="slot-pill" onclick="toggleDiagnosticPill(this)">Переношене (>4 тижнів)</span>
+                <span class="slot-pill" onclick="toggleDiagnosticPill(this)">Без покриття</span>
+              </div>
+            </div>
+            <div class="form-row">
+              <label class="form-lbl">2. Тип нігтьової пластини & кутикули</label>
+              <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                <span class="slot-pill active" onclick="toggleDiagnosticPill(this)">✓ Тонка / Чутлива</span>
+                <span class="slot-pill active" onclick="toggleDiagnosticPill(this)">✓ Суха налипаюча кутикула</span>
+                <span class="slot-pill" onclick="toggleDiagnosticPill(this)">Волога пластина (гіпергідроз)</span>
+                <span class="slot-pill" onclick="toggleDiagnosticPill(this)">Близько капіляри</span>
+              </div>
+            </div>
+            <div class="form-row">
+              <label class="form-lbl">3. База укріплення & Форма</label>
+              <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                <span class="slot-pill active" onclick="toggleDiagnosticPill(this)">✓ Rubber Base безкислотна</span>
+                <span class="slot-pill" onclick="toggleDiagnosticPill(this)">Hard Gel Clear</span>
+                <span class="slot-pill" onclick="toggleDiagnosticPill(this)">Акригель / Полігель</span>
+                <span class="slot-pill active" onclick="toggleDiagnosticPill(this)">✓ М'який квадрат (довжина 2)</span>
+                <span class="slot-pill" onclick="toggleDiagnosticPill(this)">Мигдаль</span>
+              </div>
+            </div>
+            <div class="form-row" style="margin-bottom: 0;">
+              <label class="form-lbl">4. Відтінок / Дизайн / Технічний протокол</label>
+              <input type="text" class="input-field" value="Dark Cherry Glossy Gel • Безкислотний праймер, форма квадрат, вирівнювання ідеальний блік">
+            </div>
+          </div>
+        `;
+      } else if (dir === 'Педикюр') {
+        dynContainer.innerHTML = `
+          <div style="background: var(--bg-surface-raised); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 14px 16px; margin-bottom: 14px; display: flex; flex-direction: column; gap: 12px;">
+            <div style="font-size: 13.5px; font-weight: 700; color: var(--accent); display: flex; align-items: center; gap: 6px;">
+              <span>🦶 Діагностична карта Smart-педикюру</span>
+            </div>
+            <div class="form-row">
+              <label class="form-lbl">1. Стан стопи & пальчиків</label>
+              <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                <span class="slot-pill active" onclick="toggleDiagnosticPill(this)">✓ Сухість п'ят / Гіперкератоз</span>
+                <span class="slot-pill" onclick="toggleDiagnosticPill(this)">Мікротріщини на п'ятах</span>
+                <span class="slot-pill" onclick="toggleDiagnosticPill(this)">Омозолілості</span>
+                <span class="slot-pill" onclick="toggleDiagnosticPill(this)">Схильність до вростання кутів</span>
+              </div>
+            </div>
+            <div class="form-row">
+              <label class="form-lbl">2. Техніка педикюру & Безпека</label>
+              <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                <span class="slot-pill active" onclick="toggleDiagnosticPill(this)">✓ Smart-педикюр (дисковий)</span>
+                <span class="slot-pill active" onclick="toggleDiagnosticPill(this)">✓ Прямий безпечний зпил кутів</span>
+                <span class="slot-pill active" onclick="toggleDiagnosticPill(this)">✓ Плівкове покриття Podofoot</span>
+                <span class="slot-pill" onclick="toggleDiagnosticPill(this)">Апаратний без замочування</span>
+              </div>
+            </div>
+            <div class="form-row" style="margin-bottom: 0;">
+              <label class="form-lbl">3. Домашні призначення подолога</label>
+              <input type="text" class="input-field" value="Smart-диск 180 грит + молекулярна олійка. Крем з сечовиною 15% щовечора. Вільне взуття.">
+            </div>
+          </div>
+        `;
+      } else if (dir === 'Вії') {
+        dynContainer.innerHTML = `
+          <div style="background: var(--bg-surface-raised); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 14px 16px; margin-bottom: 14px; display: flex; flex-direction: column; gap: 12px;">
+            <div style="font-size: 13.5px; font-weight: 700; color: var(--accent); display: flex; align-items: center; gap: 6px;">
+              <span>👁️ Технічна карта моделювання вій</span>
+            </div>
+            <div class="form-row">
+              <label class="form-lbl">1. Ефект & Схема нарощування</label>
+              <div style="display: flex; gap: 6px; flex-wrap: wrap;" data-single-select="true">
+                <span class="slot-pill active" onclick="toggleDiagnosticPill(this)">✓ Тренди: Мокрий ефект</span>
+                <span class="slot-pill" onclick="toggleDiagnosticPill(this)">Тренди: Стрілка Kim</span>
+                <span class="slot-pill" onclick="toggleDiagnosticPill(this)">2D об'єм натуральний</span>
+                <span class="slot-pill" onclick="toggleDiagnosticPill(this)">3D оксамит</span>
+                <span class="slot-pill" onclick="toggleDiagnosticPill(this)">Ламінування + ботокс вій</span>
+              </div>
+            </div>
+            <div class="form-row">
+              <label class="form-lbl">2. Параметри: Вигин, Довжина, Товщина, Колір</label>
+              <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                <span class="slot-pill active" onclick="toggleDiagnosticPill(this)">✓ Вигин L (ліфтинг)</span>
+                <span class="slot-pill" onclick="toggleDiagnosticPill(this)">Вигин D</span>
+                <span class="slot-pill active" onclick="toggleDiagnosticPill(this)">✓ Довжина 9-12 мм</span>
+                <span class="slot-pill active" onclick="toggleDiagnosticPill(this)">✓ Товщина 0.07 мм</span>
+                <span class="slot-pill active" onclick="toggleDiagnosticPill(this)">✓ Dark Chocolate (Темний шоколад)</span>
+              </div>
+            </div>
+            <div class="form-row" style="margin-bottom: 0;">
+              <label class="form-lbl">3. Чутливість очей & Догляд</label>
+              <input type="text" class="input-field" value="Чутливі очі до випарів, використано антиалергенний спрей. Не мочити 24 години, сухе розчісування.">
+            </div>
+          </div>
+        `;
+      } else if (dir === 'Брови') {
+        dynContainer.innerHTML = `
+          <div style="background: var(--bg-surface-raised); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 14px 16px; margin-bottom: 14px; display: flex; flex-direction: column; gap: 12px;">
+            <div style="font-size: 13.5px; font-weight: 700; color: var(--accent); display: flex; align-items: center; gap: 6px;">
+              <span>🎨 Колористика & Ламінування брів</span>
+            </div>
+            <div class="form-row">
+              <label class="form-lbl">1. Процедура & Форма</label>
+              <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                <span class="slot-pill active" onclick="toggleDiagnosticPill(this)">✓ Ламінування (довготривала укладка)</span>
+                <span class="slot-pill active" onclick="toggleDiagnosticPill(this)">✓ Ботокс відновлення</span>
+                <span class="slot-pill active" onclick="toggleDiagnosticPill(this)">✓ Моделювання віск + пінцет</span>
+                <span class="slot-pill" onclick="toggleDiagnosticPill(this)">Фарбування хною</span>
+              </div>
+            </div>
+            <div class="form-row">
+              <label class="form-lbl">2. Рівень тону & Барвник</label>
+              <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                <span class="slot-pill active" onclick="toggleDiagnosticPill(this)">✓ УГТ 7.0 Натуральний коричневий</span>
+                <span class="slot-pill" onclick="toggleDiagnosticPill(this)">УГТ 6.0 Темно-русявий</span>
+                <span class="slot-pill active" onclick="toggleDiagnosticPill(this)">✓ Levissime 7.7 + оксид 1.8%</span>
+                <span class="slot-pill" onclick="toggleDiagnosticPill(this)">Elan SB 02</span>
+              </div>
+            </div>
+            <div class="form-row" style="margin-bottom: 0;">
+              <label class="form-lbl">3. Інструкція майстра</label>
+              <input type="text" class="input-field" value="Натуральний тон 7.0 без затемнення. На ніч олійка усьми. Не мочити 24 години після ламінування.">
+            </div>
+          </div>
+        `;
+      } else if (dir === 'Косметологія') {
+        dynContainer.innerHTML = `
+          <div style="background: var(--bg-surface-raised); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 14px 16px; margin-bottom: 14px; display: flex; flex-direction: column; gap: 12px;">
+            <div style="font-size: 13.5px; font-weight: 700; color: var(--accent); display: flex; align-items: center; gap: 6px;">
+              <span>💆‍♀️ Косметологічний протокол процедури</span>
+            </div>
+            <div class="form-row">
+              <label class="form-lbl">1. Тип та особливості шкіри</label>
+              <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                <span class="slot-pill active" onclick="toggleDiagnosticPill(this)">✓ Комбінована шкіра</span>
+                <span class="slot-pill active" onclick="toggleDiagnosticPill(this)">✓ Чутлива T-зона</span>
+                <span class="slot-pill" onclick="toggleDiagnosticPill(this)">Схильність до комедонів</span>
+                <span class="slot-pill" onclick="toggleDiagnosticPill(this)">Купероз / судини</span>
+              </div>
+            </div>
+            <div class="form-row">
+              <label class="form-lbl">2. Протокол & Застосовані активи</label>
+              <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                <span class="slot-pill active" onclick="toggleDiagnosticPill(this)">✓ Комбінована чистка (УЗ + механічна)</span>
+                <span class="slot-pill active" onclick="toggleDiagnosticPill(this)">✓ Гель холодного гідрування</span>
+                <span class="slot-pill active" onclick="toggleDiagnosticPill(this)">✓ Антисептична заспокійлива маска</span>
+                <span class="slot-pill active" onclick="toggleDiagnosticPill(this)">✓ Фінішний SPF 50+ Broad Spectrum</span>
+              </div>
+            </div>
+            <div class="form-row" style="margin-bottom: 0;">
+              <label class="form-lbl">3. Призначення косметолога</label>
+              <input type="text" class="input-field" value="Атравматичний ультразвуковий протокол. Щоденний SPF 50. 3 дні без сауни, спорту та басейну.">
+            </div>
+          </div>
+        `;
+      } else {
+        dynContainer.innerHTML = `
+          <div style="background: var(--bg-surface-raised); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 14px 16px; margin-bottom: 14px; display: flex; flex-direction: column; gap: 12px;">
+            <div style="font-size: 13.5px; font-weight: 700; color: var(--accent); display: flex; align-items: center; gap: 6px;">
+              <span>💇‍♀️ Перукарський діагностичний протокол</span>
+            </div>
+            <div class="form-row">
+              <label class="form-lbl">1. Стан структури волосся</label>
+              <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                <span class="slot-pill active" onclick="toggleDiagnosticPill(this)">✓ Освітлений блонд (пористе)</span>
+                <span class="slot-pill active" onclick="toggleDiagnosticPill(this)">✓ Сухі кінчики</span>
+                <span class="slot-pill" onclick="toggleDiagnosticPill(this)">Тонке натуральне</span>
+                <span class="slot-pill" onclick="toggleDiagnosticPill(this)">Схильне до пушіння</span>
+              </div>
+            </div>
+            <div class="form-row">
+              <label class="form-lbl">2. Процедура відновлення</label>
+              <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                <span class="slot-pill active" onclick="toggleDiagnosticPill(this)">✓ Spa-догляд «Абсолютне щастя для волосся»</span>
+                <span class="slot-pill active" onclick="toggleDiagnosticPill(this)">✓ Протеїнова ампула + ліпіди</span>
+                <span class="slot-pill active" onclick="toggleDiagnosticPill(this)">✓ Термозахисний флюїд до 220°C</span>
+              </div>
+            </div>
+            <div class="form-row" style="margin-bottom: 0;">
+              <label class="form-lbl">3. Рекомендації стиліста</label>
+              <input type="text" class="input-field" value="Сушка феном тільки за ростом волосся зверху вниз. Обов'язковий термозахист. Олійка для кінчиків щовечора.">
+            </div>
+          </div>
+        `;
+      }
+    }
+
+    // Helper: Build personalized reminder text based on current appointment and preset
+    function buildReminderText(presetKey) {
+      const apt = (appState.activeBriefAppointmentId ? appState.appointments.find(a => a.id === appState.activeBriefAppointmentId) : null)
+        || appState.appointments[0]
+        || INITIAL_APPOINTMENTS[0];
+
+      const clientName = ((apt.client && apt.client !== 'undefined') ? apt.client : (apt.clientName || 'Катерина Воронова')).trim();
+      const clientFirstName = (clientName.split(/\s+/)[0] || 'Клієнтка').replace(/[«»"']/g, '');
+      const masterName = apt.master || 'Катерина';
+      const serviceName = apt.service || 'Зняття + манікюр + покриття';
+      const dir = apt.dir || 'Манікюр';
+
+      // Next visit recommended date (3 weeks from now: ~15 грудня)
+      const nextDateStr = '15 грудня';
+
+      const dirTemplates = REMINDER_TEMPLATES[dir] || REMINDER_TEMPLATES['Манікюр'];
+      let rawTpl = dirTemplates[presetKey] || dirTemplates['post_visit'];
+
+      return rawTpl
+        .replace(/\{ім'я\}/g, clientFirstName)
+        .replace(/\{майстер\}/g, masterName)
+        .replace(/\{послуга\}/g, serviceName)
+        .replace(/\{дата_оновлення\}/g, nextDateStr);
+    }
+
+    // Select preset and refresh UI
+    function selectReminderPreset(presetKey) {
+      currentReminderPresetKey = presetKey;
+      const pillsContainer = document.getElementById('reminderPresetContainer');
+      if (pillsContainer) {
+        const pills = pillsContainer.querySelectorAll('.reminder-pill');
+        const keys = ['post_visit', 'quality_24h', 'care_14d', 'retention_renewal', 'special_promo', 'sos_warning'];
+        pills.forEach((p, idx) => {
+          p.classList.toggle('active', keys[idx] === presetKey);
+        });
+      }
+
+      const compiledText = buildReminderText(presetKey);
+      const customInput = document.getElementById('briefReminderCustomText');
+      if (customInput) customInput.value = compiledText;
+
+      const tgText = document.getElementById('tgPreviewText');
+      if (tgText) tgText.innerText = compiledText;
+
+      // Update interactive inline buttons based on preset
+      const btnContainer = document.getElementById('tgPreviewInlineButtons');
+      if (btnContainer) {
+        if (presetKey === 'quality_24h') {
+          btnContainer.innerHTML = `
+            <div class="tg-btn" onclick="sendTgActionDemo('rate')">⭐️⭐️⭐️⭐️⭐️ Оцінити якість візиту</div>
+            <div class="tg-btn" onclick="sendTgActionDemo('feedback')">✍️ Написати повідомлення власниці студії</div>
+          `;
+        } else if (presetKey === 'retention_renewal' || presetKey === 'special_promo') {
+          btnContainer.innerHTML = `
+            <div class="tg-btn" onclick="sendTgActionDemo('book')">📅 Забронювати віконце в 1 клік</div>
+            <div class="tg-btn" onclick="sendTgActionDemo('prices')">📋 Переглянути прайс студії</div>
+          `;
+        } else {
+          btnContainer.innerHTML = `
+            <div class="tg-btn" onclick="sendTgActionDemo('rate')">⭐️⭐️⭐️⭐️⭐️ Оцінити якість візиту</div>
+            <div class="tg-btn" onclick="sendTgActionDemo('book')">📅 Записатися на наступний візит в 1 клік</div>
+            <div class="tg-btn" onclick="sendTgActionDemo('route')">📍 Французький бульвар, 26/1 (Маршрут)</div>
+          `;
+        }
+      }
+    }
+    window.selectReminderPreset = selectReminderPreset;
+
+    function onReminderTextManualChange(val) {
+      const tgText = document.getElementById('tgPreviewText');
+      if (tgText) tgText.innerText = val;
+    }
+    window.onReminderTextManualChange = onReminderTextManualChange;
+
+    function resetReminderTextToDefault() {
+      selectReminderPreset(currentReminderPresetKey);
+    }
+    window.resetReminderTextToDefault = resetReminderTextToDefault;
+
+    function sendSelectedReminderTelegram() {
+      const apt = (appState.activeBriefAppointmentId ? appState.appointments.find(a => a.id === appState.activeBriefAppointmentId) : null) || appState.appointments[0];
+      const clientName = (apt && (apt.client || apt.clientName)) ? (apt.client || apt.clientName) : 'Клієнтці';
+      const text = (document.getElementById('briefReminderCustomText') ? document.getElementById('briefReminderCustomText').value : '') || '';
+      alert(`✈️ Нагадування успішно надіслано в Telegram-бот!\n\nКлієнтка: ${clientName}\nКанал: Офіційний бот @wild_beauty_space_\n\nПовідомлення:\n${text}`);
+    }
+    window.sendSelectedReminderTelegram = sendSelectedReminderTelegram;
+
+    function sendSelectedReminderViber() {
+      const apt = (appState.activeBriefAppointmentId ? appState.appointments.find(a => a.id === appState.activeBriefAppointmentId) : null) || appState.appointments[0];
+      const text = (document.getElementById('briefReminderCustomText') ? document.getElementById('briefReminderCustomText').value : '') || '';
+      const phoneRaw = (apt && (apt.phone || apt.clientPhone)) ? (apt.phone || apt.clientPhone) : '380673452190';
+      const normPhone = phoneRaw.replace(/[^0-9]/g, '');
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(text).catch(() => {});
+      }
+      alert(`🟣 Текст нагадування скопійовано!\n\nВідкриваємо діалог у Viber з номером +${normPhone}.\nТекст автоматично готовий до вставки!`);
+      window.open(`viber://chat?number=%2B${normPhone}`, '_blank');
+    }
+    window.sendSelectedReminderViber = sendSelectedReminderViber;
+
+    function sendSelectedReminderWhatsApp() {
+      const apt = (appState.activeBriefAppointmentId ? appState.appointments.find(a => a.id === appState.activeBriefAppointmentId) : null) || appState.appointments[0];
+      const text = (document.getElementById('briefReminderCustomText') ? document.getElementById('briefReminderCustomText').value : '') || '';
+      const phoneRaw = (apt && (apt.phone || apt.clientPhone)) ? (apt.phone || apt.clientPhone) : '380673452190';
+      const normPhone = phoneRaw.replace(/[^0-9]/g, '');
+      const encoded = encodeURIComponent(text);
+      const cName = (apt && (apt.client || apt.clientName)) ? (apt.client || apt.clientName) : 'Клієнтка';
+      alert(`🟢 Відкриваємо WhatsApp з підготовленим текстом для клієнтки ${cName}!`);
+      window.open(`https://wa.me/${normPhone}?text=${encoded}`, '_blank');
+    }
+    window.sendSelectedReminderWhatsApp = sendSelectedReminderWhatsApp;
+
+    function copyReminderTextToClipboard() {
+      const text = (document.getElementById('briefReminderCustomText') ? document.getElementById('briefReminderCustomText').value : '') || '';
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(text).then(() => {
+          alert(`📋 Текст повідомлення успішно скопійовано в буфер обміну! Можете вставити його в будь-який месенджер.`);
+        }).catch(() => {
+          alert(`📋 Текст повідомлення:\n\n${text}`);
+        });
+      } else {
+        alert(`📋 Текст повідомлення:\n\n${text}`);
+      }
+    }
+    window.copyReminderTextToClipboard = copyReminderTextToClipboard;
+
+    function scheduleAutomatedReminderDemo() {
+      const apt = (appState.activeBriefAppointmentId ? appState.appointments.find(a => a.id === appState.activeBriefAppointmentId) : null) || appState.appointments[0];
+      const cName = (apt && (apt.client || apt.clientName)) ? (apt.client || apt.clientName) : 'Клієнтці';
+      alert(`⏰ Нагадування успішно заплановано в календарі Smart Retention!\n\nКлієнтці ${cName} буде автоматично надіслано ланцюжок через Telegram та Viber згідно з обраним циклом оновлення.`);
+    }
+    window.scheduleAutomatedReminderDemo = scheduleAutomatedReminderDemo;
+
+    function sendTgActionDemo(action) {
+      if (action === 'rate') {
+        alert(`⭐️ Дякуємо за оцінку 5 зірочок! Ваш відгук збережено в картці майстра студії wild_beauty_space.`);
+      } else if (action === 'book') {
+        closeBriefModal();
+        switchMode('client');
+        alert(`📅 Відкрито форму запису на наступний візит! Оберіть бажаний день та час.`);
+      } else if (action === 'route') {
+        alert(`📍 Адреса студії: м. Одеса, Французький бульвар, 26/1.\nВхід через фасадний хол, 1 поверх. Затишна зона паркування!`);
+      } else {
+        alert(`💬 Запит на зворотний зв'язок надіслано адміністратору студії!`);
+      }
+    }
+    window.sendTgActionDemo = sendTgActionDemo;
+
+    function openBriefReminderDirect(aptId, presetKey) {
+      if (appState.currentMode !== 'admin') {
+        switchMode('admin');
+      }
+      openBriefModal(aptId, 'reminders');
+      if (presetKey) {
+        selectReminderPreset(presetKey);
+      }
+    }
+    window.openBriefReminderDirect = openBriefReminderDirect;
+
+    function openBriefModal(aptId, targetSection) {
       try {
         appState.activeBriefAppointmentId = aptId;
         const apt = (aptId ? appState.appointments.find(a => a.id === aptId) : null)
@@ -2129,6 +2785,12 @@
         const subTitleElem = document.getElementById('briefModalSubtitle');
         if (subTitleElem) subTitleElem.innerText = `Студія wild_beauty_space • ${serviceName} • Французький б-р, 26/1`;
 
+        const dirBadge = document.getElementById('briefDirBadge');
+        if (dirBadge) {
+          const emoji = (dirVal === 'Манікюр') ? '💅' : (dirVal === 'Педикюр') ? '🦶' : (dirVal === 'Вії') ? '👁️' : (dirVal === 'Брови') ? '🎨' : (dirVal === 'Косметологія') ? '💆‍♀️' : '💇‍♀️';
+          dirBadge.innerText = `${emoji} ${dirVal}`;
+        }
+
         const nameElem = document.getElementById('briefClientName');
         if (nameElem) nameElem.innerText = clientName;
         const phoneElem = document.getElementById('briefClientPhone');
@@ -2147,83 +2809,68 @@
         const imgAfter = document.getElementById('briefImgAfter');
         const lblBefore = document.getElementById('briefImgBeforeLbl');
         const lblAfter = document.getElementById('briefImgAfterLbl');
+        const tgPhoto = document.getElementById('tgPreviewPhoto');
 
         if (dirVal === 'Манікюр') {
           if (imgBefore) imgBefore.src = './assets/img/salon_4.jpg';
           if (lblBefore) lblBefore.innerText = 'Відросле покриття (4 тижні), суха кутикула';
           if (imgAfter) imgAfter.src = './assets/img/salon_3.jpg';
           if (lblAfter) lblAfter.innerText = 'Dark Cherry Glossy Gel • Ідеальний блік';
+          if (tgPhoto) tgPhoto.src = './assets/img/salon_3.jpg';
         } else if (dirVal === 'Педикюр') {
           if (imgBefore) imgBefore.src = './assets/img/salon_4.jpg';
           if (lblBefore) lblBefore.innerText = 'Початковий стан стопи та нігтів';
           if (imgAfter) imgAfter.src = './assets/img/salon_5.jpg';
           if (lblAfter) lblAfter.innerText = 'Повний апаратний педикюр Smart + покриття';
+          if (tgPhoto) tgPhoto.src = './assets/img/salon_5.jpg';
         } else if (dirVal === 'Вії') {
           if (imgBefore) imgBefore.src = './assets/img/salon_1.jpg';
           if (lblBefore) lblBefore.innerText = 'Свої вії до нарощування';
           if (imgAfter) imgAfter.src = './assets/img/salon_2.jpg';
           if (lblAfter) lblAfter.innerText = 'Нарощування Тренди (мокрий ефект, вигин L)';
+          if (tgPhoto) tgPhoto.src = './assets/img/salon_2.jpg';
         } else if (dirVal === 'Косметологія') {
           if (imgBefore) imgBefore.src = './assets/img/salon_1.jpg';
           if (lblBefore) lblBefore.innerText = 'Забиті пори, комедони в T-зоні';
           if (imgAfter) imgAfter.src = './assets/img/salon_2.jpg';
           if (lblAfter) lblAfter.innerText = 'Чиста сяюча шкіра після УЗ + заспокійлива маска';
-        } else {
+          if (tgPhoto) tgPhoto.src = './assets/img/salon_2.jpg';
+        } else if (dirVal === 'Брови') {
           if (imgBefore) imgBefore.src = './assets/img/salon_1.jpg';
           if (lblBefore) lblBefore.innerText = 'Брови до корекції та ламінування';
           if (imgAfter) imgAfter.src = './assets/img/salon_2.jpg';
           if (lblAfter) lblAfter.innerText = 'Ламінування + моделювання воском + тон 7.0';
+          if (tgPhoto) tgPhoto.src = './assets/img/salon_2.jpg';
+        } else {
+          if (imgBefore) imgBefore.src = './assets/img/industry_4.png';
+          if (lblBefore) lblBefore.innerText = 'Сухе волосся, пористі кінчики';
+          if (imgAfter) imgAfter.src = './assets/img/salon_2.jpg';
+          if (lblAfter) lblAfter.innerText = 'Spa-догляд «Абсолютне щастя» • Дзеркальний блиск';
+          if (tgPhoto) tgPhoto.src = './assets/img/salon_2.jpg';
         }
 
-        // Render direction-specific fields
-        const dynContainer = document.getElementById('briefDynamicFields');
-        if (dynContainer) {
-          if (dirVal === 'Манікюр' || dirVal === 'Педикюр') {
-            dynContainer.innerHTML = `
-              <div class="form-row">
-                <label class="form-lbl">Стан нігтьової пластини & кутикули</label>
-                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-                  <span class="slot-pill active">✓ Тонка / Чутлива пластина</span>
-                  <span class="slot-pill">Здорова / Норма</span>
-                  <span class="slot-pill">Схильна до відшарувань</span>
-                </div>
-              </div>
-              <div class="form-row">
-                <label class="form-lbl">Технічний протокол укріплення</label>
-                <input type="text" class="input-field" value="Rubber Base безкислотне укріплення + форма квадрат, довжина 2">
-              </div>
-            `;
-          } else if (dirVal === 'Вії') {
-            dynContainer.innerHTML = `
-              <div class="form-row">
-                <label class="form-lbl">Параметри нарощування вій</label>
-                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-                  <span class="slot-pill active">✓ Вигин L</span>
-                  <span class="slot-pill active">✓ Довжина 9-12 мм</span>
-                  <span class="slot-pill active">✓ Мокрий ефект</span>
-                  <span class="slot-pill">Товщина 0.07</span>
-                </div>
-              </div>
-            `;
-          } else if (dirVal === 'Косметологія') {
-            dynContainer.innerHTML = `
-              <div class="form-row">
-                <label class="form-lbl">Тип шкіри & Протокол догляду</label>
-                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-                  <span class="slot-pill active">✓ Комбінована</span>
-                  <span class="slot-pill active">✓ Чутлива T-зона</span>
-                  <span class="slot-pill">Атравматична чистка + SPF 50</span>
-                </div>
-              </div>
-            `;
-          } else {
-            dynContainer.innerHTML = `
-              <div class="form-row">
-                <label class="form-lbl">Колористика / Рівень глибини тону</label>
-                <input type="text" class="input-field" value="Натуральний світло-коричневий 7.0, оксид 3%, віск">
-              </div>
-            `;
-          }
+        // Render direction-specific diagnostic fields
+        renderDynamicDiagnosticFields(apt);
+
+        // Populate drink and health inputs
+        const drinkInput = document.getElementById('briefDrinkInput');
+        if (drinkInput) {
+          if (dirVal === 'Манікюр') drinkInput.value = 'Капучино з корицею (вівсяне молоко)';
+          else if (dirVal === 'Педикюр') drinkInput.value = 'Зелений чай з м\'ятою та теплий плед';
+          else if (dirVal === 'Вії') drinkInput.value = 'Лате карамель або вода з лимоном';
+          else if (dirVal === 'Косметологія') drinkInput.value = 'Тепла детокс-вода з лимоном';
+          else if (dirVal === 'Брови') drinkInput.value = 'Американо з молоком';
+          else drinkInput.value = 'Чай ерл грей з бергамотом';
+        }
+
+        const healthInput = document.getElementById('briefHealthInput');
+        if (healthInput) {
+          if (dirVal === 'Манікюр') healthInput.value = 'Чутлива шкіра біля нігтьового валика, без кислотного праймера';
+          else if (dirVal === 'Педикюр') healthInput.value = 'Сухість п\'ят, схильність до мікротріщин, без глибокого зрізання';
+          else if (dirVal === 'Вії') healthInput.value = 'Чутливість до випарів клею, сльозоточивість при яскравому світлі';
+          else if (dirVal === 'Косметологія') healthInput.value = 'Чутлива судинна T-зона, уникати агресивних спиртових тоніків';
+          else if (dirVal === 'Брови') healthInput.value = 'Без алергії на хну, чутлива шкіра до гарячого воску';
+          else healthInput.value = 'Освітлений блонд, висока пористість, термозахист обов\'язковий';
         }
 
         // Initialize Editable BOM array
@@ -2235,14 +2882,21 @@
         renderBOMItemsInBrief();
         calculateBriefTotals(priceVal);
 
-        // Telegram Message Preview
-        const tgElem = document.getElementById('briefTelegramPreview');
-        if (tgElem) {
-          tgElem.innerText = `💬 «${clientFirstName}, дякуємо за візит у @wild_beauty_space_! 💜 Ваш майстер ${masterName} зафіксувала результат (${serviceName}) та нагадує про щоденний догляд. Чекаємо на оновлення 15 грудня о 11:30 ✨»`;
-        }
+        // Initialize Reminder Center
+        selectReminderPreset('post_visit');
 
         const modal = document.getElementById('adminBriefModal');
-        if (modal) modal.classList.add('open');
+        if (modal) {
+          modal.classList.add('open');
+          if (targetSection === 'reminders') {
+            setTimeout(() => {
+              const remSection = document.getElementById('briefReminderSection');
+              if (remSection && typeof remSection.scrollIntoView === 'function') {
+                remSection.scrollIntoView({ behavior: 'smooth' });
+              }
+            }, 100);
+          }
+        }
       } catch (err) {
         console.error('CRITICAL: Error in openBriefModal:', err);
         const modal = document.getElementById('adminBriefModal');
@@ -2347,13 +3001,11 @@
     };
 
     window.changeBriefPhoto = function(type) {
-      alert(`📸 У робочій версії майстер завантажує фото безпосередньо з камери або галереї телефону.`);
+      alert(`📸 У робочій версії майстер завантажує фото ${type === 'before' ? 'ДО' : 'ПІСЛЯ'} безпосередньо з камери або галереї телефону.`);
     };
 
     window.sendBriefTelegramDemo = function() {
-      const apt = appState.appointments.find(a => a.id === appState.activeBriefAppointmentId) || appState.appointments[0] || INITIAL_APPOINTMENTS[0];
-      const clientName = ((apt.client && apt.client !== 'undefined') ? apt.client : (apt.clientName || 'Катерина Воронова')).trim();
-      alert(`📲 Повідомлення клієнтці успішно надіслано в Telegram!\n\n${clientName} відправлено фото результату процедури (ПІСЛЯ), рекомендації майстра по догляду та автоматичне нагадування на наступний візит.`);
+      sendSelectedReminderTelegram();
     };
 
     window.saveBriefChanges = function() {

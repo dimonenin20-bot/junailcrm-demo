@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Privacy Policy — ThredsApi / JuNailCRM</title>
+  <style>
+    :root {
+      --bg: #0b0d12;
+      --surface: #12151c;
+      --border: rgba(240, 243, 248, 0.1);
+      --text: #f0f3f8;
+      --muted: #9aa3b4;
+      --accent: #9b62dc;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      line-height: 1.6;
+      padding: 40px 20px;
+    }
+    main {
+      max-width: 760px;
+      margin: 0 auto;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 36px;
+    }
+    h1 { font-size: 26px; margin-bottom: 8px; }
+    h2 { font-size: 18px; margin-top: 24px; margin-bottom: 8px; color: var(--accent); }
+    p, li { color: var(--muted); font-size: 15px; margin-bottom: 10px; }
+    ul { padding-left: 20px; margin-bottom: 12px; }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .meta { font-size: 13px; color: var(--muted); margin-bottom: 24px; }
+    hr { border: none; border-top: 1px solid var(--border); margin: 28px 0; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Privacy Policy — ThredsApi (JuNailCRM)</h1>
+    <p class="meta">Last updated: November 27, 2026</p>
+
+    <p>
+      This Privacy Policy describes how <strong>ThredsApi</strong> (part of the JuNailCRM studio automation suite)
+      collects, processes, and protects data accessed through the Meta Threads API.
+    </p>
+
+    <h2>1. Information We Access</h2>
+    <p>When an authorized user grants permissions via Meta Threads OAuth, the application accesses only the minimum data needed to operate:</p>
+    <ul>
+      <li><strong>Profile Basics (<code>threads_basic</code>):</strong> Threads user ID and public username.</li>
+      <li><strong>Content Publishing (<code>threads_content_publish</code>):</strong> Publishing studio announcements and replies authorized by the account owner.</li>
+      <li><strong>Reply Management (<code>threads_read_replies</code>, <code>threads_manage_replies</code>):</strong> Reading and responding to comments on the account owner's posts.</li>
+      <li><strong>Public Keyword Discovery (<code>threads_keyword_search</code>):</strong> Searching public Threads posts containing beauty/manicure service keywords to surface relevant industry discussions and leads.</li>
+    </ul>
+
+    <h2>2. How Data Is Used</h2>
+    <ul>
+      <li>To publish scheduled studio posts and respond to comments on behalf of the authorized account owner.</li>
+      <li>To display relevant public Threads posts and usernames to the authorized operator in a private management interface.</li>
+      <li>We do <strong>not</strong> sell, rent, or transfer Threads data to third-party data brokers or ad networks.</li>
+    </ul>
+
+    <h2>3. Data Storage and Retention</h2>
+    <p>
+      Authorized access tokens and operational logs are stored securely on a private server accessible only to the application owner.
+      Data is retained only as long as necessary to provide active workflow automation or until deletion is requested.
+    </p>
+
+    <h2>4. User Data Deletion & Revocation</h2>
+    <p>
+      Users may revoke access at any time via Threads Settings &rarr; Account &rarr; Website Permissions, or request complete deletion of stored records by following our
+      <a href="./data-deletion.html">Data Deletion Instructions</a>.
+    </p>
+
+    <hr>
+
+    <h2>Політика конфіденційності (Українською)</h2>
+    <p>
+      Застосунок <strong>ThredsApi (JuNailCRM)</strong> використовує офіційний Meta Threads API виключно для публікації дописів, модерації коментарів та пошуку релевантних публічних обговорень у б'юті-сфері за згодою власника акаунта. Дані не продаються та не передаються третім особам. Інструкція з видалення даних: <a href="./data-deletion.html">data-deletion.html</a>.
+    </p>
+  </main>
+</body>
+</html>
